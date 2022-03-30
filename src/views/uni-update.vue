@@ -5,6 +5,7 @@
       <div class="form-container">
         <div class="form">
           <h3><strong>PLEASE FILL UP THE SCHOOL DETAILS/INFORMATION BELOW</strong></h3>
+          <h1>test</h1>
         </div>
       </div>
     </div>
