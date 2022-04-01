@@ -40,6 +40,11 @@ const routes = [
     name: "UniversityUpdate",
     component: () => import("../views/uni-update.vue"),
   },
+  {
+    path: "/university/view",
+    name: "UniversityView",
+    component: () => import("../views/uni-view.vue"),
+  },
 ];
 
 const router = new VueRouter({
