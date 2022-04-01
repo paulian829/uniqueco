@@ -20,16 +20,27 @@
                   <button type="button" class="btn" v-bind:class="{ 'btn-primary': selected =='Performance', 'btn-warning': selected !='Performance' }" v-on:click="selected='Performance'">Performance</button>
                   <button type="button" class="btn" v-bind:class="{ 'btn-primary': selected =='Scholarship', 'btn-warning': selected !='Scholarship' }"  v-on:click="selected='Scholarship'">Scholarship</button>
                 </div>
-                <div class="detail-container" v-show="selected === 'Programs'">
-                  <h1>Programs</h1>
+                <div class="btn-group-select " v-show="selected === 'Programs'">
+                    <div v-for="(program, key) in data.ProgramsOffered" v-bind:key="key" id="item1">{{program.Field}}</div>
                 </div>
-                <div class="detail-container" v-show="selected === 'Requirements'">
-                  <h1>Requirements</h1>
+                <div class="group-details-containers" v-show="selected === 'Requirements'">
+                  <div>Deadline: {{data.AdmissionRequirements.Deadline}}</div>
+                  <br>
+                  <div>
+                    <p><strong>Freshmen</strong></p>
+                    <div v-for="req in data.AdmissionRequirements.Requirements.Freshmen" v-bind:key="req">{{req}}</div>
+                    <br>
+                    <p><strong>Cross Enrolless</strong></p>
+                    <div v-for="req in data.AdmissionRequirements.Requirements['Cross Enrolless']" v-bind:key="req">{{req}}</div>
+                    <br>
+                    <p><strong>Second Course Enrollees</strong></p>
+                    <div v-for="req in data.AdmissionRequirements.Requirements['Second Course Enrollees']" v-bind:key="req">{{req}}</div>
+                  </div>
                 </div>
-                <div class="detail-container" v-show="selected === 'Performance'">
+                <div class="group-details-containers" v-show="selected === 'Performance'">
                   <h1>Performance</h1>
                 </div>
-                <div class="detail-container" v-show="selected === 'Scholarship'">
+                <div class="group-details-containers" v-show="selected === 'Scholarship'">
                   <h1>Scholarship</h1>
                 </div>
               </div>
@@ -42,20 +53,27 @@
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
+
+import data from "../../data.json"
 export default {
   name: "uni-update",
 
   data() {
     return {
-    selected:'Programs',
-      school: {
-        name: "De la salle Dasmarinas",
-        schoolPic: require("../assets/pexels-photo-207692.jpeg"),
-      },
+      data:data,
+      selected:'Programs',
+        school: {
+          name: "De la salle Dasmarinas",
+          schoolPic: require("../assets/pexels-photo-207692.jpeg"),
+        },
     };
   },
 
-  methods: {},
+  methods: {
+    getPic(pic){
+      return require(pic)
+    }
+  },
 };
 </script>
 
@@ -100,10 +118,18 @@ export default {
   justify-content: center;
 }
 .uni-column-btn-container button {
-  margin: 0 1em;
+  margin: 8px;
+}
+.btn-group-select {
+  height: 100px;
+  display: grid;
+  grid-template-areas: "a a";
+  gap: 10px;
+  height: 100%;
+  padding-top: 20px;
+}
+.group-details-containers{
+  padding-top: 20px;
 }
 
-.details-containers{
-      transition: visibility 0s, opacity 0.5s linear;
-}
 </style>
