@@ -43,8 +43,13 @@ export default {
 </script>
 
 <style>
+
+#app > div.dashboard > div > div.col-9{
+    background: #f5f5f5;
+}
 .dasboard{
     min-height: 91vh;
+    background: #F5F5F5;
 }
 .dashboard-nav {
     background: #A8C7DC;

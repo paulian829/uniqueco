@@ -13,7 +13,7 @@
           </div>
           <div class="form-group-container">
             <div class="form-input-heaeding-container">
-              <h4><strong>School Details</strong></h4>
+              <h4><strong>School Details {{data.test}}</strong></h4>
             </div>
             <div class="form-input-container">
               <div class="mb-3">
@@ -147,11 +147,16 @@
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
+
+import data from '../../data.json'
+
 export default {
   name: "uni-update",
 
   data() {
-    return {};
+    return {
+      data:data
+    };
   },
   methods: {},
 };
