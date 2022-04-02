@@ -10,7 +10,7 @@
                 <img :src="school.schoolPic" alt="" />
               </div>
               <div class="uni-column">
-                <h3>{{ data.Name }}</h3>
+                <h3><strong>{{ data.Name }}</strong></h3>
                 <h5 style="margin-top: 10px">"{{ data.Tagline }}"</h5>
                 <h4 style="margin-top: 20px"><strong>Address</strong></h4>
                 <p>
@@ -33,11 +33,50 @@
       </div>
       <div class="inner-container second-section">
         <div class="btn-container-two">
-          <button class="btn btn-primary">About School</button>
-          <button class="btn btn-primary">Programs</button>
-          <button class="btn btn-primary">Requirements</button>
+          <button class="btn btn-primary" @click="selected='About'">About School</button>
+          <button class="btn btn-primary" @click="selected='Programs'">Programs</button>
+          <button class="btn btn-primary" @click="selected='Requirements'">Requirements</button>
           <button class="btn btn-primary">School Performance</button>
           <button class="btn btn-primary">Scholarship</button>
+        </div>
+        <div id='About' class="selected-group" v-if="selected =='About' ">
+          <div class="logo-container">
+              <img src="../assets/school-pic.png" alt="">
+          </div>
+          <div class="about-details-container">
+            <div>
+              <h4><strong>About</strong></h4>
+              <p>{{data.SchoolDetails.AboutSchool}}</p>
+            </div>
+            <div>
+              <h4><strong>Vission</strong></h4>
+              <p>{{data.SchoolDetails.Vission}}</p>
+            </div>
+            <div>
+              <h4><strong>Mission</strong></h4>
+              <p>{{data.SchoolDetails.Mission}}</p>
+            </div>
+            <div>
+              <h4><strong>Goal</strong></h4>
+              <p>{{data.SchoolDetails.Goal}}</p>
+            </div>
+          </div>
+        </div>
+        <div id='Programs' class="selected-group" v-if="selected =='Programs'" >
+          <div class="program-heading"><h3><strong>Programs</strong></h3></div>
+          <div class="group-flex">
+          <div v-for="program in data.ProgramsOffered" v-bind:key="program" class="program-container">
+            <h5><strong>{{program.Field}}</strong></h5>
+            <h6>Courses</h6>
+            <div v-for="course in program.Programs" v-bind:key="course">
+              <p>{{course}}</p>
+            </div>
+            <h6><strong>Tuition:</strong> {{program.MinTuition}} - {{program.MaxTuition}}</h6>
+          </div>
+          </div>
+        </div>
+        <div id="Requirements" class="selected-group" v-if="selected='Requirements' ">
+
         </div>
       </div>
     </div>
@@ -52,7 +91,7 @@ export default {
   data() {
     return {
       data: data,
-      selected: "Programs",
+      selected: "About",
       school: {
         name: "De la salle Dasmarinas",
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
@@ -119,5 +158,33 @@ export default {
 }
 .btn-container-two button {
   margin: 0 15px;
+}
+.btn-container-two {
+    margin-top: 20px;
+}
+div#About {
+    padding: 20px;
+    display: flex;
+    margin-top: 20px;
+}
+.logo-container {
+    max-width: 300px;
+    width: 100%;
+}
+.about-details-container {
+    text-align: left;
+}
+div#Programs {
+    padding: 30px;
+}
+.group-flex {
+    display: flex;
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+.program-container {
+    width: 50%;
+    text-align: left;
+    padding-top: 10px;
 }
 </style>

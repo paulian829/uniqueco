@@ -31,6 +31,12 @@
             "Programs":["BS in Computer Science","BS in Information Technology","BS in Entertainment and Multimedia Computing" ],
             "MinTuition": 20000,
             "MaxTuition": 40000
+        },
+        "randomID3":{
+            "Field": "IT, Computer Science & Programming",
+            "Programs":["BS in Computer Science","BS in Information Technology","BS in Entertainment and Multimedia Computing" ],
+            "MinTuition": 20000,
+            "MaxTuition": 40000
         }
     },
     "SchoolPerformance":{
