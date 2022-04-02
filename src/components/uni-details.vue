@@ -3,7 +3,7 @@
 <template>
     <div  id="uni-details">
         <div class="details-btn-container">
-            <button type="button" class="btn btn-primary">View</button>
+            <button type="button" class="btn btn-primary"><a href="#/university/view">View</a></button>
             <button type="button" class="btn btn-primary" ><a href="#/university/update">Edit</a></button>
         </div>
         <div class="details-container">

@@ -2,7 +2,7 @@
 <template>
   <div id="uni-update">
     <div class="container">
-      <div class="form-container">
+      <div class="form-container-update">
         <div class="form">
           <div class="heading-container">
             <h3>
@@ -172,7 +172,7 @@ export default {
 .form {
   text-align: left;
 }
-.form-container {
+.form-container-update {
   padding-top: 50px;
 }
 .form-group-container {
