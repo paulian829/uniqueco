@@ -3,11 +3,14 @@
     "CreatedBY":"Juan Dela Cruz",
     "DateCreated":"August 29, 1993",
     "SchoolPic":"../assets/pexels-photo-207692.jpeg",
+    "Website":"www.google.com",
+    "Contacts":["09751160135", "091234567890"],
+    "Tagline":"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..",
     "Address":{
-        "Lot":"Lot",
-        "Barangay":"Barangay",
-        "City":"City",
-        "Municipality":"Municipality",
+        "Lot":"Blk 1 Lot 52 Bf Topman Homes",
+        "Barangay":"Molino 2",
+        "City":"Bacoor",
+        "Country": "Philippines",
         "ZipCode":"4102"
     },
     "SchoolDetails":{

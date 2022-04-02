@@ -4,48 +4,40 @@
     <div class="container">
       <div class="inner-container">
         <div class="heading-container">
-          <h2><strong>Overview</strong></h2>
-          <div>
-            <h3>{{ school.name }}</h3>
-          </div>
           <div class="details-containers">
             <div class="uni-flex-column">
               <div class="uni-column-img">
                 <img :src="school.schoolPic" alt="" />
               </div>
               <div class="uni-column">
-                <div class="uni-column-btn-container">
-                  <button type="button" class="btn"   v-bind:class="{ 'btn-primary': selected =='Programs', 'btn-warning': selected !='Programs' }" v-on:click="selected='Programs'">Programs</button>
-                  <button type="button" class="btn"  v-bind:class="{ 'btn-primary': selected =='Requirements', 'btn-warning': selected !='Requirements' }" v-on:click="selected='Requirements'">Requirements</button>
-                  <button type="button" class="btn" v-bind:class="{ 'btn-primary': selected =='Performance', 'btn-warning': selected !='Performance' }" v-on:click="selected='Performance'">Performance</button>
-                  <button type="button" class="btn" v-bind:class="{ 'btn-primary': selected =='Scholarship', 'btn-warning': selected !='Scholarship' }"  v-on:click="selected='Scholarship'">Scholarship</button>
-                </div>
-                <div class="btn-group-select " v-show="selected === 'Programs'">
-                    <div v-for="(program, key) in data.ProgramsOffered" v-bind:key="key" id="item1">{{program.Field}}</div>
-                </div>
-                <div class="group-details-containers" v-show="selected === 'Requirements'">
-                  <div>Deadline: {{data.AdmissionRequirements.Deadline}}</div>
-                  <br>
-                  <div>
-                    <p><strong>Freshmen</strong></p>
-                    <div v-for="req in data.AdmissionRequirements.Requirements.Freshmen" v-bind:key="req">{{req}}</div>
-                    <br>
-                    <p><strong>Cross Enrolless</strong></p>
-                    <div v-for="req in data.AdmissionRequirements.Requirements['Cross Enrolless']" v-bind:key="req">{{req}}</div>
-                    <br>
-                    <p><strong>Second Course Enrollees</strong></p>
-                    <div v-for="req in data.AdmissionRequirements.Requirements['Second Course Enrollees']" v-bind:key="req">{{req}}</div>
-                  </div>
-                </div>
-                <div class="group-details-containers" v-show="selected === 'Performance'">
-                  <h1>Performance</h1>
-                </div>
-                <div class="group-details-containers" v-show="selected === 'Scholarship'">
-                  <h1>Scholarship</h1>
+                <h3>{{ data.Name }}</h3>
+                <h5 style="margin-top: 10px">"{{ data.Tagline }}"</h5>
+                <h4 style="margin-top: 20px"><strong>Address</strong></h4>
+                <p>
+                  {{ data.Address.Lot }} {{ data.Address.Barangay }}
+                  {{ data.Address.City }} {{ data.Address.Country }}
+                  {{ data.Address.ZipCode }}
+                </p>
+                <h4><strong>Contacts</strong></h4>
+                <p v-for="number in data.Contacts" v-bind:key="number">
+                  {{ number }}
+                </p>
+                <div class="btn-container">
+                  <button class="btn btn-primary">Message</button>
+                  <button class="btn btn-primary">Go to Website</button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="inner-container second-section">
+        <div class="btn-container-two">
+          <button class="btn btn-primary">About School</button>
+          <button class="btn btn-primary">Programs</button>
+          <button class="btn btn-primary">Requirements</button>
+          <button class="btn btn-primary">School Performance</button>
+          <button class="btn btn-primary">Scholarship</button>
         </div>
       </div>
     </div>
@@ -53,26 +45,25 @@
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
-
-import data from "../../data.json"
+import data from "../../data.json";
 export default {
   name: "uni-update",
 
   data() {
     return {
-      data:data,
-      selected:'Programs',
-        school: {
-          name: "De la salle Dasmarinas",
-          schoolPic: require("../assets/pexels-photo-207692.jpeg"),
-        },
+      data: data,
+      selected: "Programs",
+      school: {
+        name: "De la salle Dasmarinas",
+        schoolPic: require("../assets/pexels-photo-207692.jpeg"),
+      },
     };
   },
 
   methods: {
-    getPic(pic){
-      return require(pic)
-    }
+    getPic(pic) {
+      return require(pic);
+    },
   },
 };
 </script>
@@ -85,13 +76,10 @@ export default {
   justify-content: center;
 }
 .inner-container {
-  padding: 50px;
+  padding-top: 20px;
 }
 .heading-container {
   text-align: left;
-}
-.heading-container h3 {
-  padding-top: 30px;
 }
 .details-containers {
   padding-top: 20px;
@@ -112,24 +100,24 @@ export default {
   width: 100%;
   background: #f5f5f5;
   padding: 30px;
+  position: relative;
 }
-.uni-column-btn-container {
-  display: flex;
-  justify-content: center;
-}
-.uni-column-btn-container button {
-  margin: 8px;
-}
-.btn-group-select {
-  height: 100px;
-  display: grid;
-  grid-template-areas: "a a";
-  gap: 10px;
-  height: 100%;
-  padding-top: 20px;
-}
-.group-details-containers{
-  padding-top: 20px;
+.uni-column-img img {
+  width: 100%;
 }
 
+.btn-container {
+  position: absolute;
+  bottom: 30px;
+}
+.btn-container button {
+  margin-right: 20px;
+}
+.inner-container.second-section {
+  background: #f0eded;
+  padding: 30px !important;
+}
+.btn-container-two button {
+  margin: 0 15px;
+}
 </style>
