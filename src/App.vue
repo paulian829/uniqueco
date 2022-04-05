@@ -1,24 +1,22 @@
 <template>
   <div id="app">
-    <div>
-      <div id="nav">
-        <div class="nav-container">
-          <router-link to="/" style="padding: 0">
-            <img alt="Vue logo" src="./assets/logo.svg" />
-          </router-link>
-          <router-link to="/">Home</router-link>
-          <router-link to="/dashboard">Dashboard</router-link>
+    <div id="nav">
+      <div class="nav-container">
+        <router-link to="/" style="padding: 0">
+          <img alt="Vue logo" src="./assets/logo.svg" />
+        </router-link>
+        <router-link to="/">Home</router-link>
+        <router-link to="/dashboard">Dashboard</router-link>
 
-          <router-link to="/schools">Schools</router-link>
-          <router-link to="/about">About</router-link>
-          <div class="login-button-container">
-            <router-link class="secondary" to="/login">Login</router-link>
-            <router-link class="primary" to="/signup">Sign Up</router-link>
-          </div>
+        <router-link to="/schools">Schools</router-link>
+        <router-link to="/about">About</router-link>
+        <div class="login-button-container">
+          <router-link class="secondary" to="/login">Login</router-link>
+          <router-link class="primary" to="/signup">Sign Up</router-link>
         </div>
       </div>
     </div>
-    <router-view />
+    <router-view class="padding-top" />
   </div>
 </template>
 
@@ -36,6 +34,7 @@ body {
   text-align: center;
   color: #2c3e50;
   min-height: 100vh;
+  position: relative;
 }
 
 #nav a {
@@ -115,5 +114,13 @@ a.primary:hover {
   border: 1px solid #ff974c;
   color: #ff974c !important;
   transition-delay: 0.1s;
+}
+#nav {
+  position: absolute;
+  width: 100%;
+  box-shadow: 0 0 30px #ccc;
+}
+.padding-top {
+  padding-top: 83px;
 }
 </style>

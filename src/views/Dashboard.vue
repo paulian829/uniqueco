@@ -14,7 +14,6 @@
             </div>
             <div class="col-9" v-if="active == 'Profile'"><Profile></Profile></div>
             <div class="col-9" style="background:#F5F5F5" v-if="active == 'Details'"><UniDetails></UniDetails></div>
-
         </div>
   </div>
 </template>
@@ -77,7 +76,5 @@ export default {
 .nav-container h5:hover{
     color: #ff974c;
 }
-#uni-view .container {
-    padding: 50px 0;
-}
+
 </style>
