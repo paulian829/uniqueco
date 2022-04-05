@@ -8,7 +8,7 @@
         <router-link to="/">Home</router-link>
         <router-link to="/dashboard">Dashboard</router-link>
 
-        <router-link to="/schools">Schools</router-link>
+        <router-link to="/university/list">Schools</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
           <router-link class="secondary" to="/login">Login</router-link>
