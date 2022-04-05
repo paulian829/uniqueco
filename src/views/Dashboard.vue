@@ -8,7 +8,6 @@
                 <div class="nav-container">
                     <h5 v-on:click="selectScreen('Profile')"><strong>My Profile</strong></h5>
                     <h5 v-on:click="selectScreen('Details')"><strong>University Details</strong></h5>
-                    <h5 v-on:click="selectScreen('test')"><strong>Messages</strong></h5>
                     <h5 v-on:click="selectScreen('test')"><strong>Articles</strong></h5>
                     <h5 v-on:click="selectScreen('test')"><strong>Account Settings</strong></h5>    
                 </div>
@@ -36,6 +35,9 @@ export default {
   },
   methods: {
       selectScreen(screen){
+          if (screen === 'Messages'){
+              this.$router.push('/messages')
+          }
           this.active = screen
       }
   }
@@ -74,5 +76,8 @@ export default {
 }
 .nav-container h5:hover{
     color: #ff974c;
+}
+#uni-view .container {
+    padding: 50px 0;
 }
 </style>

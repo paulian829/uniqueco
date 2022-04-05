@@ -35,37 +35,41 @@
       </div>
       <div class="inner-container second-section">
         <div class="btn-container-two">
-          <button class="btn btn-primary" @click="selected = 'About'">
+          <button
+            class="btn btn-primary"
+            v-on:click="selected = 'About'"
+            :class="{ 'btn-active': selected == 'About' }"
+          >
             About School
           </button>
-          <button class="btn btn-primary" @click="selected = 'Programs'">
+          <button class="btn btn-primary" @click="selected = 'Programs'" :class="{ 'btn-active': selected == 'Programs' }">
             Programs
           </button>
-          <button class="btn btn-primary" @click="selected = 'Requirements'">
+          <button class="btn btn-primary" @click="selected = 'Requirements'" :class="{ 'btn-active': selected == 'Requirements' }">
             Requirements
           </button>
-          <button class="btn btn-primary">School Performance</button>
-          <button class="btn btn-primary">Scholarship</button>
-        </div>
+          <button class="btn btn-primary" @click="selected = 'Performance' " :class="{ 'btn-active':selected == 'Performance'}">School Performance</button>
+          <button class="btn btn-primary" @click="selected = 'Scholarship' " :class="{'btn-active':selected == 'Scholarship'}">Scholarship</button>
+        </div> 
         <div id="About" class="selected-group" v-if="selected == 'About'">
           <div class="logo-container">
             <img src="../assets/school-pic.png" alt="" />
           </div>
           <div class="about-details-container">
             <div>
-              <h4><strong>About</strong></h4>
+              <h5 class="primary-color"><strong>About</strong></h5>
               <p>{{ data.SchoolDetails.AboutSchool }}</p>
             </div>
             <div>
-              <h4><strong>Vission</strong></h4>
+              <h5 class="primary-color"><strong>Vission</strong></h5>
               <p>{{ data.SchoolDetails.Vission }}</p>
             </div>
             <div>
-              <h4><strong>Mission</strong></h4>
+              <h5 class="primary-color"><strong>Mission</strong></h5>
               <p>{{ data.SchoolDetails.Mission }}</p>
             </div>
             <div>
-              <h4><strong>Goal</strong></h4>
+              <h5 class="primary-color"><strong>Goal</strong></h5>
               <p>{{ data.SchoolDetails.Goal }}</p>
             </div>
           </div>
@@ -83,8 +87,12 @@
               <h5>
                 <strong>{{ program.Field }}</strong>
               </h5>
-              <h6>Courses</h6>
-              <div v-for="course in program.Programs" v-bind:key="course">
+              <h6><strong>Courses</strong></h6>
+              <div
+                v-for="course in program.Programs"
+                v-bind:key="course"
+                class="indented"
+              >
                 <p>{{ course }}</p>
               </div>
               <h6>
@@ -101,19 +109,57 @@
         >
           <div class="program-heading">
             <h3><strong>Admission Requirements</strong></h3>
-            <div class="group-flex">
-                          <div
-             class="program-container"
-              v-for="(requirement, key) in data.AdmissionRequirements.Requirements"
+          </div>
+          <div class="group-flex">
+            <div
+              class="program-container"
+              v-for="(requirement, key) in data.AdmissionRequirements
+                .Requirements"
               v-bind:key="key"
             >
-            <h4><strong>{{key}}</strong></h4>
-              <p v-for="item in requirement" v-bind:key='item'>{{ item }}</p>
+              <h5>
+                <strong>{{ key }}</strong>
+              </h5>
+              <div>
+                <p v-for="item in requirement" v-bind:key="item">{{ item }}</p>
+              </div>
             </div>
-            </div>
-
           </div>
         </div>
+        <div
+          id="Performance"
+          class="selected-group"
+          v-if="selected === 'Performance'"
+        >
+        <div class="program-heading">
+          <h3><strong>School Performance</strong></h3>
+        </div>
+        <div class="group-centered">
+          <br>
+          <h5><strong>Ranking</strong></h5>
+          <h1>{{data.SchoolPerformance.Ranking}}TH</h1>
+          <br>
+          <h5><strong>Board Exam Performance</strong></h5>
+          <h1>{{data.SchoolPerformance.BoardRankingPerformance}}</h1>
+          <br>
+          <div class="performance-others">
+            <h5><strong>Others</strong></h5>
+            <p v-for="others in data.SchoolPerformance.Others" v-bind:key='others'>{{others}}</p>
+          </div>
+        </div>
+        </div>
+        <div class="selected-group" id="Scholarship" v-if="selected === 'Scholarship' ">
+          <div class="program-heading">
+            <h3><strong>Scholarship</strong></h3>
+          </div>
+          <br>
+          <div class="group-centered">
+            <h5 v-for="item in data.Scholarship" v-bind:key="item">{{item}}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d295.61664909642514!2d121.92252934719077!3d13.999647954095922!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1649086065331!5m2!1sen!2sph" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
@@ -149,15 +195,10 @@ export default {
   min-height: 91vh;
   display: flex;
   justify-content: center;
-}
-.inner-container {
-  padding-top: 20px;
+  padding: 50px;
 }
 .heading-container {
   text-align: left;
-}
-.details-containers {
-  padding-top: 20px;
 }
 .uni-img {
   width: 100%;
@@ -224,6 +265,34 @@ div#Programs {
   padding-top: 10px;
 }
 .program-heading {
-    padding-top: 30px;
+  padding-top: 30px;
+}
+.program-container h5 {
+  text-align: center;
+  color: #ff974c;
+}
+.indented {
+  margin-left: 30px;
+}
+div#Requirements,div#Scholarship {
+  padding: 30px;
+}
+.btn-active {
+  background: #ff974c !important;
+  border: #ff974c !important;
+}
+div#Performance {
+    padding: 30px;
+}
+.group-centered h5{
+  color: #ff974c;
+}
+
+.primary-color{
+  color: #ff974c;
+}
+#uni-view .container {
+    box-shadow: 0 0 50px #ccc;
+    padding: 0;
 }
 </style>

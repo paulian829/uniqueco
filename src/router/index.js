@@ -45,6 +45,11 @@ const routes = [
     name: "UniversityView",
     component: () => import("../views/uni-view.vue"),
   },
+  {
+    path:"/messages",
+    name: "Messages",
+    component: () => import("../views/messages.vue")
+  }
 ];
 
 const router = new VueRouter({
