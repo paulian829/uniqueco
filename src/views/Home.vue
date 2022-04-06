@@ -25,7 +25,7 @@ export default {
 <style>
 .home {
   background: #ff974c;
-  height: 95vh;
+  height: 100vh;
 }
 
 .column {

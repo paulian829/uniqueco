@@ -165,7 +165,7 @@ export default {
 <style>
 #uni-update {
   background: #e4eef4;
-  min-height: 91vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
 }

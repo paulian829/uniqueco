@@ -31,7 +31,7 @@ export default {
 <style>
 #terms-page {
     background: #E4EEF4;
-    height: 91vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
 }

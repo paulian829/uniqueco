@@ -28,7 +28,7 @@ export default {
 
 <style>
 #messages.row{
-    height: 95vh;
+    height: 100vh;
 }
 .message-list-container, .message-container{
     height: 100%;
@@ -36,5 +36,6 @@ export default {
 .message-list-container{
     background: #A8C7DC;
 }
+
 
 </style>

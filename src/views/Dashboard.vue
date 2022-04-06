@@ -49,12 +49,12 @@ export default {
     background: #f5f5f5;
 }
 .dasboard{
-    min-height: 91vh;
+    min-height: 100vh;
     background: #F5F5F5;
 }
 .dashboard-nav {
     background: #A8C7DC;
-    min-height: 91vh;
+    min-height: 100vh;
     padding: 50px;
 }
 
