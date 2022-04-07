@@ -46,15 +46,15 @@ const routes = [
     component: () => import("../views/uni-view.vue"),
   },
   {
-    path:"/messages",
+    path: "/messages",
     name: "Messages",
-    component: () => import("../views/messages.vue")
+    component: () => import("../views/messages.vue"),
   },
   {
-    path:"/university/list",
+    path: "/university/list",
     name: "universityList",
-    component: () => import("../views/school-list.vue")
-  }
+    component: () => import("../views/school-list.vue"),
+  },
 ];
 
 const router = new VueRouter({

@@ -7,7 +7,6 @@
       </div>
       <div class="column">
         <img src="../assets/home-pic.png" style="margin: 0 auto" alt="" />
-        <font-awesome-icon icon="fa-solid fa-circle-right" />
       </div>
     </div>
   </div>

@@ -35,8 +35,24 @@
           </div>
         </div>
       </div>
-      <div class="school-container">
-          <h1>test</h1>
+      <div class="school-group-container">
+        <div class="school-item" v-for="item, key in data" :key="key">
+            <div class="school-logo-container">
+                <img src="../assets/school-pic.png" alt="">
+            </div>
+            <div class="list-item-details-container">
+                <h3><strong>{{item.Name}}</strong></h3>
+                <h6>{{item.Address.Lot}} {{item.Address.Barangay}}</h6>
+                <br>
+                <h6><strong>Programs Offered</strong></h6>
+                <h6><span v-for="program, key in item.ProgramsOffered" :key="key">{{program.Field}}</span></h6>
+                <div class="school-list-btn-group">
+                    <button class="btn btn-primary">View</button>
+                    <button class="btn btn-primary">Visit Website</button>
+
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -93,4 +109,31 @@ div#university-list {
   align-items: center;
   padding-top: 20px;
 }
+.school-group-container {
+    max-width: 1280px;
+    width: 100%;
+    margin: 50px auto;
+}
+.school-item {
+    padding: 30px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 50px #ccc;
+    margin: 50px 0px;
+    display: flex;
+    align-items: center;
+}
+.school-logo-container {
+    max-width: 300px;
+    width: 100%;
+}
+.list-item-details-container{
+    text-align: left;
+}
+.school-list-btn-group button{
+    margin-top: 20px;
+    margin-right: 20px;
+
+}
+
 </style>
