@@ -21,9 +21,9 @@
                   {{ data.Address.ZipCode }}
                 </p>
                 <h4><strong>Contacts</strong></h4>
-                <p v-for="number in data.Contacts" v-bind:key="number">
+                <span v-for="number in data.Contacts" v-bind:key="number" style="margin-right:20px">
                   {{ number }}
-                </p>
+                </span>
                 <div class="btn-container">
                   <button class="btn btn-primary">Message</button>
                   <button class="btn btn-primary">Go to Website</button>
@@ -195,7 +195,7 @@ export default {
   min-height: 91vh;
   display: flex;
   justify-content: center;
-  padding: 50px;
+  padding: 135px 50px 50px 50px ;
 }
 .heading-container {
   text-align: left;

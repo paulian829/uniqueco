@@ -6,19 +6,72 @@
           <img alt="Vue logo" src="./assets/logo.svg" />
         </router-link>
         <router-link to="/">Home</router-link>
-        <router-link to="/dashboard">Dashboard</router-link>
+        <router-link v-if="loggedIn" to="/dashboard">Dashboard</router-link>
 
         <router-link to="/university/list">Schools</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
-          <router-link class="secondary" to="/login">Login</router-link>
-          <router-link class="primary" to="/signup">Sign Up</router-link>
+          <button v-if="loggedIn" class="btn btn-secondary secondary" @click="logout()">Logout</button>
+          <router-link v-if="!loggedIn" class="secondary" to="/login"
+            >Login</router-link
+          >
+          <router-link v-if="!loggedIn" class="primary" to="/signup"
+            >Sign Up</router-link
+          >
         </div>
       </div>
     </div>
     <router-view class="padding-top" />
   </div>
 </template>
+
+<script>
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { passAuth } from "./db";
+
+export default {
+  data() {
+    return {
+      loggedIn: false,
+    };
+  },
+  mounted() {
+    console.log("test");
+    this.checkLoggedIn();
+  },
+  methods: {
+    checkLoggedIn() {
+      const auth = passAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const uid = user.uid;
+          console.log(uid);
+          this.loggedIn = true;
+          this.$router.push('/dashboard')
+          // ...
+        } else {
+          // User is signed out
+          // ...
+          this.loggedIn = false
+          console.log("user is logged out");
+        }
+      });
+    },
+    logout() {
+      signOut(passAuth())
+        .then(() => {
+          this.$router.push("/login")
+          console.log("LOGGED OUT");
+        })
+        .catch((error) => {
+          console.log("ERROR", error);
+        });
+    },
+  },
+};
+</script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");

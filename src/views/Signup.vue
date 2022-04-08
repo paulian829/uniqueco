@@ -1,85 +1,240 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div class="login">
-      <div class="form-container">
-        <h2 class="form-header">Signup</h2>
-        <p class="align-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime ullam amet dignissimos.</p>
-        <div class="mb-3">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="University name">
-        </div>
-        <div class="mb-3">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Email">
-        </div>
-        <div class="mb-3">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Firstname">
-        </div>
-        <div class="mb-3">
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Lastname">
-        </div>
-        <div class="mb-3">
-            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
-        </div>
-        <div class="mb-3">
-            <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Repeat Password">
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault" style="float:left">
-                <router-link class="terms" to="/terms-and-conditions">I accept the Terms of Service and Privacy Policy</router-link>
-            </label>
-        </div>
-        <br>
-        <button type="button" class="btn btn-primary-final space">Sign up</button>
-
+    <div class="form-container">
+      <h2 class="form-header">Signup</h2>
+      <p class="align-left">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime ullam
+        amet dignissimos.
+      </p>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="universityName"
+          placeholder="University name"
+          v-model="form.universityName"
+        />
       </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="email"
+          placeholder="Email"
+          v-model="form.email"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          placeholder="Firstname"
+          v-model="form.firstName"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          placeholder="Lastname"
+          v-model="form.lastName"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Password"
+          v-model="form.password"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="exampleFormControlInput1"
+          placeholder="Repeat Password"
+          v-model="form.repeatPassword"
+        />
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="flexCheckDefault"
+          v-model="terms"
+        />
+        <label
+          class="form-check-label"
+          for="flexCheckDefault"
+          style="float: left"
+        >
+          <router-link class="terms" to="/terms-and-conditions"
+            >I accept the Terms of Service and Privacy Policy</router-link
+          >
+        </label>
+      </div>
+      <br />
+      <button
+        type="button"
+        @click="createAccount()"
+        class="btn btn-primary-final space"
+      >
+        Sign up
+      </button>
+    </div>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
 // @ is an alias to /src
 
+import { passAuth } from "../db";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+
 export default {
   name: "Signup",
   components: {},
+  data() {
+    return {
+      test: "test",
+      form: {
+        email: "",
+        password: "",
+        repeatPassword: "",
+        universityName: "",
+        firstName: "",
+        lastName: "",
+      },
+      terms: false,
+    };
+  },
+  methods: {
+    createAccount() {
+      let form = this.form;
+      if (this.checkIfEmpty(form)) {
+        this.showAlertError("All fields are required!");
+        return;
+      }
+
+      if (form.password !== form.repeatPassword) {
+        this.showAlertError("Password are not the same!");
+        return;
+      }
+      if (this.terms === false) {
+        this.showAlertError("Accept the terms and conditions");
+        return;
+      }
+
+      createUserWithEmailAndPassword(passAuth(), form.email, form.password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          this.saveData(user.uid, form);
+          this.showAlertSuccess();
+          this.logout();
+
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+          this.showAlertError(errorMessage);
+        });
+    },
+    showAlertError(log) {
+      this.$swal({
+        icon: "error",
+        title: "Failed to Register Account",
+        text: log,
+      });
+    },
+    saveData(uid, form) {
+      const db = getDatabase();
+      set(ref(db, "universities/" + uid), {
+        Name:form.universityName,
+        CreatedBY:{
+          firstName:form.firstName,
+          lastName:form.lastName
+        },
+        DateCreated:Date.now(),
+      });
+    },
+    showAlertSuccess() {
+      this.$swal({
+        icon: "success",
+        title: "Success",
+        text: "Sucess Creating your account!",
+        footer: '<a href="#/login">Go to login page?</a>',
+      });
+    },
+    checkIfEmpty(form) {
+      console.log(form);
+      let result = Object.keys(form).reduce(
+        (res, k) =>
+          res && !(!!form[k] || form[k] === false || !isNaN(parseInt(form[k]))),
+        true
+      ); // returns false
+      console.log(result);
+      return result;
+    },
+        logout() {
+      signOut(passAuth())
+        .then(() => {
+          this.$router.push("/login")
+          console.log("LOGGED OUT");
+        })
+        .catch((error) => {
+          console.log("ERROR", error);
+        });
+    },
+  },
 };
 </script>
 
 <style>
 .terms {
-    color: blue;
-    font-size: 14px;
+  color: blue;
+  font-size: 14px;
 }
 .login {
-    background: #E4EEF4;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #e4eef4;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-container {
-    max-width: 400px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 30px;
-    border-radius: 7px;
-    background: #F5F5F5;
-    height: auto;
-    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 7px;
+  background: #f5f5f5;
+  height: auto;
+  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
 }
 
-.btn-primary-final{
-    color: #fff;
-    background-color: #ff974c;
-    width: 100%;
+.btn-primary-final {
+  color: #fff;
+  background-color: #ff974c;
+  width: 100%;
 }
 
-.btn-primary-final:hover{
-    background-color: #f7ab76;
-    color: white;
+.btn-primary-final:hover {
+  background-color: #f7ab76;
+  color: white;
 }
-.space{
-    margin-bottom: 20px;
+.space {
+  margin-bottom: 20px;
 }
-
 </style>

@@ -1,6 +1,9 @@
 {
     "Name": "Manuel S. Enverga University Foundation Lucena City",
-    "CreatedBY": "Juan Dela Cruz",
+    "CreatedBY": {
+        "firstName":"Juan",
+        "lastName":"Dela Cruz"
+    },
     "DateCreated": "August 29, 1993",
     "SchoolPic": "../assets/pexels-photo-207692.jpeg",
     "Website": "www.google.com",
