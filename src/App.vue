@@ -11,7 +11,13 @@
         <router-link to="/university/list">Schools</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
-          <button v-if="loggedIn" class="btn btn-secondary secondary" @click="logout()">Logout</button>
+          <button
+            v-if="loggedIn"
+            class="btn btn-secondary secondary"
+            @click="logout()"
+          >
+            Logout
+          </button>
           <router-link v-if="!loggedIn" class="secondary" to="/login"
             >Login</router-link
           >
@@ -37,6 +43,7 @@ export default {
   },
   mounted() {
     console.log("test");
+    this.checkLoggedIn();
   },
   methods: {
     checkLoggedIn() {
@@ -48,12 +55,12 @@ export default {
           const uid = user.uid;
           console.log(uid);
           this.loggedIn = true;
-          this.$router.push('/dashboard')
+          this.$router.push("/dashboard");
           // ...
         } else {
           // User is signed out
           // ...
-          this.loggedIn = false
+          this.loggedIn = false;
           console.log("user is logged out");
         }
       });
@@ -61,7 +68,7 @@ export default {
     logout() {
       signOut(passAuth())
         .then(() => {
-          this.$router.push("/login")
+          this.$router.push("/login");
           console.log("LOGGED OUT");
         })
         .catch((error) => {

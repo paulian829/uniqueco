@@ -52,17 +52,24 @@ export default {
   },
   methods: {
     login() {
-      let email = this.form.email;
+
+      try {
+             let email = this.form.email;
       let password = this.form.password;
       console.log(email, password)
       signInWithEmailAndPassword(passAuth(), email, password)
         .then((r) => {
           const user = r.user;
           console.log(user);
+          this.$router.push('/dashboard')
         })
         .catch((error) => {
           this.showAlertError(error.message);
-        });
+        }); 
+      } catch (error) {
+        this.showAlertError(error.message)
+      }
+
     },
     showAlertError(log) {
       this.$swal({
