@@ -1,80 +1,120 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div class="dashboard">
-        <div class="row">
-            <div class="col-3 full-width dashboard-nav">
-                <img class="school-logo"  src="../assets/school-pic.png" alt="">
-                <h2 style="margin-top:20px"><strong>Dashboard</strong></h2>
-                <div class="nav-container">
-                    <h5 v-on:click="selectScreen('Profile')"><strong>My Profile</strong></h5>
-                    <h5 v-on:click="selectScreen('Details')"><strong>University Details</strong></h5>
-                    <h5 v-on:click="selectScreen('test')"><strong>Articles</strong></h5>
-                    <h5 v-on:click="selectScreen('test')"><strong>Account Settings</strong></h5>    
-                </div>
-            </div>
-            <div class="col-9" v-if="active == 'Profile'"><Profile></Profile></div>
-            <div class="col-9" style="background:#F5F5F5" v-if="active == 'Details'"><UniDetails></UniDetails></div>
+    <div class="row">
+      <div class="col-3 full-width dashboard-nav">
+        <img class="school-logo" src="../assets/school-pic.png" alt="" />
+        <h2 style="margin-top: 20px"><strong>Dashboard</strong></h2>
+        <div class="nav-container">
+          <h5 v-on:click="selectScreen('Profile')">
+            <strong>My Profile</strong>
+          </h5>
+          <h5 v-on:click="selectScreen('Details')">
+            <strong>University Details</strong>
+          </h5>
+          <h5 v-on:click="selectScreen('test')"><strong>Articles</strong></h5>
+          <h5 v-on:click="selectScreen('test')">
+            <strong>Account Settings</strong>
+          </h5>
         </div>
+      </div>
+      <div class="col-9" v-if="active == 'Profile'"><Profile :dataProp="data"></Profile></div>
+      <div class="col-9" style="background: #f5f5f5" v-if="active == 'Details'">
+        <UniDetails ></UniDetails>
+      </div>
+    </div>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
-import Profile from '../components/profile.vue';
-import UniDetails from '../components/uni-details.vue';
+import { onAuthStateChanged } from "firebase/auth";
+import { passAuth } from "../db";
+
+import Profile from "../components/profile.vue";
+import UniDetails from "../components/uni-details.vue";
+
+import { getDatabase, ref, onValue } from "firebase/database";
 
 // @ is an alias to /src
 
 export default {
-  name: "Signup",
-  components: {Profile, UniDetails},
+  name: "dashboard",
+  components: { Profile, UniDetails },
   data() {
-      return{
-          active:'Profile'
-      }
+    return {
+      active: "Profile",
+      data:"",
+    };
+  },
+  mounted() {
+    this.checkLoggedIn();
   },
   methods: {
-      selectScreen(screen){
-          if (screen === 'Messages'){
-              this.$router.push('/messages')
-          }
-          this.active = screen
+    selectScreen(screen) {
+      if (screen === "Messages") {
+        this.$router.push("/messages");
       }
-  }
+      this.active = screen;
+    },
+    checkLoggedIn() {
+      const auth = passAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const uid = user.uid;
+          console.log(uid);
+          this.getUserData(uid);
+          // ...
+        } else {
+          // User is signed out
+          // ...
+          this.loggedIn = false;
+          this.$router.push("/");
+        }
+      });
+    },
+    getUserData(uid) {
+      const db = getDatabase();
+      const query = ref(db, "universities/" + uid);
+      onValue(query, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+        this.data = data
+      });
+    },
+  },
 };
 </script>
 
 <style>
-
-#app > div.dashboard > div > div.col-9{
-    background: #f5f5f5;
+#app > div.dashboard > div > div.col-9 {
+  background: #f5f5f5;
 }
-.dasboard{
-    min-height: 100vh;
-    background: #F5F5F5;
+.dasboard {
+  min-height: 100vh;
+  background: #f5f5f5;
 }
 .dashboard-nav {
-    background: #A8C7DC;
-    min-height: 100vh;
-    padding: 50px;
+  background: #a8c7dc;
+  min-height: 100vh;
+  padding: 50px;
 }
 
-.school-logo{
-    max-width: 100px;
-    max-height: 100px;
-    width:100% ;
-    height: 100%;
-    border-radius: 999px;
-    object-fit:cover;
+.school-logo {
+  max-width: 100px;
+  max-height: 100px;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
 }
-.nav-container{
-    margin-top: 30px;
+.nav-container {
+  margin-top: 30px;
 }
-.nav-container h5{
-    padding: 15px 0;
-    cursor: pointer;
+.nav-container h5 {
+  padding: 15px 0;
+  cursor: pointer;
 }
-.nav-container h5:hover{
-    color: #ff974c;
+.nav-container h5:hover {
+  color: #ff974c;
 }
-
 </style>

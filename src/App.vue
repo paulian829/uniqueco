@@ -55,7 +55,7 @@ export default {
           const uid = user.uid;
           console.log(uid);
           this.loggedIn = true;
-          this.$router.push("/dashboard");
+
           // ...
         } else {
           // User is signed out
