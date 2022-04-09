@@ -43,7 +43,7 @@
         />
         <label for="exampleFormControlInput1" class="form-label">Website</label>
       </div>
-      <button type="button" class="btn btn-primary" @click="test()">Save</button>
+      <button type="button" class="btn btn-primary btn-lg btn-block" @click="test()">Save</button>
     </div>
   </div>
 </template>
@@ -86,5 +86,8 @@ export default {
 #my-profile input {
   text-align: center;
   margin-bottom: 10px;
+}
+button.btn.btn-primary.btn-lg.btn-block {
+    width: 100%;
 }
 </style>

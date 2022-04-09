@@ -187,7 +187,6 @@ export default {
         icon: "success",
         title: "Success",
         text: "Sucess Creating your account!",
-        footer: '<a href="#/login">Go to login page?</a>',
       });
     },
     checkIfEmpty(form) {
