@@ -2,71 +2,154 @@
 
 <template>
   <div id="my-profile">
-    <img class="school-pic" :src="dataProp.logo" alt="" />
     <h1>My Profile</h1>
     <div class="profile-form-container">
       <div class="mb-3" style="margin-top: 50px">
-        <input class="form-control" type="file" id="formFile" />
+        <input
+          class="form-control"
+          type="file"
+          id="formFile"
+          @change="uploadImage"
+        />
         <label for="formFile" class="form-label">School Logo</label>
       </div>
       <div class="mb-3">
         <input
           type="email"
           class="form-control"
-          id="exampleFormControlInput1"
-          placeholder="name@example.com"
+          id="uniName"
+          placeholder="My university"
           v-model="dataProp.Name"
         />
-        <label for="exampleFormControlInput1" class="form-label"
-          >School Name</label
-        >
+        <label for="uniName" class="form-label">School Name</label>
       </div>
       <div class="mb-3">
         <input
           type="email"
           class="form-control"
-          id="exampleFormControlInput1"
+          id="email"
           placeholder="name@example.com"
-          v-model="dataProp.email"
+          v-model="dataProp.Email"
         />
-        <label for="exampleFormControlInput1" class="form-label"
-          >Email address</label
-        >
+        <label for="email" class="form-label">Email address</label>
       </div>
       <div class="mb-3">
         <input
-          type="email"
+          type="text"
           class="form-control"
-          id="exampleFormControlInput1"
-          placeholder="name@example.com"
-          v-model="dataProp.website"
+          id="website"
+          placeholder="www.uniqueco.com"
+          v-model="dataProp.Website"
         />
-        <label for="exampleFormControlInput1" class="form-label">Website</label>
+        <label for="website" class="form-label">Website</label>
       </div>
-      <button type="button" class="btn btn-primary btn-lg btn-block" @click="test()">Save</button>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          placeholder="First name"
+          v-model="dataProp.CreatedBY.FirstName"
+        />
+        <label for="firstName" class="form-label">First Name</label>
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          placeholder="First name"
+          v-model="dataProp.CreatedBY.LastName"
+        />
+        <label for="lastName" class="form-label">Last Name</label>
+      </div>
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="phone"
+          placeholder="PhoneNumber"
+          v-model="dataProp.Phone"
+        />
+        <label for="lastName" class="form-label">Phone number</label>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg btn-block"
+        @click="updateProfile()"
+      >
+        Save
+      </button>
     </div>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
 
 <script>
-// @ is an alias to /src
+import { getDatabase, ref, update } from "firebase/database";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as StorageRef,
+  uploadBytes,
+} from "firebase/storage";
 
 export default {
   name: "Profile",
   components: {},
-  props:['dataProp'],
-  data: function() {
+  props: ["dataProp", "isLoading"],
+  data: function () {
     return {
+      imageUri: "",
+      imageFile: "",
+      path: "",
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
-    test(){
-      console.log(this.dataProp)
-    }
-
+    updateProfile() {
+      this.$emit("setLoading", true);
+      let data = this.dataProp;
+      if (this.imageFile !== "") {
+        const storage = getStorage();
+        const logoRef = StorageRef(
+          storage,
+          "logo/" + this.dataProp.Uid + ".png"
+        );
+        uploadBytes(logoRef, this.imageFile[0]).then(() => {});
+        getDownloadURL(logoRef).then((url) => {
+          data["UniLogo"] = url;
+          const db = getDatabase();
+          const updates = {};
+          console.log(data);
+          updates["universities/" + data.Uid] = data;
+          update(ref(db), updates).then(() => {
+            this.$emit("setLoading", false);
+          }).catch((e) => {
+            this.$emit("setLoading", false);
+            console.log(e)
+          })
+        });
+      } else {
+        const db = getDatabase();
+        const updates = {};
+        console.log(data);
+        updates["universities/" + data.Uid] = data;
+        update(ref(db), updates).then(() => {
+          this.$emit("setLoading", false);
+        }).catch((e)=>{
+          console.log(e)
+          this.$emit("setLoading", false)
+        });
+      }
+    },
+    uploadImage(event) {
+      console.log(event);
+      this.imageFile = event.target.files;
+    },
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
   },
 };
 </script>
@@ -88,6 +171,6 @@ export default {
   margin-bottom: 10px;
 }
 button.btn.btn-primary.btn-lg.btn-block {
-    width: 100%;
+  width: 100%;
 }
 </style>

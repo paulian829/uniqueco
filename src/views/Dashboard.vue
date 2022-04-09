@@ -3,7 +3,7 @@
   <div class="dashboard">
     <div class="row">
       <div class="col-3 full-width dashboard-nav">
-        <img class="school-logo" src="../assets/school-pic.png" alt="" />
+        <img class="school-logo" :src="logoUrl" v-if="showLogo" alt="" />
         <h2 style="margin-top: 20px"><strong>Dashboard</strong></h2>
         <div class="nav-container">
           <h5 v-on:click="selectScreen('Profile')">
@@ -18,11 +18,14 @@
           </h5>
         </div>
       </div>
-      <div class="col-9" v-if="active == 'Profile'"><Profile :dataProp="data"></Profile></div>
+      <div class="col-9" v-if="active == 'Profile'">
+        <Profile :dataProp="data" @setLoading="setLoading"></Profile>
+      </div>
       <div class="col-9" style="background: #f5f5f5" v-if="active == 'Details'">
-        <UniDetails ></UniDetails>
+        <UniDetails></UniDetails>
       </div>
     </div>
+    <Loader v-if="isLoading"></Loader>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
@@ -34,16 +37,25 @@ import Profile from "../components/profile.vue";
 import UniDetails from "../components/uni-details.vue";
 
 import { getDatabase, ref, onValue } from "firebase/database";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+} from "firebase/storage";
+import Loader from "../components/loader.vue";
 
 // @ is an alias to /src
 
 export default {
   name: "dashboard",
-  components: { Profile, UniDetails },
+  components: { Profile, UniDetails, Loader },
   data() {
     return {
+      isLoading: false,
       active: "Profile",
-      data:"",
+      data: "",
+      logoUrl: "",
+      showLogo: false,
     };
   },
   mounted() {
@@ -73,13 +85,39 @@ export default {
       });
     },
     getUserData(uid) {
+    this.isLoading = true;
       const db = getDatabase();
       const query = ref(db, "universities/" + uid);
+      const storage = getStorage();
       onValue(query, (snapshot) => {
         const data = snapshot.val();
         console.log(data);
-        this.data = data
+        this.data = data;
+
+        try {
+          const logoRef = storageRef(storage, "logo/" + uid + ".png");
+          getDownloadURL(logoRef)
+            .then((url) => {
+              this.showLogo = true;
+              this.logoUrl = url;
+              this.isLoading = false
+            })
+            .catch((e) => {
+              console.log(e);
+              this.showLogo = false;
+              this.logoUrl = "";
+              this.isLoading = false
+            });
+        } catch {
+            console.log('error')
+        }
+      }).catch((e) => {
+        console.log(e);
+        this.isLoading = false;
       });
+    },
+    setLoading(status) {
+      this.isLoading = status;
     },
   },
 };

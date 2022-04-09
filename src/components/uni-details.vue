@@ -65,89 +65,189 @@
               ></textarea>
             </div>
           </div>
-          
         </div>
-                  <div class="form-group-container">
-            <div class="form-input-heaeding-container">
-              <h4><strong>Programs Offered</strong></h4>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4>
+              <strong>School Details {{ data.test }}</strong>
+            </h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >About School</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
             </div>
-            <div class="form-input-container">
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Field</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-              </div>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Programs</label>
-                <textarea
-                  class="form-control"
-                  id="exampleFormControlTextarea1"
-                  rows="2"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Tuition Fee</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-              </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Mission</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
             </div>
-            <div class="add-btn-container">
-              <button type="button" class="btn btn-primary">Add Program</button>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Vission</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Goals</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
             </div>
           </div>
-          <div class="form-group-container">
-            <div class="form-input-heaeding-container">
-              <h4><strong>School Performance</strong></h4>
+        </div>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4><strong>Programs Offered</strong></h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Field</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
-            <div class="form-input-container">
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Rankings</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-              </div>
-                            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Board Examp Performance</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-              </div>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Tuition Fee</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-              </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Programs</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Tuition Fee</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
           </div>
-          <div class="form-group-container">
-            <div class="form-input-heaeding-container">
-              <h4><strong>School Performance</strong></h4>
+          <div class="add-btn-container">
+            <button type="button" class="btn btn-primary">Add Program</button>
+          </div>
+        </div>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4><strong>School Performance</strong></h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Rankings</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
-            <div class="form-input-container">
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Deadline</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-              </div>
-              <h5>Requirements</h5>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Freshmen</label>
-                <textarea
-                  class="form-control"
-                  id="exampleFormControlTextarea1"
-                  rows="2"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Cross-Enrolles</label>
-                  <textarea
-                  class="form-control"
-                  id="exampleFormControlTextarea1"
-                  srows="2">
-                  </textarea>
-              </div>
-              <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Second Course Enrolles</label>
-                  <textarea
-                  class="form-control"
-                  id="exampleFormControlTextarea1"
-                  srows="2">
-                  </textarea>
-              </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Board Examp Performance</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Tuition Fee</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
           </div>
+        </div>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4><strong>School Performance</strong></h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Deadline</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
+            </div>
+            <h5>Requirements</h5>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Freshmen</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Cross-Enrolles</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                srows="2"
+              >
+              </textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Second Course Enrolles</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                srows="2"
+              >
+              </textarea>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -215,6 +315,6 @@ dd.col-sm-11 {
   margin-top: 30px;
   padding: 50px;
   background: #fff;
-  box-shadow:0 0 30px #ccc
+  box-shadow: 0 0 30px #ccc;
 }
 </style>
