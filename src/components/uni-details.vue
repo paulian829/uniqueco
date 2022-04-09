@@ -5,160 +5,149 @@
     <div class="details-btn-container">
       <router-link to="/university/view"
         ><button type="button" class="btn btn-primary">
-          View
+          VIEW
         </button></router-link
       >
-      <router-link to="/university/update"
-        ><button type="button" class="btn btn-primary">
-          Update
-        </button></router-link
-      >
+      <button class="btn btn-primary">SAVE</button>
     </div>
     <div class="details-container">
-      <h2>{{ data.Name }}</h2>
-      <div class="details-section">
-        <h5><strong>ABOUT SCHOOL</strong></h5>
-        <span
-          ><strong>About:</strong><br />
-          {{ data.SchoolDetails.AboutSchool }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Vission:</strong> <br />{{
-            data.SchoolDetails.Vission
-          }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Mission:</strong><br />
-          {{ data.SchoolDetails.Mission }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Goal:</strong><br />
-          {{ data.SchoolDetails.Goal }}</span
-        >
-        <hr class="hr-style" />
+      <div class="heading-container">
+        <h3>
+          <strong>PLEASE FILL UP THE SCHOOL DETAILS/INFORMATION BELOW</strong>
+        </h3>
       </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>PROGRAMS OFFERED</strong></h5>
-        <div v-for="program in data.ProgramsOffered" v-bind:key="program.Field">
-          <span><strong>Field:</strong> {{ program.Field }}</span>
-          <hr class="hr-style" />
-          <dl class="row">
-            <dt class="col-sm-1">Programs:</dt>
-            <dd class="col-sm-11">
-              <p
-                v-for="programs in program.Programs"
-                v-bind:key="programs"
-                class="no-space"
+      <div class="outer-form-group-container">
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4>
+              <strong>School Details {{ data.test }}</strong>
+            </h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >About School</label
               >
-                {{ programs }}
-              </p>
-            </dd>
-          </dl>
-          <hr class="hr-style" />
-          <span
-            ><strong>Tuition: </strong>PHP {{ program.MinTuition }} - PHP
-            {{ program.MaxTuition }}</span
-          >
-          <hr class="hr-style" />
-          <br />
-          <br />
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Mission</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Vission</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Goals</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+          
         </div>
-      </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>SCHOOL PERFORMANCE</strong></h5>
-        <span
-          ><strong>Ranking:</strong> {{ data.SchoolPerformance.Ranking }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Board Ranking Performance:</strong>
-          {{ data.SchoolPerformance.BoardRankingPerformance }}</span
-        >
-        <hr class="hr-style" />
-        <dl class="row">
-          <dt class="col-sm-1">Others:</dt>
-          <dd class="col-sm-11">
-            <p
-              v-for="othersAward in data.SchoolPerformance.Others"
-              v-bind:key="othersAward"
-              class="no-space"
-            >
-              {{ othersAward }}
-            </p>
-          </dd>
-        </dl>
-        <hr class="hr-style" />
-      </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>ADMISSION REQUIREMENTS</strong></h5>
-        <span
-          ><strong>Deadline: </strong>
-          {{ data.AdmissionRequirements.Deadline }}</span
-        >
-        <hr class="hr-style" />
-        <dl class="row">
-          <dt class="col-sm-1">Requirements:</dt>
-          <dd class="col-sm-11">
-            <div>
-              <span>Freshmen</span><br />
-              <div
-                v-for="requirement in data.AdmissionRequirements.Requirements
-                  .Freshmen"
-                v-bind:key="requirement"
-              >
-                <span>{{ requirement }}</span>
+                  <div class="form-group-container">
+            <div class="form-input-heaeding-container">
+              <h4><strong>Programs Offered</strong></h4>
+            </div>
+            <div class="form-input-container">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Field</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Programs</label>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="2"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Tuition Fee</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
               </div>
             </div>
-            <br />
-            <div>
-              <span>Cross Enrolless</span><br />
-              <div
-                v-for="requirement in data.AdmissionRequirements.Requirements[
-                  'Cross Enrolless'
-                ]"
-                v-bind:key="requirement"
-              >
-                <span>{{ requirement }}</span>
+            <div class="add-btn-container">
+              <button type="button" class="btn btn-primary">Add Program</button>
+            </div>
+          </div>
+          <div class="form-group-container">
+            <div class="form-input-heaeding-container">
+              <h4><strong>School Performance</strong></h4>
+            </div>
+            <div class="form-input-container">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Rankings</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+                            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Board Examp Performance</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Tuition Fee</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
               </div>
             </div>
-            <br />
-            <div>
-              <span>Cross Enrolless</span><br />
-              <div
-                v-for="requirement in data.AdmissionRequirements.Requirements[
-                  'Second Course Enrollees'
-                ]"
-                v-bind:key="requirement"
-              >
-                <span>{{ requirement }}</span>
+          </div>
+          <div class="form-group-container">
+            <div class="form-input-heaeding-container">
+              <h4><strong>School Performance</strong></h4>
+            </div>
+            <div class="form-input-container">
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Deadline</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+              <h5>Requirements</h5>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Freshmen</label>
+                <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="2"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Cross-Enrolles</label>
+                  <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  srows="2">
+                  </textarea>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Second Course Enrolles</label>
+                  <textarea
+                  class="form-control"
+                  id="exampleFormControlTextarea1"
+                  srows="2">
+                  </textarea>
               </div>
             </div>
-          </dd>
-        </dl>
-        <hr class="hr-style" />
-      </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>SCHOLARSHIP</strong></h5>
-        <dl class="row">
-          <dt class="col-sm-1"></dt>
-          <dd class="col-sm-11">
-            <p
-              v-for="scholarship in data.Scholarship"
-              v-bind:key="scholarship"
-              class="no-space"
-            >
-              {{ scholarship }}
-            </p>
-          </dd>
-        </dl>
-        <hr class="hr-style" />
+          </div>
       </div>
     </div>
   </div>
@@ -221,5 +210,11 @@ dd.col-sm-11 {
 .details-btn-container a {
   color: white;
   text-decoration: none;
+}
+.form-group-container {
+  margin-top: 30px;
+  padding: 50px;
+  background: #fff;
+  box-shadow:0 0 30px #ccc
 }
 </style>

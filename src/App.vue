@@ -37,7 +37,6 @@ export default {
   },
   mounted() {
     console.log("test");
-    this.checkLoggedIn();
   },
   methods: {
     checkLoggedIn() {
