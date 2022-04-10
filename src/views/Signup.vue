@@ -88,6 +88,7 @@
         Sign up
       </button>
     </div>
+    <Loader v-if="isLoading"></Loader>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
@@ -97,13 +98,15 @@
 import { passAuth } from "../db";
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
+import Loader from '../components//loader.vue'
 
 export default {
   name: "Signup",
-  components: {},
+  components: {Loader},
   data() {
     return {
       test: "test",
+      isLoading:  false,
       form: {
         email: "",
         password: "",
@@ -117,18 +120,24 @@ export default {
   },
   methods: {
     createAccount() {
+      this.isLoading = true
       let form = this.form;
       if (this.checkIfEmpty(form)) {
         this.showAlertError("All fields are required!");
+        this.isLoading = false
         return;
       }
 
       if (form.password !== form.repeatPassword) {
         this.showAlertError("Password are not the same!");
+        this.isLoading = false
+
         return;
       }
       if (this.terms === false) {
         this.showAlertError("Accept the terms and conditions");
+        this.isLoading = false
+
         return;
       }
 
@@ -137,9 +146,11 @@ export default {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          this.saveData(user.uid, form);
+          this.saveData(user, form);
           this.showAlertSuccess();
           this.logout();
+        this.isLoading = false
+
 
           // ...
         })
@@ -148,6 +159,8 @@ export default {
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
           this.showAlertError(errorMessage);
+        this.isLoading = false
+
         });
     },
     showAlertError(log) {
@@ -157,15 +170,36 @@ export default {
         text: log,
       });
     },
-    saveData(uid, form) {
+    saveData(user, form) {
       const db = getDatabase();
-      set(ref(db, "universities/" + uid), {
+      set(ref(db, "universities/" + user.uid), {
+        Uid:user.uid,
         Name:form.universityName,
+        Email:form.email,
         CreatedBY:{
-          firstName:form.firstName,
-          lastName:form.lastName
+          FirstName:form.firstName,
+          LastName:form.lastName
         },
         DateCreated:Date.now(),
+        Address: {
+          Lot:' '
+        },
+        SchoolDetails:{
+          AboutSchool:' '
+        },
+        ProgramsOffered:{
+          randomID1:{
+            Field:''
+          }
+        },
+        SchoolPerformance:{
+          Ranking:" "
+        },
+        AdmissionRequirements: {
+          Deadline:' '
+        },
+
+
       });
     },
     showAlertSuccess() {
@@ -173,7 +207,6 @@ export default {
         icon: "success",
         title: "Success",
         text: "Sucess Creating your account!",
-        footer: '<a href="#/login">Go to login page?</a>',
       });
     },
     checkIfEmpty(form) {

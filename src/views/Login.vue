@@ -30,6 +30,7 @@
       </button>
       <router-link to="/about">Forgot Password?</router-link>
     </div>
+    <Loader v-if="loader"> </Loader>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
@@ -38,12 +39,14 @@
 // import { signInWithEmailAndPassword } from firebase/auth;
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { passAuth } from "../db";
+import Loader from "../components/loader.vue";
 
 export default {
   name: "Login",
-  components: {},
+  components: { Loader },
   data() {
     return {
+      loader:false,
       form: {
         email: "",
         password: "",
@@ -52,17 +55,26 @@ export default {
   },
   methods: {
     login() {
-      let email = this.form.email;
-      let password = this.form.password;
-      console.log(email, password)
-      signInWithEmailAndPassword(passAuth(), email, password)
-        .then((r) => {
-          const user = r.user;
-          console.log(user);
-        })
-        .catch((error) => {
-          this.showAlertError(error.message);
-        });
+      this.loader = true
+      try {
+        let email = this.form.email;
+        let password = this.form.password;
+        console.log(email, password);
+        signInWithEmailAndPassword(passAuth(), email, password)
+          .then((r) => {
+            const user = r.user;
+            console.log(user);
+            this.$router.push("/dashboard");
+            this.loader = false
+          })
+          .catch(() => {
+            this.showAlertError("Email or Password is wrong!");
+            this.loader = false
+          });
+      } catch (error) {
+        this.showAlertError("Something went wrong!");
+        this.loader = false
+      }
     },
     showAlertError(log) {
       this.$swal({

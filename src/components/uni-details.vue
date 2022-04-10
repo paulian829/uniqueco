@@ -5,160 +5,274 @@
     <div class="details-btn-container">
       <router-link to="/university/view"
         ><button type="button" class="btn btn-primary">
-          View
+          VIEW
         </button></router-link
       >
-      <router-link to="/university/update"
-        ><button type="button" class="btn btn-primary">
-          Update
-        </button></router-link
-      >
+      <button class="btn btn-primary" @click="saveData">SAVE</button>
     </div>
     <div class="details-container">
-      <h2>{{ data.Name }}</h2>
-      <div class="details-section">
-        <h5><strong>ABOUT SCHOOL</strong></h5>
-        <span
-          ><strong>About:</strong><br />
-          {{ data.SchoolDetails.AboutSchool }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Vission:</strong> <br />{{
-            data.SchoolDetails.Vission
-          }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Mission:</strong><br />
-          {{ data.SchoolDetails.Mission }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Goal:</strong><br />
-          {{ data.SchoolDetails.Goal }}</span
-        >
-        <hr class="hr-style" />
+      <div class="heading-container">
+        <h3>
+          <strong>PLEASE FILL UP THE SCHOOL DETAILS/INFORMATION BELOW</strong>
+        </h3>
       </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>PROGRAMS OFFERED</strong></h5>
-        <div v-for="program in data.ProgramsOffered" v-bind:key="program.Field">
-          <span><strong>Field:</strong> {{ program.Field }}</span>
-          <hr class="hr-style" />
-          <dl class="row">
-            <dt class="col-sm-1">Programs:</dt>
-            <dd class="col-sm-11">
-              <p
-                v-for="programs in program.Programs"
-                v-bind:key="programs"
-                class="no-space"
+      <div class="outer-form-group-container">
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4>
+              <strong>Address</strong>
+            </h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="Address-Barangay" class="form-label">Lot</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Address-Barangay"
+                v-model="data.Address.Lot"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Address-Lot" class="form-label">Barangay</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Address-Lot"
+                v-model="data.Address.Barangay"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Address-City" class="form-label"
+                >City/Municipality</label
               >
-                {{ programs }}
-              </p>
-            </dd>
-          </dl>
-          <hr class="hr-style" />
-          <span
-            ><strong>Tuition: </strong>PHP {{ program.MinTuition }} - PHP
-            {{ program.MaxTuition }}</span
-          >
-          <hr class="hr-style" />
-          <br />
-          <br />
+              <input
+                type="text"
+                class="form-control"
+                id="Address-City"
+                v-model="data.Address.City"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Address-Country" class="form-label">Country</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Address-Country"
+                v-model="data.Address.Country"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Address-Zip" class="form-label">Zipcode</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Address-Zip"
+                v-model="data.Address.Zipcode"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>SCHOOL PERFORMANCE</strong></h5>
-        <span
-          ><strong>Ranking:</strong> {{ data.SchoolPerformance.Ranking }}</span
-        >
-        <hr class="hr-style" />
-        <span
-          ><strong>Board Ranking Performance:</strong>
-          {{ data.SchoolPerformance.BoardRankingPerformance }}</span
-        >
-        <hr class="hr-style" />
-        <dl class="row">
-          <dt class="col-sm-1">Others:</dt>
-          <dd class="col-sm-11">
-            <p
-              v-for="othersAward in data.SchoolPerformance.Others"
-              v-bind:key="othersAward"
-              class="no-space"
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4>
+              <strong>School Details</strong>
+            </h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="Details-About" class="form-label">About School</label>
+              <textarea
+                class="form-control"
+                id="Details-About"
+                rows="2"
+                v-model="data.SchoolDetails.AboutSchool"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Mission</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+                v-model="data.SchoolDetails.Mission"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Vission</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+                v-model="data.SchoolDetails.Vission"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Goals</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+                v-model="data.SchoolDetails.Goal"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4><strong>Programs Offered</strong></h4>
+          </div>
+          <div
+            class="form-input-container"
+            v-for="(program, key, index) in data.ProgramsOffered"
+            :key="key"
+          >
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Field Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+                v-model="data.ProgramsOffered[key].Field"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Programs</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Tuition Fee</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
+              <button class="btn btn-warning delete-program-btn"   @click="removePrograms(key)">Delete Program</button>
+            </div>
+            <hr
+              v-if="index != Object.keys(data.ProgramsOffered).length - 1"
+              style="margin-top: 70px"
+            />
+          </div>
+          <div class="add-btn-container">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="appendPrograms"
             >
-              {{ othersAward }}
-            </p>
-          </dd>
-        </dl>
-        <hr class="hr-style" />
-      </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>ADMISSION REQUIREMENTS</strong></h5>
-        <span
-          ><strong>Deadline: </strong>
-          {{ data.AdmissionRequirements.Deadline }}</span
-        >
-        <hr class="hr-style" />
-        <dl class="row">
-          <dt class="col-sm-1">Requirements:</dt>
-          <dd class="col-sm-11">
-            <div>
-              <span>Freshmen</span><br />
-              <div
-                v-for="requirement in data.AdmissionRequirements.Requirements
-                  .Freshmen"
-                v-bind:key="requirement"
+              Add Program
+            </button>
+          </div>
+        </div>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4><strong>School Performance</strong></h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Rankings</label
               >
-                <span>{{ requirement }}</span>
-              </div>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
-            <br />
-            <div>
-              <span>Cross Enrolless</span><br />
-              <div
-                v-for="requirement in data.AdmissionRequirements.Requirements[
-                  'Cross Enrolless'
-                ]"
-                v-bind:key="requirement"
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Board Examp Performance</label
               >
-                <span>{{ requirement }}</span>
-              </div>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
-            <br />
-            <div>
-              <span>Cross Enrolless</span><br />
-              <div
-                v-for="requirement in data.AdmissionRequirements.Requirements[
-                  'Second Course Enrollees'
-                ]"
-                v-bind:key="requirement"
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Tuition Fee</label
               >
-                <span>{{ requirement }}</span>
-              </div>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
             </div>
-          </dd>
-        </dl>
-        <hr class="hr-style" />
-      </div>
-      <br />
-      <div class="details-section">
-        <h5><strong>SCHOLARSHIP</strong></h5>
-        <dl class="row">
-          <dt class="col-sm-1"></dt>
-          <dd class="col-sm-11">
-            <p
-              v-for="scholarship in data.Scholarship"
-              v-bind:key="scholarship"
-              class="no-space"
-            >
-              {{ scholarship }}
-            </p>
-          </dd>
-        </dl>
-        <hr class="hr-style" />
+          </div>
+        </div>
+        <div class="form-group-container">
+          <div class="form-input-heaeding-container">
+            <h4><strong>School Performance</strong></h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Deadline</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              />
+            </div>
+            <h5>Requirements</h5>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Freshmen</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Cross-Enrolles</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                srows="2"
+              >
+              </textarea>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Second Course Enrolles</label
+              >
+              <textarea
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                srows="2"
+              >
+              </textarea>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -167,15 +281,50 @@
 
 <script>
 // @ is an alias to /src
-import data from "../../data.json";
+import { getDatabase, ref, update } from "firebase/database";
 
 export default {
   name: "uni-details",
+  props: ["dataProps"],
   components: {},
-  data() {
+  data: function () {
     return {
-      data: data,
+      data: "",
     };
+  },
+
+  mounted() {
+    this.data = this.dataProps;
+  },
+  methods: {
+    saveData() {
+      this.$emit("setLoading", true);
+      let data = this.data;
+
+      const db = getDatabase();
+      const updates = {};
+      updates["universities/" + data.Uid] = data;
+      update(ref(db), updates)
+        .then(() => {
+          this.$emit("setLoading", false);
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$emit("setLoading", false);
+        });
+    },
+    appendPrograms() {
+      const random =
+        Math.random().toString(36).substring(2) +
+        new Date().getTime().toString(36);
+
+      this.$set(this.data.ProgramsOffered, random, {
+        Field: "New Field",
+      });
+    },
+    removePrograms(key) {
+      this.$delete(this.data.ProgramsOffered, key)
+}
   },
 };
 </script>
@@ -221,5 +370,15 @@ dd.col-sm-11 {
 .details-btn-container a {
   color: white;
   text-decoration: none;
+}
+.form-group-container {
+  margin-top: 30px;
+  padding: 50px;
+  background: #fff;
+  box-shadow: 0 0 30px #ccc;
+}
+.delete-program-btn{
+  margin-top: 20px;
+
 }
 </style>
