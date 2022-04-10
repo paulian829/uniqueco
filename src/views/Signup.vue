@@ -181,6 +181,25 @@ export default {
           LastName:form.lastName
         },
         DateCreated:Date.now(),
+        Address: {
+          Lot:' '
+        },
+        SchoolDetails:{
+          AboutSchool:' '
+        },
+        ProgramsOffered:{
+          randomID1:{
+            Field:''
+          }
+        },
+        SchoolPerformance:{
+          Ranking:" "
+        },
+        AdmissionRequirements: {
+          Deadline:' '
+        },
+
+
       });
     },
     showAlertSuccess() {

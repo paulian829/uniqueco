@@ -19,10 +19,10 @@
         </div>
       </div>
       <div class="col-9" v-if="active == 'Profile'">
-        <Profile :dataProp="data" @setLoading="setLoading"></Profile>
+        <Profile :dataProp="data" @setLoading="setLoading" @resetLogo="resetLogo"></Profile>
       </div>
       <div class="col-9" style="background: #f5f5f5" v-if="active == 'Details'">
-        <UniDetails></UniDetails>
+        <UniDetails :dataProps="data" @reloadPage='reloadPage'></UniDetails>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -56,6 +56,8 @@ export default {
       data: "",
       logoUrl: "",
       showLogo: false,
+      uid:'',
+      random:''
     };
   },
   mounted() {
@@ -74,6 +76,7 @@ export default {
         if (user) {
           const uid = user.uid;
           console.log(uid);
+          this.uid = uid
           this.getUserData(uid);
           // ...
         } else {
@@ -85,40 +88,63 @@ export default {
       });
     },
     getUserData(uid) {
-    this.isLoading = true;
-      const db = getDatabase();
-      const query = ref(db, "universities/" + uid);
-      const storage = getStorage();
-      onValue(query, (snapshot) => {
-        const data = snapshot.val();
-        console.log(data);
-        this.data = data;
+      try {
+        this.isLoading = true;
+        const db = getDatabase();
+        const query = ref(db, "universities/" + uid);
+        const storage = getStorage();
+        onValue(query, (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          this.data = data;
 
-        try {
-          const logoRef = storageRef(storage, "logo/" + uid + ".png");
-          getDownloadURL(logoRef)
-            .then((url) => {
-              this.showLogo = true;
-              this.logoUrl = url;
-              this.isLoading = false
-            })
-            .catch((e) => {
-              console.log(e);
-              this.showLogo = false;
-              this.logoUrl = "";
-              this.isLoading = false
-            });
-        } catch {
-            console.log('error')
-        }
-      }).catch((e) => {
-        console.log(e);
+          try {
+            const logoRef = storageRef(storage, "logo/" + uid + ".png");
+            getDownloadURL(logoRef)
+              .then((url) => {
+                this.showLogo = true;
+                this.logoUrl = url;
+                this.isLoading = false;
+              })
+              .catch((e) => {
+                console.log(e);
+                this.showLogo = false;
+                this.logoUrl = "";
+                this.isLoading = false;
+              });
+          } catch {
+            console.log("error");
+            this.isLoading = false;
+          }
+        }).catch((e) => {
+          console.log(e);
+          this.isLoading = false;
+        });
+      } catch {
+        console.log("error");
         this.isLoading = false;
-      });
+      }
     },
     setLoading(status) {
       this.isLoading = status;
     },
+    resetLogo() {
+        const storage = getStorage();
+
+      const logoRef = storageRef(storage, "logo/" + this.uid + ".png");
+      getDownloadURL(logoRef).then((url)=>{
+        this.showLogo = true;
+        this.logoUrl = url;
+        this.isLoading = false
+      }).catch((e) => {
+        console.log(e)
+        this.isLoading = false
+      } )
+    },
+    reloadPage(){
+        const random =   Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
+        this.random = random 
+    }
   },
 };
 </script>

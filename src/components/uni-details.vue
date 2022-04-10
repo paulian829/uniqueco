@@ -8,7 +8,7 @@
           VIEW
         </button></router-link
       >
-      <button class="btn btn-primary">SAVE</button>
+      <button class="btn btn-primary" @click="saveData">SAVE</button>
     </div>
     <div class="details-container">
       <div class="heading-container">
@@ -20,67 +20,73 @@
         <div class="form-group-container">
           <div class="form-input-heaeding-container">
             <h4>
-              <strong>School Details {{ data.test }}</strong>
+              <strong>Address</strong>
             </h4>
           </div>
           <div class="form-input-container">
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >About School</label
-              >
-              <textarea
+              <label for="Address-Barangay" class="form-label">Lot</label>
+              <input
+                type="text"
                 class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="2"
-              ></textarea>
+                id="Address-Barangay"
+                v-model="dataProps.Address.Lot"
+              />
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Mission</label
-              >
-              <textarea
+              <label for="Address-Lot" class="form-label">Barangay</label>
+              <input
+                type="text"
                 class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="2"
-              ></textarea>
+                id="Address-Lot"
+                v-model="dataProps.Address.Barangay"
+              />
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Vission</label
+              <label for="Address-City" class="form-label"
+                >City/Municipality</label
               >
-              <textarea
+              <input
+                type="text"
                 class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="2"
-              ></textarea>
+                id="Address-City"
+                v-model="dataProps.Address.City"
+              />
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Goals</label
-              >
-              <textarea
+              <label for="Address-Country" class="form-label">Country</label>
+              <input
+                type="text"
                 class="form-control"
-                id="exampleFormControlTextarea1"
-                rows="2"
-              ></textarea>
+                id="Address-Country"
+                v-model="dataProps.Address.Country"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="Address-Zip" class="form-label">Zipcode</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Address-Zip"
+                v-model="dataProps.Address.Zipcode"
+              />
             </div>
           </div>
         </div>
         <div class="form-group-container">
           <div class="form-input-heaeding-container">
             <h4>
-              <strong>School Details {{ data.test }}</strong>
+              <strong>School Details</strong>
             </h4>
           </div>
           <div class="form-input-container">
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >About School</label
-              >
+              <label for="Details-About" class="form-label">About School</label>
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="Details-About"
                 rows="2"
+                v-model="dataProps.SchoolDetails.AboutSchool"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -91,6 +97,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
+                v-model="dataProps.SchoolDetails.Mission"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -101,6 +108,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
+                v-model="dataProps.SchoolDetails.Vission"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -111,6 +119,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
+                v-model="dataProps.SchoolDetails.Goal"
               ></textarea>
             </div>
           </div>
@@ -119,16 +128,21 @@
           <div class="form-input-heaeding-container">
             <h4><strong>Programs Offered</strong></h4>
           </div>
-          <div class="form-input-container">
+          <div
+            class="form-input-container"
+            v-for="(program, key, index) in dataProps.ProgramsOffered"
+            :key="key"
+          >
             <div class="mb-3">
               <label for="exampleFormControlTextarea1" class="form-label"
-                >Field</label
+                >Field Name</label
               >
               <input
-                type="email"
+                type="text"
                 class="form-control"
                 id="exampleFormControlInput1"
                 placeholder="name@example.com"
+                v-model="dataProps.ProgramsOffered[key].Field"
               />
             </div>
             <div class="mb-3">
@@ -152,9 +166,19 @@
                 placeholder="name@example.com"
               />
             </div>
+            <hr
+              v-if="index != Object.keys(dataProps.ProgramsOffered).length - 1"
+              style="margin-top: 50px"
+            />
           </div>
           <div class="add-btn-container">
-            <button type="button" class="btn btn-primary">Add Program</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="appendPrograms"
+            >
+              Add Program
+            </button>
           </div>
         </div>
         <div class="form-group-container">
@@ -256,15 +280,58 @@
 
 <script>
 // @ is an alias to /src
-import data from "../../data.json";
+import { getDatabase, ref, update } from "firebase/database";
 
 export default {
   name: "uni-details",
+  props: ["dataProps"],
   components: {},
-  data() {
+  data: function () {
     return {
-      data: data,
+      data:this.dataProps
     };
+  },
+  methods: {
+    saveData() {
+      console.log(this.dataProps);
+      this.$emit("setLoading", true);
+      let data = this.dataProps;
+
+      const db = getDatabase();
+      const updates = {};
+      updates["universities/" + data.Uid] = data;
+      update(ref(db), updates)
+        .then(() => {
+          this.$emit("setLoading", false);
+        })
+        .catch((e) => {
+          console.log(e);
+          this.$emit("setLoading", false);
+        });
+    },
+    appendPrograms() {
+      const random =
+        Math.random().toString(36).substring(2) +
+        new Date().getTime().toString(36);
+      console.log(random);
+      let data = this.dataProps;
+      // Object.assign(data.ProgramsOffered, {
+      //   [random]: {
+      //     Field:'New Field'
+      //   }
+      // })
+      // data.ProgramsOffered.append({ [random]: { Field: "New Field" } });
+      const newRow = '{"'+random+'":{"Field":"NewField"}}'
+      
+      let jsonNewRow = JSON.parse(newRow)
+      console.log(jsonNewRow)
+
+      Object.entries(jsonNewRow).forEach(([key,value]) => { data.ProgramsOffered[key] = value })
+
+
+      console.log(data);
+      this.data = data;
+    },
   },
 };
 </script>
