@@ -30,7 +30,7 @@
                 type="text"
                 class="form-control"
                 id="Address-Barangay"
-                v-model="dataProps.Address.Lot"
+                v-model="data.Address.Lot"
               />
             </div>
             <div class="mb-3">
@@ -39,7 +39,7 @@
                 type="text"
                 class="form-control"
                 id="Address-Lot"
-                v-model="dataProps.Address.Barangay"
+                v-model="data.Address.Barangay"
               />
             </div>
             <div class="mb-3">
@@ -50,7 +50,7 @@
                 type="text"
                 class="form-control"
                 id="Address-City"
-                v-model="dataProps.Address.City"
+                v-model="data.Address.City"
               />
             </div>
             <div class="mb-3">
@@ -59,7 +59,7 @@
                 type="text"
                 class="form-control"
                 id="Address-Country"
-                v-model="dataProps.Address.Country"
+                v-model="data.Address.Country"
               />
             </div>
             <div class="mb-3">
@@ -68,7 +68,7 @@
                 type="text"
                 class="form-control"
                 id="Address-Zip"
-                v-model="dataProps.Address.Zipcode"
+                v-model="data.Address.Zipcode"
               />
             </div>
           </div>
@@ -86,7 +86,7 @@
                 class="form-control"
                 id="Details-About"
                 rows="2"
-                v-model="dataProps.SchoolDetails.AboutSchool"
+                v-model="data.SchoolDetails.AboutSchool"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -97,7 +97,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
-                v-model="dataProps.SchoolDetails.Mission"
+                v-model="data.SchoolDetails.Mission"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -108,7 +108,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
-                v-model="dataProps.SchoolDetails.Vission"
+                v-model="data.SchoolDetails.Vission"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -119,7 +119,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
-                v-model="dataProps.SchoolDetails.Goal"
+                v-model="data.SchoolDetails.Goal"
               ></textarea>
             </div>
           </div>
@@ -130,7 +130,7 @@
           </div>
           <div
             class="form-input-container"
-            v-for="(program, key, index) in dataProps.ProgramsOffered"
+            v-for="(program, key, index) in data.ProgramsOffered"
             :key="key"
           >
             <div class="mb-3">
@@ -142,7 +142,7 @@
                 class="form-control"
                 id="exampleFormControlInput1"
                 placeholder="name@example.com"
-                v-model="dataProps.ProgramsOffered[key].Field"
+                v-model="data.ProgramsOffered[key].Field"
               />
             </div>
             <div class="mb-3">
@@ -165,10 +165,11 @@
                 id="exampleFormControlInput1"
                 placeholder="name@example.com"
               />
+              <button class="btn btn-warning delete-program-btn"   @click="removePrograms(key)">Delete Program</button>
             </div>
             <hr
-              v-if="index != Object.keys(dataProps.ProgramsOffered).length - 1"
-              style="margin-top: 50px"
+              v-if="index != Object.keys(data.ProgramsOffered).length - 1"
+              style="margin-top: 70px"
             />
           </div>
           <div class="add-btn-container">
@@ -288,14 +289,17 @@ export default {
   components: {},
   data: function () {
     return {
-      data:this.dataProps
+      data: "",
     };
+  },
+
+  mounted() {
+    this.data = this.dataProps;
   },
   methods: {
     saveData() {
-      console.log(this.dataProps);
       this.$emit("setLoading", true);
-      let data = this.dataProps;
+      let data = this.data;
 
       const db = getDatabase();
       const updates = {};
@@ -313,25 +317,14 @@ export default {
       const random =
         Math.random().toString(36).substring(2) +
         new Date().getTime().toString(36);
-      console.log(random);
-      let data = this.dataProps;
-      // Object.assign(data.ProgramsOffered, {
-      //   [random]: {
-      //     Field:'New Field'
-      //   }
-      // })
-      // data.ProgramsOffered.append({ [random]: { Field: "New Field" } });
-      const newRow = '{"'+random+'":{"Field":"NewField"}}'
-      
-      let jsonNewRow = JSON.parse(newRow)
-      console.log(jsonNewRow)
 
-      Object.entries(jsonNewRow).forEach(([key,value]) => { data.ProgramsOffered[key] = value })
-
-
-      console.log(data);
-      this.data = data;
+      this.$set(this.data.ProgramsOffered, random, {
+        Field: "New Field",
+      });
     },
+    removePrograms(key) {
+      this.$delete(this.data.ProgramsOffered, key)
+}
   },
 };
 </script>
@@ -383,5 +376,9 @@ dd.col-sm-11 {
   padding: 50px;
   background: #fff;
   box-shadow: 0 0 30px #ccc;
+}
+.delete-program-btn{
+  margin-top: 20px;
+
 }
 </style>

@@ -112,16 +112,13 @@ export default {
                 this.logoUrl = "";
                 this.isLoading = false;
               });
-          } catch {
-            console.log("error");
+          } catch(e){
+            console.log("error",e);
             this.isLoading = false;
           }
-        }).catch((e) => {
-          console.log(e);
-          this.isLoading = false;
-        });
-      } catch {
-        console.log("error");
+        })
+      } catch(e) {
+        console.log("error", e);
         this.isLoading = false;
       }
     },
@@ -142,8 +139,8 @@ export default {
       } )
     },
     reloadPage(){
-        const random =   Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
-        this.random = random 
+      console.log('test')
+      this.checkLoggedIn()
     }
   },
 };
