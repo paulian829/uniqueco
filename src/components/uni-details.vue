@@ -153,8 +153,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
-                :value="arrayToString(data.ProgramsOffered[key].programs)"
-                @change="stringToArrayPrograms(key, $event)"
+                v-model="data.ProgramsOffered[key].programs"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -339,13 +338,6 @@ export default {
       }
       this.$delete(this.data.ProgramsOffered, key);
     },
-    arrayToString(val) {
-      console.log(typeof val);
-      return val.replaceAll(",", "\n");
-    },
-    stringToArrayPrograms( key, event){
-      console.log(event.target.value, key)
-    }
   },
 };
 </script>
