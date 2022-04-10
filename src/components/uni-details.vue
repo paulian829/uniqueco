@@ -153,7 +153,8 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
-                v-model="data.ProgramsOffered[key].programs"
+                :value="arrayToString(data.ProgramsOffered[key].programs)"
+                @change="stringToArrayPrograms(key, $event)"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -167,7 +168,12 @@
                 placeholder="name@example.com"
                 v-model="data.ProgramsOffered[key].tuition"
               />
-              <button class="btn btn-warning delete-program-btn"   @click="removePrograms(key)">Delete Program</button>
+              <button
+                class="btn btn-warning delete-program-btn"
+                @click="removePrograms(key)"
+              >
+                Delete Program
+              </button>
             </div>
             <hr
               v-if="index != Object.keys(data.ProgramsOffered).length - 1"
@@ -294,8 +300,7 @@ export default {
       data: "",
     };
   },
-  computed:{
-  },
+  computed: {},
 
   mounted() {
     this.data = this.dataProps;
@@ -327,14 +332,20 @@ export default {
       });
     },
     removePrograms(key) {
-      const arrLength = Object.keys(this.data.ProgramsOffered).length
-      if (arrLength === 1){
-        console.log('cant delete program!')
-        return
+      const arrLength = Object.keys(this.data.ProgramsOffered).length;
+      if (arrLength === 1) {
+        console.log("cant delete program!");
+        return;
       }
-      this.$delete(this.data.ProgramsOffered, key)
-
-}
+      this.$delete(this.data.ProgramsOffered, key);
+    },
+    arrayToString(val) {
+      console.log(typeof val);
+      return val.replaceAll(",", "\n");
+    },
+    stringToArrayPrograms( key, event){
+      console.log(event.target.value, key)
+    }
   },
 };
 </script>
@@ -387,8 +398,7 @@ dd.col-sm-11 {
   background: #fff;
   box-shadow: 0 0 30px #ccc;
 }
-.delete-program-btn{
+.delete-program-btn {
   margin-top: 20px;
-
 }
 </style>
