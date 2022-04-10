@@ -153,6 +153,7 @@
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="2"
+                v-model="data.ProgramsOffered[key].programs"
               ></textarea>
             </div>
             <div class="mb-3">
@@ -164,6 +165,7 @@
                 class="form-control"
                 id="exampleFormControlInput1"
                 placeholder="name@example.com"
+                v-model="data.ProgramsOffered[key].tuition"
               />
               <button class="btn btn-warning delete-program-btn"   @click="removePrograms(key)">Delete Program</button>
             </div>
@@ -292,6 +294,8 @@ export default {
       data: "",
     };
   },
+  computed:{
+  },
 
   mounted() {
     this.data = this.dataProps;
@@ -323,7 +327,13 @@ export default {
       });
     },
     removePrograms(key) {
+      const arrLength = Object.keys(this.data.ProgramsOffered).length
+      if (arrLength === 1){
+        console.log('cant delete program!')
+        return
+      }
       this.$delete(this.data.ProgramsOffered, key)
+
 }
   },
 };
