@@ -79,7 +79,7 @@ export default {
     showAlertError(log) {
       this.$swal({
         icon: "error",
-        title: "Failed to Register Account",
+        title: "Failed to Login",
         text: log,
       });
     },
