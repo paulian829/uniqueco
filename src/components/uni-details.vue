@@ -91,6 +91,15 @@
           </div>
           <div class="form-input-container">
             <div class="mb-3">
+              <label for="School-qoute" class="form-label">School Qoute</label>
+              <input
+                type="text"
+                class="form-control"
+                id="School-qoute"
+                v-model="data.SchoolDetails.Qoute"
+              />
+            </div>
+            <div class="mb-3">
               <label for="Details-About" class="form-label">About School</label>
               <textarea
                 class="form-control"
@@ -306,6 +315,21 @@
             </div>
           </div>
         </div>
+        <div class="form-group-container">
+            <h5 style="margin-top: 20px"><strong>Scholarship</strong></h5>
+          <div class="mb-3">
+            <label for="scholarships" class="form-label"
+              >List of Scholarship offered</label
+            >
+          </div>
+          <textarea
+            class="form-control"
+            id="requirements-second-course"
+            srows="2"
+            v-model="data.Scholarship"
+          >
+          </textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -365,11 +389,10 @@ export default {
       this.$delete(this.data.ProgramsOffered, key);
     },
     goToView() {
-      let userID = this.data.Uid
-      console.log(userID)
-      this.$router.push(`/university/view/${userID}`)
-
-    }
+      let userID = this.data.Uid;
+      console.log(userID);
+      this.$router.push(`/university/view/${userID}`);
+    },
   },
 };
 </script>

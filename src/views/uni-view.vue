@@ -13,7 +13,9 @@
                 <h3>
                   <strong>{{ data.Name }}</strong>
                 </h3>
-                <h5 style="margin-top: 10px">"{{ data.Tagline }}"</h5>
+                <h5 style="margin-top: 10px">
+                  "{{ data.SchoolDetails.Qoute }}"
+                </h5>
                 <h4 style="margin-top: 20px"><strong>Address</strong></h4>
                 <p>
                   {{ data.Address.Lot }} {{ data.Address.Barangay }}
@@ -21,16 +23,9 @@
                   {{ data.Address.ZipCode }}
                 </p>
                 <h4><strong>Contacts</strong></h4>
-                <span
-                  v-for="number in data.Contacts"
-                  v-bind:key="number"
-                  style="margin-right: 20px"
-                >
-                  {{ number }}
-                </span>
+                <span>{{ data.Phone }}</span>
                 <div class="btn-container">
-                  <button class="btn btn-primary">Message</button>
-                  <button class="btn btn-primary">Go to Website</button>
+                  <a :href='"https://" + data.Website'  target="_blank" rel="noreferrer noopener"><button class="btn btn-primary">Go to Website</button></a>
                 </div>
               </div>
             </div>
@@ -113,15 +108,15 @@
               </h5>
               <h6><strong>Courses</strong></h6>
               <div
-                v-for="course in program.Programs"
+                v-for="course in stringSplit(program.programs)"
                 v-bind:key="course"
                 class="indented"
               >
                 <p>{{ course }}</p>
               </div>
               <h6>
-                <strong>Tuition:</strong> {{ program.MinTuition }} -
-                {{ program.MaxTuition }}
+                <strong>Tuition:</strong> {{ program.TuitionMin }} -
+                {{ program.TuitionMax }}
               </h6>
             </div>
           </div>
@@ -131,21 +126,45 @@
           class="selected-group"
           v-if="selected === 'Requirements'"
         >
-          <div class="program-heading">
+          <div class="">
             <h3><strong>Admission Requirements</strong></h3>
           </div>
-          <div class="group-flex">
-            <div
-              class="program-container"
-              v-for="(requirement, key) in data.AdmissionRequirements
-                .Requirements"
-              v-bind:key="key"
-            >
-              <h5>
-                <strong>{{ key }}</strong>
-              </h5>
-              <div>
-                <p v-for="item in requirement" v-bind:key="item">{{ item }}</p>
+          <div class="group-flex center">
+            <div class="data-container">
+              <h5><strong>Deadline for Requirements</strong></h5>
+              <h2>{{ data.Requirements.Date }}</h2>
+            </div>
+            <div class="group-flex center">
+              <div class="data-container">
+                <h5><strong>Freshmen</strong></h5>
+                <p
+                  v-for="item in stringSplit(data.Requirements.Freshmen)"
+                  :key="item"
+                >
+                  {{ item }}
+                </p>
+              </div>
+            </div>
+            <div class="group-flex center">
+              <div class="data-container">
+                <h5><strong>Cross-Enrolless </strong></h5>
+                <p
+                  v-for="item in stringSplit(data.Requirements.CrossEnrolles)"
+                  :key="item"
+                >
+                  {{ item }}
+                </p>
+              </div>
+            </div>
+            <div class="group-flex center">
+              <div class="data-container">
+                <h5><strong>Second Course</strong></h5>
+                <p
+                  v-for="item in stringSplit(data.Requirements.SecondCourse)"
+                  :key="item"
+                >
+                  {{ item }}
+                </p>
               </div>
             </div>
           </div>
@@ -161,15 +180,15 @@
           <div class="group-centered">
             <br />
             <h5><strong>Ranking</strong></h5>
-            <h1>{{ data.SchoolPerformance.Ranking }}TH</h1>
+            <h1>{{ data.SchoolPerformance.Ranking }} Place on Philippines</h1>
             <br />
             <h5><strong>Board Exam Performance</strong></h5>
-            <h1>{{ data.SchoolPerformance.BoardRankingPerformance }}</h1>
+            <h1>{{ data.SchoolPerformance.BoardPerformance }} Passing Rate</h1>
             <br />
             <div class="performance-others">
               <h5><strong>Others</strong></h5>
               <p
-                v-for="others in data.SchoolPerformance.Others"
+                v-for="others in stringSplit(data.SchoolPerformance.Others)"
                 v-bind:key="others"
               >
                 {{ others }}
@@ -187,9 +206,9 @@
           </div>
           <br />
           <div class="group-centered">
-            <h5 v-for="item in data.Scholarship" v-bind:key="item">
+            <h4 v-for="item in stringSplit(data.Scholarship)" v-bind:key="item">
               {{ item }}
-            </h5>
+            </h4>
           </div>
         </div>
       </div>
@@ -270,6 +289,10 @@ export default {
         console.log("error", e);
         this.isLoading = false;
       }
+    },
+    stringSplit(e) {
+      let arrayItem = e.split("\n");
+      return arrayItem;
     },
   },
 };
@@ -381,5 +404,20 @@ div#Performance {
 #uni-view .container {
   box-shadow: 0 0 50px #ccc;
   padding: 0;
+}
+.group-flex.center {
+  display: flex;
+  justify-content: center;
+}
+.group-flex.center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.group-flex.center h5 {
+  color: #ff974c;
+}
+div#Requirements, div#Scholarship {
+    padding: 30px;
 }
 </style>
