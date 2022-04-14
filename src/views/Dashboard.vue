@@ -18,11 +18,11 @@
           </h5>
         </div>
       </div>
-      <div class="col-9" v-if="active == 'Profile'">
+      <div class="col-9 overflow-scroll" v-if="active == 'Profile'" style="height:100vh">
         <Profile :dataProp="data" @setLoading="setLoading" @resetLogo="resetLogo"></Profile>
       </div>
-      <div class="col-9" style="background: #f5f5f5" v-if="active == 'Details'">
-        <UniDetails :dataProps="data" @reloadPage='reloadPage'></UniDetails>
+      <div class="col-9 overflow-scroll" style="background: #f5f5f5; height:100vh" v-if="active == 'Details'">
+        <UniDetails :dataProps="data" @reloadPage='reloadPage' @setLoading='setLoading'></UniDetails>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>

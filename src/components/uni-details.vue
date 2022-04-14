@@ -3,11 +3,7 @@
 <template>
   <div id="uni-details">
     <div class="details-btn-container">
-      <router-link to="/university/view"
-        ><button type="button" class="btn btn-primary">
-          VIEW
-        </button></router-link
-      >
+      <button class="btn btn-primary" @click="goToView">VIEW</button>
       <button class="btn btn-primary" @click="saveData">SAVE</button>
     </div>
     <div class="details-container">
@@ -33,43 +29,57 @@
                 v-model="data.Address.Lot"
               />
             </div>
-            <div class="mb-3">
-              <label for="Address-Lot" class="form-label">Barangay</label>
-              <input
-                type="text"
-                class="form-control"
-                id="Address-Lot"
-                v-model="data.Address.Barangay"
-              />
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label for="Address-Lot" class="form-label">Barangay</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Address-Lot"
+                    v-model="data.Address.Barangay"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <label for="Address-City" class="form-label"
+                    >City/Municipality</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Address-City"
+                    v-model="data.Address.City"
+                  />
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="Address-City" class="form-label"
-                >City/Municipality</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="Address-City"
-                v-model="data.Address.City"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="Address-Country" class="form-label">Country</label>
-              <input
-                type="text"
-                class="form-control"
-                id="Address-Country"
-                v-model="data.Address.Country"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="Address-Zip" class="form-label">Zipcode</label>
-              <input
-                type="text"
-                class="form-control"
-                id="Address-Zip"
-                v-model="data.Address.Zipcode"
-              />
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label for="Address-Country" class="form-label"
+                    >Country</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Address-Country"
+                    v-model="data.Address.Country"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <label for="Address-Zip" class="form-label">Zipcode</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Address-Zip"
+                    v-model="data.Address.Zipcode"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -90,34 +100,28 @@
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Mission</label
-              >
+              <label for="Details-Mission" class="form-label">Mission</label>
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="Details-Mission"
                 rows="2"
                 v-model="data.SchoolDetails.Mission"
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Vission</label
-              >
+              <label for="Details-Vission" class="form-label">Vission</label>
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="Details-Mission"
                 rows="2"
                 v-model="data.SchoolDetails.Vission"
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Goals</label
-              >
+              <label for="Details-Goals" class="form-label">Goals</label>
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="Details-Goals"
                 rows="2"
                 v-model="data.SchoolDetails.Goal"
               ></textarea>
@@ -134,46 +138,63 @@
             :key="key"
           >
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label :for="key + '-Field-Name'" class="form-label"
                 >Field Name</label
               >
               <input
                 type="text"
                 class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                :id="key + '-Field-Name'"
+                placeholder="Field Name"
                 v-model="data.ProgramsOffered[key].Field"
               />
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label :for="key + '-Programs'" class="form-label"
                 >Programs</label
               >
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                :id="key + '-Programs'"
                 rows="2"
                 v-model="data.ProgramsOffered[key].programs"
               ></textarea>
             </div>
-            <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Tuition Fee</label
-              >
-              <input
-                type="email"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="name@example.com"
-                v-model="data.ProgramsOffered[key].tuition"
-              />
-              <button
-                class="btn btn-warning delete-program-btn"
-                @click="removePrograms(key)"
-              >
-                Delete Program
-              </button>
+
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label :for="key + '-Tuition-Min'" class="form-label"
+                    >Tuition Fee Min</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    :id="key + '-Tuition-Min'"
+                    v-model="data.ProgramsOffered[key].TuitionMin"
+                  />
+                </div>
+              </div>
+              <div class="col order-5">
+                <div class="mb-3">
+                  <label :for="key + '-Tuition-Max'" class="form-label"
+                    >Tuition Fee Max</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    :id="key + '-Tuition-Max'"
+                    v-model="data.ProgramsOffered[key].TuitionMax"
+                  />
+                </div>
+              </div>
             </div>
+            <button
+              class="btn btn-warning delete-program-btn"
+              @click="removePrograms(key)"
+            >
+              Delete Program
+            </button>
             <hr
               v-if="index != Object.keys(data.ProgramsOffered).length - 1"
               style="margin-top: 70px"
@@ -181,6 +202,7 @@
           </div>
           <div class="add-btn-container">
             <button
+              style="margin-top: 20px"
               type="button"
               class="btn btn-primary"
               @click="appendPrograms"
@@ -195,86 +217,90 @@
           </div>
           <div class="form-input-container">
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label for="Performance-Ranking" class="form-label"
                 >Rankings</label
               >
               <input
                 type="email"
                 class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                id="Performance-Ranking"
+                v-model="data.SchoolPerformance.Ranking"
               />
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label for="school-performance-board-exam" class="form-label"
                 >Board Examp Performance</label
               >
               <input
                 type="email"
                 class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                id="school-performance-board-exam"
+                v-model="data.SchoolPerformance.BoardPerformance"
               />
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
-                >Tuition Fee</label
+              <label for="school-performance-others" class="form-label"
+                >Others</label
               >
-              <input
-                type="email"
+              <textarea
                 class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="name@example.com"
-              />
+                id="school-performance-others"
+                cols="30"
+                rows="3"
+                v-model="data.SchoolPerformance.Others"
+              ></textarea>
             </div>
           </div>
         </div>
         <div class="form-group-container">
           <div class="form-input-heaeding-container">
-            <h4><strong>School Performance</strong></h4>
+            <h4><strong>Admission Requirements</strong></h4>
           </div>
           <div class="form-input-container">
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label for="Requirements-deadline" class="form-label"
                 >Deadline</label
               >
               <input
-                type="email"
+                type="date"
                 class="form-control"
-                id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                id="Requirements-deadline"
+                v-model="data.Requirements.Date"
               />
             </div>
-            <h5>Requirements</h5>
+            <h5 style="margin-top: 20px">Requirements</h5>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label for="requirements-freshmen" class="form-label"
                 >Freshmen</label
               >
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="requirements-freshmen"
                 rows="2"
+                v-model="data.Requirements.Freshmen"
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label for="requirements-cross-enrolles" class="form-label"
                 >Cross-Enrolles</label
               >
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="requirements-cross-enrolles"
                 srows="2"
+                v-model="data.Requirements.CrossEnrolles"
               >
               </textarea>
             </div>
             <div class="mb-3">
-              <label for="exampleFormControlTextarea1" class="form-label"
+              <label for="requirements-second-course" class="form-label"
                 >Second Course Enrolles</label
               >
               <textarea
                 class="form-control"
-                id="exampleFormControlTextarea1"
+                id="requirements-second-course"
                 srows="2"
+                v-model="data.Requirements.SecondCourse"
               >
               </textarea>
             </div>
@@ -338,6 +364,12 @@ export default {
       }
       this.$delete(this.data.ProgramsOffered, key);
     },
+    goToView() {
+      let userID = this.data.Uid
+      console.log(userID)
+      this.$router.push(`/university/view/${userID}`)
+
+    }
   },
 };
 </script>

@@ -180,6 +180,6 @@ a.primary:hover {
   box-shadow: 0 0 30px #ccc;
 }
 .padding-top {
-  padding-top: 83px;
+  padding-top: 80px;
 }
 </style>

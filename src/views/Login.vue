@@ -89,11 +89,12 @@ export default {
 
 <style>
 .login {
-  background: #e4eef4;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background: #e4eef4;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 50px;
 }
 
 .form-container {

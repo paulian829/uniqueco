@@ -21,7 +21,11 @@
                   {{ data.Address.ZipCode }}
                 </p>
                 <h4><strong>Contacts</strong></h4>
-                <span v-for="number in data.Contacts" v-bind:key="number" style="margin-right:20px">
+                <span
+                  v-for="number in data.Contacts"
+                  v-bind:key="number"
+                  style="margin-right: 20px"
+                >
                   {{ number }}
                 </span>
                 <div class="btn-container">
@@ -42,15 +46,35 @@
           >
             About School
           </button>
-          <button class="btn btn-primary" @click="selected = 'Programs'" :class="{ 'btn-active': selected == 'Programs' }">
+          <button
+            class="btn btn-primary"
+            @click="selected = 'Programs'"
+            :class="{ 'btn-active': selected == 'Programs' }"
+          >
             Programs
           </button>
-          <button class="btn btn-primary" @click="selected = 'Requirements'" :class="{ 'btn-active': selected == 'Requirements' }">
+          <button
+            class="btn btn-primary"
+            @click="selected = 'Requirements'"
+            :class="{ 'btn-active': selected == 'Requirements' }"
+          >
             Requirements
           </button>
-          <button class="btn btn-primary" @click="selected = 'Performance' " :class="{ 'btn-active':selected == 'Performance'}">School Performance</button>
-          <button class="btn btn-primary" @click="selected = 'Scholarship' " :class="{'btn-active':selected == 'Scholarship'}">Scholarship</button>
-        </div> 
+          <button
+            class="btn btn-primary"
+            @click="selected = 'Performance'"
+            :class="{ 'btn-active': selected == 'Performance' }"
+          >
+            School Performance
+          </button>
+          <button
+            class="btn btn-primary"
+            @click="selected = 'Scholarship'"
+            :class="{ 'btn-active': selected == 'Scholarship' }"
+          >
+            Scholarship
+          </button>
+        </div>
         <div id="About" class="selected-group" v-if="selected == 'About'">
           <div class="logo-container">
             <img src="../assets/school-pic.png" alt="" />
@@ -131,48 +155,73 @@
           class="selected-group"
           v-if="selected === 'Performance'"
         >
-        <div class="program-heading">
-          <h3><strong>School Performance</strong></h3>
-        </div>
-        <div class="group-centered">
-          <br>
-          <h5><strong>Ranking</strong></h5>
-          <h1>{{data.SchoolPerformance.Ranking}}TH</h1>
-          <br>
-          <h5><strong>Board Exam Performance</strong></h5>
-          <h1>{{data.SchoolPerformance.BoardRankingPerformance}}</h1>
-          <br>
-          <div class="performance-others">
-            <h5><strong>Others</strong></h5>
-            <p v-for="others in data.SchoolPerformance.Others" v-bind:key='others'>{{others}}</p>
+          <div class="program-heading">
+            <h3><strong>School Performance</strong></h3>
+          </div>
+          <div class="group-centered">
+            <br />
+            <h5><strong>Ranking</strong></h5>
+            <h1>{{ data.SchoolPerformance.Ranking }}TH</h1>
+            <br />
+            <h5><strong>Board Exam Performance</strong></h5>
+            <h1>{{ data.SchoolPerformance.BoardRankingPerformance }}</h1>
+            <br />
+            <div class="performance-others">
+              <h5><strong>Others</strong></h5>
+              <p
+                v-for="others in data.SchoolPerformance.Others"
+                v-bind:key="others"
+              >
+                {{ others }}
+              </p>
+            </div>
           </div>
         </div>
-        </div>
-        <div class="selected-group" id="Scholarship" v-if="selected === 'Scholarship' ">
+        <div
+          class="selected-group"
+          id="Scholarship"
+          v-if="selected === 'Scholarship'"
+        >
           <div class="program-heading">
             <h3><strong>Scholarship</strong></h3>
           </div>
-          <br>
+          <br />
           <div class="group-centered">
-            <h5 v-for="item in data.Scholarship" v-bind:key="item">{{item}}</h5>
+            <h5 v-for="item in data.Scholarship" v-bind:key="item">
+              {{ item }}
+            </h5>
           </div>
         </div>
       </div>
       <div class="map-container">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d295.61664909642514!2d121.92252934719077!3d13.999647954095922!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1649086065331!5m2!1sen!2sph" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d295.61664909642514!2d121.92252934719077!3d13.999647954095922!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1649086065331!5m2!1sen!2sph"
+          width="100%"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
       </div>
     </div>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
-import data from "../../data.json";
+import { getDatabase, ref, onValue } from "firebase/database";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+} from "firebase/storage";
 export default {
   name: "uni-update",
 
   data() {
     return {
-      data: data,
+      uid: this.$route.params.uid,
+      data: "",
       selected: "About",
       school: {
         name: "De la salle Dasmarinas",
@@ -180,10 +229,47 @@ export default {
       },
     };
   },
-
+  mounted() {
+    this.getUserData(this.uid);
+  },
   methods: {
     getPic(pic) {
       return require(pic);
+    },
+    getUserData(uid) {
+      try {
+        this.isLoading = true;
+        const db = getDatabase();
+        const query = ref(db, "universities/" + uid);
+        const storage = getStorage();
+        onValue(query, (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          this.data = data;
+
+          try {
+            const logoRef = storageRef(storage, "logo/" + uid + ".png");
+            getDownloadURL(logoRef)
+              .then((url) => {
+                this.showLogo = true;
+                this.logoUrl = url;
+                this.isLoading = false;
+              })
+              .catch((e) => {
+                console.log(e);
+                this.showLogo = false;
+                this.logoUrl = "";
+                this.isLoading = false;
+              });
+          } catch (e) {
+            console.log("error", e);
+            this.isLoading = false;
+          }
+        });
+      } catch (e) {
+        console.log("error", e);
+        this.isLoading = false;
+      }
     },
   },
 };
@@ -195,7 +281,7 @@ export default {
   min-height: 91vh;
   display: flex;
   justify-content: center;
-  padding: 135px 50px 50px 50px ;
+  padding: 135px 50px 50px 50px;
 }
 .heading-container {
   text-align: left;
@@ -274,7 +360,8 @@ div#Programs {
 .indented {
   margin-left: 30px;
 }
-div#Requirements,div#Scholarship {
+div#Requirements,
+div#Scholarship {
   padding: 30px;
 }
 .btn-active {
@@ -282,17 +369,17 @@ div#Requirements,div#Scholarship {
   border: #ff974c !important;
 }
 div#Performance {
-    padding: 30px;
+  padding: 30px;
 }
-.group-centered h5{
+.group-centered h5 {
   color: #ff974c;
 }
 
-.primary-color{
+.primary-color {
   color: #ff974c;
 }
 #uni-view .container {
-    box-shadow: 0 0 50px #ccc;
-    padding: 0;
+  box-shadow: 0 0 50px #ccc;
+  padding: 0;
 }
 </style>

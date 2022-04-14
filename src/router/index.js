@@ -36,12 +36,7 @@ const routes = [
     component: () => import("../views/Dashboard.vue"),
   },
   {
-    path: "/university/update",
-    name: "UniversityUpdate",
-    component: () => import("../views/uni-update.vue"),
-  },
-  {
-    path: "/university/view",
+    path: "/university/view/:uid",
     name: "UniversityView",
     component: () => import("../views/uni-view.vue"),
   },

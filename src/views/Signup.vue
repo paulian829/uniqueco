@@ -206,7 +206,7 @@ export default {
       this.$swal({
         icon: "success",
         title: "Success",
-        text: "Sucess Creating your account!",
+        text: "Success Creating your account!",
       });
     },
     checkIfEmpty(form) {
@@ -240,10 +240,12 @@ export default {
 }
 .login {
   background: #e4eef4;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 50px;
+  padding-top: 150px;
 }
 
 .form-container {
