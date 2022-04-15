@@ -355,7 +355,12 @@
 <script>
 // @ is an alias to /src
 import { getDatabase, ref, update } from "firebase/database";
-import { uploadBytes, getStorage , ref as StorageRef} from '@firebase/storage';
+import {
+  uploadBytes,
+  getStorage,
+  ref as StorageRef,
+  getDownloadURL,
+} from "@firebase/storage";
 
 export default {
   name: "uni-details",
@@ -367,7 +372,7 @@ export default {
       preview: "",
       currentImage: "",
       previewChanged: false,
-      imageFile:'',
+      imageFile: "",
     };
   },
   computed: {},
@@ -379,6 +384,32 @@ export default {
   methods: {
     getCurrentImage(uid) {
       console.log(uid, "TEST");
+      if (this.data.ImageFileName) {
+        const storage = getStorage();
+        getDownloadURL(StorageRef(storage, this.data.ImageFileName))
+          .then((url) => {
+            // `url` is the download URL for 'images/stars.jpg'
+            // This can be downloaded directly:
+            // const xhr = new XMLHttpRequest();
+            // xhr.responseType = "blob";
+            // xhr.onload = () => {
+            //   const blob = xhr.response;
+            //   console.log(blob)
+            // };
+            // xhr.open("GET", url);
+            // xhr.send();
+
+            // Or inserted into an <img> element
+            // const img = document.getElementById("myimg");
+            // img.setAttribute("src", url);
+            this.previewChanged = false
+            this.currentImage = url
+          })
+          .catch((error) => {
+            // Handle any errors
+            console.log(error)
+          });
+      }
     },
     saveData() {
       this.$emit("setLoading", true);
@@ -388,28 +419,31 @@ export default {
       const updates = {};
       updates["universities/" + data.Uid] = data;
       update(ref(db), updates)
-        .then(() => {
-        })
+        .then(() => {})
         .catch((e) => {
           console.log(e);
         });
-        if(this.previewChanged) {
-          let fileType = this.imageFile.name.split('.').pop();
-          alert(fileType)
-          const storage = getStorage();
-          let uid = this.data.Uid
-          const schoolPicRef = StorageRef(storage, `schoolPictures/${uid}.${fileType}`)
-          uploadBytes(schoolPicRef, this.imageFile).then((r) => {
-            console.log(r)
-          this.$emit("setLoading", false);
-
-          }).catch((e) => {console.log(e) 
-          this.$emit("setLoading", false);
-          } )
-
-
-
-        }
+      if (this.previewChanged) {
+        let fileType = this.imageFile.name.split(".").pop();
+        alert(fileType);
+        const storage = getStorage();
+        let uid = this.data.Uid;
+        const schoolPicRef = StorageRef(
+          storage,
+          `schoolPictures/${uid}.${fileType}`
+        );
+        uploadBytes(schoolPicRef, this.imageFile)
+          .then((r) => {
+            console.log(r);
+            this.$emit("setLoading", false);
+          })
+          .catch((e) => {
+            console.log(e);
+            this.$emit("setLoading", false);
+          });
+      }else{
+        this.$emit("setLoading", false)
+      }
     },
     appendPrograms() {
       const random =
@@ -437,9 +471,13 @@ export default {
       const file = e.target.files[0];
       console.log(URL.createObjectURL(file));
       this.previewChanged = true;
-      this.imageFile = file
-      console.log(file)
+      this.imageFile = file;
+      console.log(file);
       this.preview = URL.createObjectURL(file);
+      let fileType = file.name.split(".").pop();
+      let uid = this.data.Uid;
+      let filename = `schoolPictures/${uid}.${fileType}`;
+      this.data.ImageFileName = filename;
     },
   },
 };
