@@ -316,7 +316,7 @@
           </div>
         </div>
         <div class="form-group-container">
-            <h5 style="margin-top: 20px"><strong>Scholarship</strong></h5>
+          <h5 style="margin-top: 20px"><strong>Scholarship</strong></h5>
           <div class="mb-3">
             <label for="scholarships" class="form-label"
               >List of Scholarship offered</label
@@ -330,6 +330,22 @@
           >
           </textarea>
         </div>
+        <div class="form-group-container">
+          <h5 style="margin-top: 20px"><strong>Images</strong></h5>
+          <div class="mb-3">
+            <label for="formFile" class="form-label">Select Images</label>
+            <input
+              class="form-control"
+              type="file"
+              id="formFile"
+              @change="onFileChange"
+            />
+          </div>
+          <div>
+            <img v-if="!previewChanged" :src="currentImage" alt="" />
+            <img v-else :src="preview" alt="" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -339,6 +355,7 @@
 <script>
 // @ is an alias to /src
 import { getDatabase, ref, update } from "firebase/database";
+import { uploadBytes, getStorage , ref as StorageRef} from '@firebase/storage';
 
 export default {
   name: "uni-details",
@@ -347,14 +364,22 @@ export default {
   data: function () {
     return {
       data: "",
+      preview: "",
+      currentImage: "",
+      previewChanged: false,
+      imageFile:'',
     };
   },
   computed: {},
 
   mounted() {
     this.data = this.dataProps;
+    this.getCurrentImage(this.data.Uid);
   },
   methods: {
+    getCurrentImage(uid) {
+      console.log(uid, "TEST");
+    },
     saveData() {
       this.$emit("setLoading", true);
       let data = this.data;
@@ -364,12 +389,27 @@ export default {
       updates["universities/" + data.Uid] = data;
       update(ref(db), updates)
         .then(() => {
-          this.$emit("setLoading", false);
         })
         .catch((e) => {
           console.log(e);
-          this.$emit("setLoading", false);
         });
+        if(this.previewChanged) {
+          let fileType = this.imageFile.name.split('.').pop();
+          alert(fileType)
+          const storage = getStorage();
+          let uid = this.data.Uid
+          const schoolPicRef = StorageRef(storage, `schoolPictures/${uid}.${fileType}`)
+          uploadBytes(schoolPicRef, this.imageFile).then((r) => {
+            console.log(r)
+          this.$emit("setLoading", false);
+
+          }).catch((e) => {console.log(e) 
+          this.$emit("setLoading", false);
+          } )
+
+
+
+        }
     },
     appendPrograms() {
       const random =
@@ -392,6 +432,14 @@ export default {
       let userID = this.data.Uid;
       console.log(userID);
       this.$router.push(`/university/view/${userID}`);
+    },
+    onFileChange(e) {
+      const file = e.target.files[0];
+      console.log(URL.createObjectURL(file));
+      this.previewChanged = true;
+      this.imageFile = file
+      console.log(file)
+      this.preview = URL.createObjectURL(file);
     },
   },
 };
