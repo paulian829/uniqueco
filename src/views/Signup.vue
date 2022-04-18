@@ -195,8 +195,8 @@ export default {
         SchoolPerformance:{
           Ranking:" "
         },
-        AdmissionRequirements: {
-          Deadline:' '
+        Requirements: {
+          Date:' '
         },
 
 

@@ -7,7 +7,7 @@
           <div class="details-containers">
             <div class="uni-flex-column">
               <div class="uni-column-img">
-                <img :src="school.schoolPic" alt="" />
+                <img :src="SchoopPic" alt="" />
               </div>
               <div class="uni-column">
                 <h3>
@@ -25,7 +25,12 @@
                 <h4><strong>Contacts</strong></h4>
                 <span>{{ data.Phone }}</span>
                 <div class="btn-container">
-                  <a :href='"https://" + data.Website'  target="_blank" rel="noreferrer noopener"><button class="btn btn-primary">Go to Website</button></a>
+                  <a
+                    :href="'https://' + data.Website"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    ><button class="btn btn-primary">Go to Website</button></a
+                  >
                 </div>
               </div>
             </div>
@@ -72,7 +77,7 @@
         </div>
         <div id="About" class="selected-group" v-if="selected == 'About'">
           <div class="logo-container">
-            <img src="../assets/school-pic.png" alt="" />
+            <img :src="data.logoURL" alt="" />
           </div>
           <div class="about-details-container">
             <div>
@@ -126,7 +131,7 @@
           class="selected-group"
           v-if="selected === 'Requirements'"
         >
-          <div class="">
+          <div class="program-heading">
             <h3><strong>Admission Requirements</strong></h3>
           </div>
           <div class="group-flex center">
@@ -224,11 +229,13 @@
         ></iframe>
       </div>
     </div>
+    <Loader v-if="isLoading"></Loader>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
 import { getDatabase, ref, onValue } from "firebase/database";
+import Loader from "../components/loader.vue";
 import {
   getDownloadURL,
   getStorage,
@@ -236,12 +243,16 @@ import {
 } from "firebase/storage";
 export default {
   name: "uni-update",
+  components: { Loader },
 
   data() {
     return {
       uid: this.$route.params.uid,
       data: "",
+      isLoading: false,
       selected: "About",
+      SchoopPic:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png",
       school: {
         name: "De la salle Dasmarinas",
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
@@ -280,6 +291,14 @@ export default {
                 this.logoUrl = "";
                 this.isLoading = false;
               });
+            if (data.ImageFileName) {
+              const schoolImageRef = storageRef(storage, data.ImageFileName);
+              getDownloadURL(schoolImageRef).then((url) => {
+                this.SchoopPic = url;
+                console.log(url);
+                this.isLoading = false;
+              });
+            }
           } catch (e) {
             console.log("error", e);
             this.isLoading = false;
@@ -316,9 +335,11 @@ export default {
 .uni-flex-column {
   display: flex;
 }
-.uni-column-img {
-  max-width: 40%;
+.uni-column-img img {
+  max-width: 530px;
+  max-height: 470px;
   width: 100%;
+  height: 100%;
 }
 .uni-column {
   max-width: 60%;
@@ -417,7 +438,8 @@ div#Performance {
 .group-flex.center h5 {
   color: #ff974c;
 }
-div#Requirements, div#Scholarship {
-    padding: 30px;
+div#Requirements,
+div#Scholarship {
+  padding: 30px;
 }
 </style>

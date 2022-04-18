@@ -38,7 +38,7 @@
       <div class="school-group-container">
         <div class="school-item" v-for="(item, key) in data" :key="key">
           <div class="school-logo-container">
-            <img src="../assets/school-pic.png" alt="" />
+            <img :src="item.logoURL" alt="" />
           </div>
           <div class="list-item-details-container">
             <h3>
@@ -53,8 +53,12 @@
               }}</span>
             </h6>
             <div class="school-list-btn-group">
-              <button class="btn btn-primary">View</button>
-              <button class="btn btn-primary">Visit Website</button>
+              <router-link :to="'/university/view/' + item.Uid"
+                ><button class="btn btn-primary">View</button></router-link
+              >
+              <a :href="item.Website"
+                ><button class="btn btn-primary">Visit Website</button></a
+              >
             </div>
           </div>
         </div>
@@ -65,12 +69,40 @@
 
 <script>
 import unversityList from "../../manyschools.json";
+// import Loader from "../components/loader.vue"
+import { getDatabase, ref, onValue } from "firebase/database";
+// import {
+//   getDownloadURL,
+//   getStorage,
+//   ref as storageRef,
+// } from "firebase/storage";
 
 export default {
   data() {
     return {
       data: unversityList,
+      isLoading: false,
     };
+  },
+  mounted() {
+    this.getSchools();
+  },
+  methods: {
+    getSchools() {
+      try {
+        this.isLoading = true;
+        const db = getDatabase();
+        const query = ref(db, "universities");
+        // const storage = getStorage();
+        onValue(query, (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          this.data = data;
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 };
 </script>

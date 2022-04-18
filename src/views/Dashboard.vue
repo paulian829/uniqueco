@@ -12,17 +12,40 @@
           <h5 v-on:click="selectScreen('Details')">
             <strong>University Details</strong>
           </h5>
-          <h5 v-on:click="selectScreen('test')"><strong>Articles</strong></h5>
+          <h5 v-on:click="selectScreen('Articles')"><strong>Articles</strong></h5>
           <h5 v-on:click="selectScreen('test')">
             <strong>Account Settings</strong>
           </h5>
         </div>
       </div>
-      <div class="col-9 overflow-scroll" v-if="active == 'Profile'" style="height:100vh">
-        <Profile :dataProp="data" @setLoading="setLoading" @resetLogo="resetLogo"></Profile>
+      <div
+        class="col-9 overflow-scroll"
+        v-if="active == 'Profile'"
+        style="height: 100vh"
+      >
+        <Profile
+          :dataProp="data"
+          @setLoading="setLoading"
+          @resetLogo="resetLogo"
+        ></Profile>
       </div>
-      <div class="col-9 overflow-scroll" style="background: #f5f5f5; height:100vh" v-if="active == 'Details'">
-        <UniDetails :dataProps="data" @reloadPage='reloadPage' @setLoading='setLoading'></UniDetails>
+      <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'Details'"
+      >
+        <UniDetails
+          :dataProps="data"
+          @reloadPage="reloadPage"
+          @setLoading="setLoading"
+        ></UniDetails>
+      </div>
+      <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'Articles'"
+      >
+      <Articles></Articles>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -35,6 +58,7 @@ import { passAuth } from "../db";
 
 import Profile from "../components/profile.vue";
 import UniDetails from "../components/uni-details.vue";
+import Articles from "../components/articles.vue";
 
 import { getDatabase, ref, onValue } from "firebase/database";
 import {
@@ -48,7 +72,7 @@ import Loader from "../components/loader.vue";
 
 export default {
   name: "dashboard",
-  components: { Profile, UniDetails, Loader },
+  components: { Profile, UniDetails, Loader, Articles },
   data() {
     return {
       isLoading: false,
@@ -56,8 +80,8 @@ export default {
       data: "",
       logoUrl: "",
       showLogo: false,
-      uid:'',
-      random:''
+      uid: "",
+      random: "",
     };
   },
   mounted() {
@@ -76,7 +100,7 @@ export default {
         if (user) {
           const uid = user.uid;
           console.log(uid);
-          this.uid = uid
+          this.uid = uid;
           this.getUserData(uid);
           // ...
         } else {
@@ -112,12 +136,12 @@ export default {
                 this.logoUrl = "";
                 this.isLoading = false;
               });
-          } catch(e){
-            console.log("error",e);
+          } catch (e) {
+            console.log("error", e);
             this.isLoading = false;
           }
-        })
-      } catch(e) {
+        });
+      } catch (e) {
         console.log("error", e);
         this.isLoading = false;
       }
@@ -126,22 +150,24 @@ export default {
       this.isLoading = status;
     },
     resetLogo() {
-        const storage = getStorage();
+      const storage = getStorage();
 
       const logoRef = storageRef(storage, "logo/" + this.uid + ".png");
-      getDownloadURL(logoRef).then((url)=>{
-        this.showLogo = true;
-        this.logoUrl = url;
-        this.isLoading = false
-      }).catch((e) => {
-        console.log(e)
-        this.isLoading = false
-      } )
+      getDownloadURL(logoRef)
+        .then((url) => {
+          this.showLogo = true;
+          this.logoUrl = url;
+          this.isLoading = false;
+        })
+        .catch((e) => {
+          console.log(e);
+          this.isLoading = false;
+        });
     },
-    reloadPage(){
-      console.log('test')
-      this.checkLoggedIn()
-    }
+    reloadPage() {
+      console.log("test");
+      this.checkLoggedIn();
+    },
   },
 };
 </script>
@@ -165,7 +191,6 @@ export default {
   max-height: 100px;
   width: 100%;
   height: 100%;
-  border-radius: 999px;
   object-fit: cover;
 }
 .nav-container {

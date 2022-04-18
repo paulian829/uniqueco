@@ -87,7 +87,12 @@
 
 <script>
 import { getDatabase, ref, update } from "firebase/database";
-import { getStorage, ref as StorageRef, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as StorageRef,
+  uploadBytes,
+} from "firebase/storage";
 
 export default {
   name: "Profile",
@@ -113,20 +118,22 @@ export default {
         );
         uploadBytes(logoRef, this.imageFile[0]).then((r) => {
           console.log(r);
-          this.$emit("setLoading", false);
           this.$emit("resetLogo");
-        });
-        const db = getDatabase();
-        const updates = {};
-        updates["universities/" + data.Uid] = data;
-        update(ref(db), updates)
-          .then(() => {
-            this.$emit("setLoading", false);
-          })
-          .catch((e) => {
-            console.log(e);
-            this.$emit("setLoading", false);
+          getDownloadURL(StorageRef(logoRef)).then((url) => {
+            data.logoURL = url
+            const db = getDatabase();
+            const updates = {};
+            updates["universities/" + data.Uid] = data;
+            update(ref(db), updates)
+              .then(() => {
+                this.$emit("setLoading", false);
+              })
+              .catch((e) => {
+                console.log(e);
+                this.$emit("setLoading", false);
+              });
           });
+        });
       } else {
         const db = getDatabase();
         const updates = {};
@@ -141,6 +148,7 @@ export default {
           });
       }
     },
+
     uploadImage(event) {
       console.log(event);
       this.imageFile = event.target.files;

@@ -402,12 +402,12 @@ export default {
             // Or inserted into an <img> element
             // const img = document.getElementById("myimg");
             // img.setAttribute("src", url);
-            this.previewChanged = false
-            this.currentImage = url
+            this.previewChanged = false;
+            this.currentImage = url;
           })
           .catch((error) => {
             // Handle any errors
-            console.log(error)
+            console.log(error);
           });
       }
     },
@@ -425,7 +425,6 @@ export default {
         });
       if (this.previewChanged) {
         let fileType = this.imageFile.name.split(".").pop();
-        alert(fileType);
         const storage = getStorage();
         let uid = this.data.Uid;
         const schoolPicRef = StorageRef(
@@ -441,8 +440,8 @@ export default {
             console.log(e);
             this.$emit("setLoading", false);
           });
-      }else{
-        this.$emit("setLoading", false)
+      } else {
+        this.$emit("setLoading", false);
       }
     },
     appendPrograms() {
