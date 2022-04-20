@@ -2,7 +2,21 @@
   <div id="Articles">
     <div class="article-header-container">
       <h2>Articles</h2>
-      <button class="btn btn-primary" style="margin-left: 20px">Add new</button>
+      <button
+        class="btn btn-primary primary"
+        style="margin-left: 20px"
+        @click="addNewArticle"
+      >
+        Add new
+      </button>
+      <div class="search-group-container">
+        <div class="input-group mb-3 input-group-lg">
+          <input type="text" class="form-control" placeholder="Search" />
+          <button class="btn btn-primary" type="button" id="button-addon2">
+            Search
+          </button>
+        </div>
+      </div>
     </div>
     <div class="articles-list-container">
       <table class="table">
@@ -15,10 +29,15 @@
         </thead>
         <tbody>
           <tr v-for="(item, key) in data" :key="key">
-            <td>{{ item.name }}</td>
-            <td>{{ item.dateCreated }}</td>
-            <td>
-              <button class="btn btn-primary" @click="goToEdit(key)">
+            <td class="text-left">{{ item.title }}</td>
+            <td class="text-left" v-text="textSlice(item.dateCreated)"></td>
+            <td class="articles-btn-container">
+              <button class="btn btn-secondary">View</button>
+              <button
+                class="btn btn-primary"
+                @click="goToEdit(key)"
+                style="margin-left: 30px"
+              >
                 Edit</button
               ><button
                 style="margin-left: 30px"
@@ -36,29 +55,48 @@
 </template>
 
 <script>
+import { getDatabase, onValue, ref, set } from "@firebase/database";
 export default {
   name: "Articles",
   components: {},
+  props: ["dataProps"],
   data: function () {
     return {
-      data: {
-        random1: {
-          name: "Lorem ipsum dolor sit amet, consectetur tempor magna aliqua.",
-          dateCreated: "1-2-2021",
-        },
-        random2: {
-          name: "Lorem ipsum dolor sit amet, consectetur tempor magna aliqua.",
-          dateCreated:'1-5-2020'
-        },
-      },
+      data: "",
     };
+  },
+  mounted() {
+    this.getData();
   },
   methods: {
     goToEdit(key) {
       console.log(key, "Edit");
     },
     deleteArticle(key) {
-      console.log(key, "Delete");
+      this.$emit("setLoading", true);
+      let data = this.dataProps;
+      const db = getDatabase();
+      set(ref(db, `universities/${data.Uid}/articles/${key}`), {}).then(
+        (result) => {
+          console.log(result);
+        }
+      );
+    },
+    addNewArticle() {
+      this.$emit("setPage", "NewArticle");
+    },
+    getData() {
+      let Uid = this.dataProps.Uid;
+      const db = getDatabase();
+      const query = ref(db, `universities/${Uid}/articles`);
+      onValue(query, (snapshot) => {
+        const data = snapshot.val();
+        this.data = data;
+      });
+    },
+    textSlice(item) {
+      console.log(typeof item);
+      return item.slice(0, 28);
     },
   },
 };
@@ -72,5 +110,21 @@ div#Articles {
 .article-header-container {
   display: flex;
   padding-bottom: 30px;
+}
+.text-left {
+  text-align: left;
+}
+.articles-btn-container {
+  display: flex;
+  justify-content: left;
+}
+.input-group.mb-3 {
+  margin-bottom: 0 !important;
+}
+.search-group-container {
+  margin-left: auto;
+}
+#Articles {
+  text-align: left;
 }
 </style>

@@ -45,7 +45,10 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Articles'"
       >
-      <Articles></Articles>
+      <Articles :dataProps='data' @setLoading='setLoading' @setPage='setPage'></Articles>
+      </div>
+      <div class="col-9 overflow-scroll" style="background:#f5f5f5; height:100vh" v-if="active == 'NewArticle'">
+        <NewArticle :dataProps="data" @setLoading='setLoading' @setPage='setPage'></NewArticle>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -67,12 +70,13 @@ import {
   ref as storageRef,
 } from "firebase/storage";
 import Loader from "../components/loader.vue";
+import NewArticle from "../components/new-article.vue"
 
 // @ is an alias to /src
 
 export default {
   name: "dashboard",
-  components: { Profile, UniDetails, Loader, Articles },
+  components: { Profile, UniDetails, Loader, Articles,NewArticle },
   data() {
     return {
       isLoading: false,
@@ -148,6 +152,9 @@ export default {
     },
     setLoading(status) {
       this.isLoading = status;
+    },
+    setPage(component){
+      this.active = component
     },
     resetLogo() {
       const storage = getStorage();

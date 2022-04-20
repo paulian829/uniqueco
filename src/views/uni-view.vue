@@ -228,6 +228,26 @@
           referrerpolicy="no-referrer-when-downgrade"
         ></iframe>
       </div>
+      <div class="articles-view-container">
+        <div class="articles-header-container" style="margin-bottom:30px">
+          <h3>Articles</h3>
+        </div>
+        <div class="no-articles" v-if="!data.articles">
+          <h4>No Articles Available</h4>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-4" v-else>
+          <div class="col" v-for='item,key in data.articles' :key='key' @click="gotoArticles(key)">
+            <div class="card">
+              <img :src="item.articleImageURL" class="card-img-top" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{stringTruncate(item.content)}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <Loader v-if="isLoading"></Loader>
   </div>
@@ -313,6 +333,10 @@ export default {
       let arrayItem = e.split("\n");
       return arrayItem;
     },
+    stringTruncate(e){
+      return e.split(" ").splice(0,15).join(" ")
+
+    }
   },
 };
 </script>
@@ -336,7 +360,7 @@ export default {
   display: flex;
 }
 .uni-column-img img {
-  max-width: 530px;
+  max-width: 550px;
   max-height: 470px;
   width: 100%;
   height: 100%;
@@ -348,10 +372,10 @@ export default {
   padding: 30px;
   position: relative;
 }
-.uni-column-img img {
+.uni-column-img {
+  max-width: 550px;
   width: 100%;
 }
-
 .btn-container {
   position: absolute;
   bottom: 30px;
@@ -441,5 +465,12 @@ div#Performance {
 div#Requirements,
 div#Scholarship {
   padding: 30px;
+}
+.articles-view-container {
+  margin: 0 !important;
+  background: #f0eded;
+  padding: 50px;
+}
+.articles-view-container h5 {
 }
 </style>
