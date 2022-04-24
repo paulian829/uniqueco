@@ -32,7 +32,7 @@
             <td class="text-left">{{ item.title }}</td>
             <td class="text-left" v-text="textSlice(item.dateCreated)"></td>
             <td class="articles-btn-container">
-              <button class="btn btn-secondary">View</button>
+              <button class="btn btn-secondary" @click="viewArticle(key)">View</button>
               <button
                 class="btn btn-primary"
                 @click="goToEdit(key)"
@@ -98,6 +98,9 @@ export default {
       console.log(typeof item);
       return item.slice(0, 28);
     },
+    viewArticle(key){
+      this.$router.push(`articles/${this.dataProps.Uid}/${key}`)
+    }
   },
 };
 </script>

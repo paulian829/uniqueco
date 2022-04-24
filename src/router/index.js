@@ -50,6 +50,12 @@ const routes = [
     name: "universityList",
     component: () => import("../views/school-list.vue"),
   },
+  {
+    path:"/articles/:uid/:articlesID",
+    name: 'singleArticle',
+    component: () => import('../views/articles-view.vue')
+
+  }
 ];
 
 const router = new VueRouter({

@@ -166,6 +166,7 @@ div#university-list {
 }
 .list-item-details-container {
   text-align: left;
+  margin-left: 30px;
 }
 .school-list-btn-group button {
   margin-top: 20px;

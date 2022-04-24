@@ -182,4 +182,11 @@ a.primary:hover {
 .padding-top {
   padding-top: 80px;
 }
+.btn-primary{
+  background: #ff974c !important;
+  border: 1px solid #ff974c !important;
+}
+.btn-primary:hover{
+  background: #f5761a !important;
+} 
 </style>

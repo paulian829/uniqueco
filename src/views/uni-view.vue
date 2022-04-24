@@ -236,7 +236,7 @@
           <h4>No Articles Available</h4>
         </div>
         <div class="row row-cols-1 row-cols-md-2 g-4" v-else>
-          <div class="col" v-for='item,key in data.articles' :key='key' @click="gotoArticles(key)">
+          <div class="col" v-for='item,key in data.articles' :key='key' @click="goToArticles(key)">
             <div class="card">
               <img :src="item.articleImageURL" class="card-img-top" alt="..." />
               <div class="card-body">
@@ -280,6 +280,7 @@ export default {
     };
   },
   mounted() {
+    window.scrollTo(0,0)
     this.getUserData(this.uid);
   },
   methods: {
@@ -336,6 +337,9 @@ export default {
     stringTruncate(e){
       return e.split(" ").splice(0,15).join(" ")
 
+    },
+    goToArticles(key) {
+      this.$router.push(`/articles/${this.data.Uid}/${key}`)
     }
   },
 };
