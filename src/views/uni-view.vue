@@ -331,6 +331,7 @@ export default {
       }
     },
     stringSplit(e) {
+      console.log(e)
       let arrayItem = e.split("\n");
       return arrayItem;
     },

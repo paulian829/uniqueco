@@ -55,7 +55,8 @@ const routes = [
     name: 'singleArticle',
     component: () => import('../views/articles-view.vue')
 
-  }
+  },
+
 ];
 
 const router = new VueRouter({

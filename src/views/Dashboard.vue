@@ -45,10 +45,13 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Articles'"
       >
-      <Articles :dataProps='data' @setLoading='setLoading' @setPage='setPage'></Articles>
+      <Articles :dataProps='data' @setLoading='setLoading' @setPage='setPage' @setEditArticle='selectEditArticle'></Articles>
       </div>
       <div class="col-9 overflow-scroll" style="background:#f5f5f5; height:100vh" v-if="active == 'NewArticle'">
         <NewArticle :dataProps="data" @setLoading='setLoading' @setPage='setPage'></NewArticle>
+      </div>
+      <div class="col-9 overflow-scroll" style="background:#f5f5f5; height:100vh" v-if="active == 'EditArticle'">
+        <EditArticle :dataProps='data' @setLoading='setLoading' @setPage='setPage' :selectedArticle='selectArticle'></EditArticle>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -71,14 +74,16 @@ import {
 } from "firebase/storage";
 import Loader from "../components/loader.vue";
 import NewArticle from "../components/new-article.vue"
+import EditArticle  from "../components/edit-article.vue"
 
 // @ is an alias to /src
 
 export default {
   name: "dashboard",
-  components: { Profile, UniDetails, Loader, Articles,NewArticle },
+  components: { Profile, UniDetails, Loader, Articles,NewArticle, EditArticle },
   data() {
     return {
+      selectArticle:'test',
       isLoading: false,
       active: "Profile",
       data: "",
@@ -92,6 +97,12 @@ export default {
     this.checkLoggedIn();
   },
   methods: {
+    selectEditArticle(articleID) {
+      console.log(articleID)
+      this.selectArticle = articleID
+      this.active = 'EditArticle'
+      
+    },
     selectScreen(screen) {
       if (screen === "Messages") {
         this.$router.push("/messages");

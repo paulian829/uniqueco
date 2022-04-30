@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     goToEdit(key) {
-      console.log(key, "Edit");
+      this.$emit("setEditArticle",key)
     },
     deleteArticle(key) {
       this.$emit("setLoading", true);
