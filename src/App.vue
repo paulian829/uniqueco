@@ -11,6 +11,18 @@
         <router-link to="/university/list">Schools</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexSwitchCheckChecked"
+              v-model="publish"
+              @change="togglePublish"
+            />
+            <label class="form-check-label" for="flexSwitchCheckChecked"
+              >Publish</label
+            >
+          </div>
           <button
             v-if="loggedIn"
             class="btn btn-secondary secondary"
@@ -34,15 +46,17 @@
 <script>
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { passAuth } from "./db";
+import { getDatabase, onValue, ref, update } from "@firebase/database";
 
 export default {
   data() {
     return {
       loggedIn: false,
+      publish: false,
+      Uid: "",
     };
   },
   mounted() {
-    console.log("test");
     this.checkLoggedIn();
   },
   methods: {
@@ -55,6 +69,8 @@ export default {
           const uid = user.uid;
           console.log(uid);
           this.loggedIn = true;
+          this.Uid = uid;
+          this.checkIfPublished(uid);
 
           // ...
         } else {
@@ -73,6 +89,26 @@ export default {
         })
         .catch((error) => {
           console.log("ERROR", error);
+        });
+    },
+    checkIfPublished(uid) {
+      const db = getDatabase();
+      const query = ref(db, "universities/" + uid);
+      onValue(query, (snapshot) => {
+        const data = snapshot.val();
+        this.publish = data.publish;
+      });
+    },
+    togglePublish() {
+      const db = getDatabase();
+      const updates = {};
+      updates["universities/" + this.Uid + "/publish"] = this.publish;
+
+      update(ref(db), updates)
+        .then(() => {
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
   },
@@ -139,8 +175,9 @@ div#nav {
 
 #nav .nav-container .login-button-container {
   margin-left: auto;
+  display: flex;
+  align-items: center;
 }
-
 .primary,
 .secondary {
   border: 1px solid #ff974c;
@@ -182,11 +219,21 @@ a.primary:hover {
 .padding-top {
   padding-top: 80px;
 }
-.btn-primary{
+.btn-primary {
   background: #ff974c !important;
   border: 1px solid #ff974c !important;
 }
-.btn-primary:hover{
+.btn-primary:hover {
   background: #f5761a !important;
-} 
+}
+input#flexSwitchCheckChecked {
+  height: 30px;
+  width: 50px;
+  margin-right: 10px;
+}
+.form-switch {
+  padding-left: 2.5em;
+  display: flex !important;
+  align-items: center;
+}
 </style>

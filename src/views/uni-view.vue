@@ -332,11 +332,19 @@ export default {
     },
     stringSplit(e) {
       console.log(e)
+      if (e !== undefined){
       let arrayItem = e.split("\n");
       return arrayItem;
+      }
+      return []
+
     },
     stringTruncate(e){
+      if(e !==undefined){
       return e.split(" ").splice(0,15).join(" ")
+
+      }
+      return []
 
     },
     goToArticles(key) {
@@ -406,6 +414,7 @@ div#About {
 .logo-container {
   max-width: 300px;
   width: 100%;
+  margin-right: 15px;
 }
 .about-details-container {
   text-align: left;

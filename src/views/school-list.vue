@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="school-group-container">
-        <div class="school-item" v-for="(item, key) in data" :key="key">
+        <div class="school-item" v-for="(item, key) in data" :key="key" v-show="item.publish === true">
           <div class="school-logo-container">
             <img :src="item.logoURL" alt="" />
           </div>
