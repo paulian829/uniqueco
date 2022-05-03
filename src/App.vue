@@ -11,7 +11,7 @@
         <router-link to="/university/list">Schools</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
-          <div class="form-check form-switch">
+          <div class="form-check form-switch" v-if="loggedIn">
             <input
               class="form-check-input"
               type="checkbox"
@@ -86,8 +86,7 @@ export default {
           this.$router.push("/login");
           console.log("LOGGED OUT");
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     checkIfPublished(uid) {
       const db = getDatabase();
@@ -103,10 +102,8 @@ export default {
       updates["universities/" + this.Uid + "/publish"] = this.publish;
 
       update(ref(db), updates)
-        .then(() => {
-        })
-        .catch(() => {
-        });
+        .then(() => {})
+        .catch(() => {});
     },
   },
 };

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable prettier/prettier -->
   <div id="university-list">
     <div class="flex-list">
       <div class="search-bar-container">
@@ -12,7 +13,7 @@
                 type="email"
                 class="form-control"
                 id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                v-model='searchName'
               />
             </div>
           </div>
@@ -25,19 +26,24 @@
                 type="email"
                 class="form-control"
                 id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                v-model='searchLocation'
               />
             </div>
           </div>
           <div class="col search-btn-container">
-            <button class="btn btn-primary">Search</button>
-            <button class="btn btn-primary">Reset</button>
+            <button class="btn btn-primary" @click="search">Search</button>
+            <button class="btn btn-primary" @click="reset">Reset</button>
           </div>
         </div>
       </div>
       <div class="school-group-container">
-        <div class="school-item" v-for="(item, key) in data" :key="key" v-show="item.publish === true">
-        <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
+        <div
+          class="school-item"
+          v-for="(item, key) in data"
+          :key="key"
+          v-show="item.publish === true"
+        >
+          <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
 
           <div class="school-logo-container">
             <img :src="item.logoURL" alt="" />
@@ -70,7 +76,8 @@
 </template>
 
 <script>
-import unversityList from "../../manyschools.json";
+/* eslint-disable prettier/prettier */
+
 // import Loader from "../components/loader.vue"
 import { getDatabase, ref, onValue } from "firebase/database";
 // import {
@@ -82,8 +89,11 @@ import { getDatabase, ref, onValue } from "firebase/database";
 export default {
   data() {
     return {
-      data: unversityList,
+      data: "",
       isLoading: false,
+      searchLocation:'',
+      searchName:"",
+      originalData:"",
     };
   },
   mounted() {
@@ -98,13 +108,32 @@ export default {
         // const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();
-          console.log(data);
           this.data = data;
+          this.originalData = data
         });
       } catch (e) {
         console.log(e);
       }
     },
+    search() {
+      let searchName = this.searchName;
+      // let searchLocation = this.searchLocation
+      let searchResults = {}
+      for (const prop in this.originalData) {
+        let schoolName = this.originalData[prop].Name
+        console.log(schoolName.includes(searchName));
+        schoolName = schoolName.toLowerCase()
+        searchName = searchName.toLowerCase()
+        if (schoolName.includes(searchName)){
+          searchResults[prop] = this.originalData[prop]
+        }
+      }
+      console.log(searchResults)
+      this.data = searchResults
+    },
+    reset() {
+      console.log('test')
+    }
   },
 };
 </script>

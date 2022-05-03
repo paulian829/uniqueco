@@ -1,4 +1,6 @@
 <template>
+  <!-- eslint-disable prettier/prettier  -->
+
   <div class="chat-widget">
     <div class="unopened-icon" v-show="!chatOpened" @click="toggleChat(true)">
       How can I help you?
@@ -7,7 +9,7 @@
       <div class="widget-header" @click="toggleChat(false)">
         <strong>UniqueCo Help Chat</strong>
       </div>
-      <div class="chat-container" id="container" ref="list">
+      <div class="chat-container" id="chat-container" ref="list">
         <div class="dialog-left">
           How can I help you? Click on the topic you want to explore
           <div class="help-topics">
@@ -49,6 +51,8 @@
 </template>
 
 <script>
+/* eslint-disable prettier/prettier */
+
 export default {
   name: "Chat",
   data() {
@@ -68,9 +72,10 @@ export default {
       randomID: "",
     };
   },
-  updated() {
-    this.$nextTick(() => this.scrollToEnd());
-  },
+  updated: function () {
+    this.scrollToBottom()
+},
+
   methods: {
     toggleChat(status) {
       this.chatOpened = status;
@@ -84,10 +89,10 @@ export default {
       this.$set(this.conversation, id, {
         title: data.title,
         content: data.content,
-      });
+      })
+        this.scrollToBottom()
 
-      var container = this.$el.querySelector("#container");
-      container.scrollTop = container.scrollHeight;
+
     },
     makeid(length) {
       var result = "";
@@ -101,14 +106,13 @@ export default {
       }
       return result;
     },
-    scrollToEnd: function () {
-      // scroll to the start of the last message
-      this.$el.scrollTop = this.$refs.list
-    },
+    scrollToBottom() {
+    let element = document.getElementById("chat-container");
+    element.scrollIntoView(false);
+}
   },
 };
 </script>
-
 
 <style scoped>
 :root {
@@ -134,7 +138,7 @@ export default {
 }
 .opened-widged {
   width: 600px;
-  height: 800px;
+  height: 80vh;
   margin-right: -3rem;
   margin-bottom: -3rem;
   background: white;
@@ -167,8 +171,8 @@ export default {
 }
 .chat-container {
   margin: 15px;
-  height: 740px;
   overflow-y: scroll;
+  max-height: 70vh;
 }
 .help-topics {
   display: flex;
