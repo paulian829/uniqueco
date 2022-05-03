@@ -54,7 +54,6 @@ const routes = [
     path:"/articles/:uid/:articlesID",
     name: 'singleArticle',
     component: () => import('../views/articles-view.vue')
-
   },
 
 ];

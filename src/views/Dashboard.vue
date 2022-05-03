@@ -98,7 +98,6 @@ export default {
   },
   methods: {
     selectEditArticle(articleID) {
-      console.log(articleID)
       this.selectArticle = articleID
       this.active = 'EditArticle'
       
@@ -114,7 +113,6 @@ export default {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const uid = user.uid;
-          console.log(uid);
           this.uid = uid;
           this.getUserData(uid);
           // ...

@@ -67,7 +67,6 @@ export default {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
-          console.log(uid);
           this.loggedIn = true;
           this.Uid = uid;
           this.checkIfPublished(uid);
@@ -87,8 +86,7 @@ export default {
           this.$router.push("/login");
           console.log("LOGGED OUT");
         })
-        .catch((error) => {
-          console.log("ERROR", error);
+        .catch(() => {
         });
     },
     checkIfPublished(uid) {
@@ -107,8 +105,7 @@ export default {
       update(ref(db), updates)
         .then(() => {
         })
-        .catch((e) => {
-          console.log(e);
+        .catch(() => {
         });
     },
   },
