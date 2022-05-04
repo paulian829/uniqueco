@@ -11,7 +11,7 @@
         <router-link to="/university/list">Schools</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
-          <div class="form-check form-switch" v-if="loggedIn">
+          <!-- <div class="form-check form-switch" v-if="loggedIn">
             <input
               class="form-check-input"
               type="checkbox"
@@ -22,7 +22,7 @@
             <label class="form-check-label" for="flexSwitchCheckChecked"
               >Publish</label
             >
-          </div>
+          </div> -->
           <button
             v-if="loggedIn"
             class="btn btn-secondary secondary"

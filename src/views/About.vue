@@ -3,7 +3,7 @@
     <div class="about-nav">
       <div class="first-section">
         <div class="container">
-          <h1>About UniQueCo Finder</h1>
+          <h1>About Finder</h1>
           <div class="about-nav-btn-container">
             <button type="button" class="btn btn-primary btn-space">
               <a class="btn-link" href="#system-description"
