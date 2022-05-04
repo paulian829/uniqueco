@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div id="nav" v-if="!isAdmin">
       <div class="nav-container">
         <router-link to="/" style="padding: 0">
           <img alt="Vue logo" src="./assets/logo.svg" />
@@ -39,6 +39,17 @@
         </div>
       </div>
     </div>
+    <div id="nav" v-if="isAdmin">
+      <div class="nav-container">
+        <router-link to="/admin" style="padding: 0">
+          <img alt="Vue logo" src="./assets/logo.svg" />
+        </router-link>
+        <router-link to="/admin/accounts">Accounts</router-link>
+        <router-link to="/admin/universities">Universities</router-link>
+        <router-link to="/admin/help">Help Messages</router-link>
+
+      </div>
+    </div>
     <router-view class="padding-top" />
   </div>
 </template>
@@ -54,6 +65,7 @@ export default {
       loggedIn: false,
       publish: false,
       Uid: "",
+      isAdmin: false,
     };
   },
   mounted() {
@@ -64,21 +76,18 @@ export default {
       const auth = passAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
           this.loggedIn = true;
           this.Uid = uid;
           this.checkIfPublished(uid);
-
-          // ...
         } else {
-          // User is signed out
-          // ...
           this.loggedIn = false;
           console.log("user is logged out");
         }
       });
+      var urlName = window.location.href
+      console.log(urlName);
+      this.isAdmin = urlName.includes('admin')
     },
     logout() {
       signOut(passAuth())
@@ -100,7 +109,6 @@ export default {
       const db = getDatabase();
       const updates = {};
       updates["universities/" + this.Uid + "/publish"] = this.publish;
-
       update(ref(db), updates)
         .then(() => {})
         .catch(() => {});

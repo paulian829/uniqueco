@@ -13,7 +13,7 @@
                 type="email"
                 class="form-control"
                 id="exampleFormControlInput1"
-                v-model='searchName'
+                v-model="searchName"
               />
             </div>
           </div>
@@ -26,13 +26,18 @@
                 type="email"
                 class="form-control"
                 id="exampleFormControlInput1"
-                v-model='searchLocation'
+                v-model="searchLocation"
               />
             </div>
           </div>
           <div class="col search-btn-container">
-            <button class="btn btn-primary" @click="search">Search</button>
-            <button class="btn btn-primary" @click="reset">Reset</button>
+            <button
+              class="btn btn-primary"
+              @click="search(searchName, searchLocation)"
+            >
+              Search
+            </button>
+            <button class="btn btn-secondary" @click="reset()">Clear</button>
           </div>
         </div>
       </div>
@@ -65,7 +70,7 @@
                 ><button class="btn btn-primary">View</button></router-link
               >
               <a :href="item.Website"
-                ><button class="btn btn-primary">Visit Website</button></a
+                ><button class="btn btn-secondary">Visit Website</button></a
               >
             </div>
           </div>
@@ -91,9 +96,9 @@ export default {
     return {
       data: "",
       isLoading: false,
-      searchLocation:'',
-      searchName:"",
-      originalData:"",
+      searchLocation: "",
+      searchName: "",
+      originalData: "",
     };
   },
   mounted() {
@@ -109,31 +114,42 @@ export default {
         onValue(query, (snapshot) => {
           const data = snapshot.val();
           this.data = data;
-          this.originalData = data
+          this.originalData = data;
         });
       } catch (e) {
         console.log(e);
       }
     },
-    search() {
-      let searchName = this.searchName;
-      // let searchLocation = this.searchLocation
-      let searchResults = {}
+    search(searchName, searchLocation) {
+      let searchResults = {};
+      let finalResults = {};
       for (const prop in this.originalData) {
-        let schoolName = this.originalData[prop].Name
+        let schoolName = this.originalData[prop].Name;
         console.log(schoolName.includes(searchName));
-        schoolName = schoolName.toLowerCase()
-        searchName = searchName.toLowerCase()
-        if (schoolName.includes(searchName)){
-          searchResults[prop] = this.originalData[prop]
+        schoolName = schoolName.toLowerCase();
+        searchName = searchName.toLowerCase();
+        if (schoolName.includes(searchName)) {
+          searchResults[prop] = this.originalData[prop];
         }
       }
-      console.log(searchResults)
-      this.data = searchResults
+      console.log(searchResults);
+
+      for (const prop in searchResults) {
+        console.log(searchResults[prop].Address);
+        let obj = JSON.stringify(searchResults[prop].Address);
+        obj = obj.toLowerCase();
+        searchLocation = searchLocation.toLowerCase();
+        if (obj.includes(searchLocation)) {
+          finalResults[prop] = searchResults[prop];
+        }
+      }
+      this.data = finalResults;
     },
     reset() {
-      console.log('test')
-    }
+      this.searchName = "";
+      this.searchLocation = "";
+      this.data = this.originalData;
+    },
   },
 };
 </script>

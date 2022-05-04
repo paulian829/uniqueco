@@ -57,7 +57,7 @@ export default {
   name: "Chat",
   data() {
     return {
-      chatOpened: true,
+      chatOpened: false,
       helpOptions: {
         test1: {
           title: "Lorem Ipsum",
@@ -184,5 +184,6 @@ export default {
   background: whitesmoke;
   border-radius: 999px;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 </style>

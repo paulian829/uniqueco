@@ -11,8 +11,19 @@
       </button>
       <div class="search-group-container">
         <div class="input-group mb-3 input-group-lg">
-          <input type="text" class="form-control" placeholder="Search" />
-          <button class="btn btn-primary" type="button" id="button-addon2">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search"
+            @input="search"
+            v-model="searchString"
+          />
+          <button
+            class="btn btn-primary"
+            @click="search"
+            type="button"
+            id="button-addon2"
+          >
             Search
           </button>
         </div>
@@ -32,7 +43,9 @@
             <td class="text-left">{{ item.title }}</td>
             <td class="text-left" v-text="textSlice(item.dateCreated)"></td>
             <td class="articles-btn-container">
-              <button class="btn btn-secondary" @click="viewArticle(key)">View</button>
+              <button class="btn btn-secondary" @click="viewArticle(key)">
+                View
+              </button>
               <button
                 class="btn btn-primary"
                 @click="goToEdit(key)"
@@ -63,6 +76,8 @@ export default {
   data: function () {
     return {
       data: "",
+      searchString: "",
+      originalData: "",
     };
   },
   mounted() {
@@ -70,7 +85,7 @@ export default {
   },
   methods: {
     goToEdit(key) {
-      this.$emit("setEditArticle",key)
+      this.$emit("setEditArticle", key);
     },
     deleteArticle(key) {
       this.$emit("setLoading", true);
@@ -92,15 +107,28 @@ export default {
       onValue(query, (snapshot) => {
         const data = snapshot.val();
         this.data = data;
+        this.originalData = data;
       });
     },
     textSlice(item) {
-      console.log(typeof item);
       return item.slice(0, 28);
     },
-    viewArticle(key){
-      this.$router.push(`articles/${this.dataProps.Uid}/${key}`)
-    }
+    viewArticle(key) {
+      this.$router.push(`articles/${this.dataProps.Uid}/${key}`);
+    },
+    search() {
+      let searchString = this.searchString;
+      searchString = searchString.toLowerCase();
+      let result = {};
+      for (const prop in this.originalData) {
+        let title = this.originalData[prop].title;
+        title = title.toLowerCase();
+        if (title.includes(searchString)) {
+          result[prop] = this.originalData[prop]
+        }
+      }
+      this.data = result;
+    },
   },
 };
 </script>
