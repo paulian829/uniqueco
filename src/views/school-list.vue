@@ -46,7 +46,6 @@
           class="school-item"
           v-for="(item, key) in data"
           :key="key"
-          v-show="item.publish === true"
         >
           <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
 
