@@ -46,16 +46,10 @@ const routes = [
     component: () => import("../views/school-list.vue"),
   },
   {
-    path:"/articles/:uid/:articlesID",
-    name: 'singleArticle',
-    component: () => import('../views/articles-view.vue')
+    path: "/articles/:uid/:articlesID",
+    name: "singleArticle",
+    component: () => import("../views/articles-view.vue"),
   },
-  {
-    path:"/admin",
-    name:"Admin",
-    component: () => import('../views/admin.vue')
-  }
-
 ];
 
 const router = new VueRouter({

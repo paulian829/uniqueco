@@ -173,6 +173,7 @@ export default {
   margin: 15px;
   overflow-y: scroll;
   max-height: 70vh;
+  height: 100%;
 }
 .help-topics {
   display: flex;

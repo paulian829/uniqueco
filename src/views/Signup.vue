@@ -173,6 +173,7 @@ export default {
     saveData(user, form) {
       const db = getDatabase();
       set(ref(db, "universities/" + user.uid), {
+        publish:true,
         Uid:user.uid,
         Name:form.universityName,
         Email:form.email,

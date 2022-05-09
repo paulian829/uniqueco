@@ -46,6 +46,7 @@
           class="school-item"
           v-for="(item, key) in data"
           :key="key"
+          v-show="!item.Admin && item.publish "
         >
           <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
 
@@ -209,6 +210,8 @@ div#university-list {
 .school-logo-container {
   max-width: 300px;
   width: 100%;
+  max-height: 300px;
+  height: 100%;
 }
 .list-item-details-container {
   text-align: left;
@@ -217,5 +220,9 @@ div#university-list {
 .school-list-btn-group button {
   margin-top: 20px;
   margin-right: 20px;
+}
+.school-logo-container img {
+    width: 100%;
+    height: 100%;
 }
 </style>

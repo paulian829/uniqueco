@@ -9,17 +9,17 @@
         <img src="../assets/home-pic.png" style="margin: 0 auto" alt="" />
       </div>
     </div>
-    <Chat/>
+    <Chat />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Chat from "../components/chat.vue"
+import Chat from "../components/chat.vue";
 
 export default {
   name: "Home",
-  components: {Chat},
+  components: { Chat },
 };
 </script>
 

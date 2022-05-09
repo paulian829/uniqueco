@@ -2,7 +2,7 @@
 <template>
   <div class="dashboard">
     <div class="row">
-      <div class="col-3 full-width dashboard-nav">
+      <div class="col-3 full-width dashboard-nav" v-if="!data.Admin">
         <img class="school-logo" :src="logoUrl" v-if="showLogo" alt="" />
         <h2 style="margin-top: 20px"><strong>Dashboard</strong></h2>
         <div class="nav-container">
@@ -12,9 +12,25 @@
           <h5 v-on:click="selectScreen('Details')">
             <strong>University Details</strong>
           </h5>
-          <h5 v-on:click="selectScreen('Articles')"><strong>Articles</strong></h5>
+          <h5 v-on:click="selectScreen('Articles')">
+            <strong>Articles</strong>
+          </h5>
           <h5 v-on:click="selectScreen('test')">
             <strong>Account Settings</strong>
+          </h5>
+        </div>
+      </div>
+      <div class="col-3 full-width dashboard-nav" v-else>
+        <h2 style="margin-top: 20px"><strong>Admin Dashboard</strong></h2>
+        <div class="nav-container">
+          <h5 v-on:click="selectScreen('AdminUserList')">
+            <strong>User List</strong>
+          </h5>
+          <h5 v-on:click="selectScreen('AdminUniList')">
+            <strong>University List</strong>
+          </h5>
+          <h5 v-on:click="selectScreen('AdminHelpList')">
+            <strong>Help Items</strong>
           </h5>
         </div>
       </div>
@@ -45,13 +61,56 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Articles'"
       >
-      <Articles :dataProps='data' @setLoading='setLoading' @setPage='setPage' @setEditArticle='selectEditArticle'></Articles>
+        <Articles
+          :dataProps="data"
+          @setLoading="setLoading"
+          @setPage="setPage"
+          @setEditArticle="selectEditArticle"
+        ></Articles>
       </div>
-      <div class="col-9 overflow-scroll" style="background:#f5f5f5; height:100vh" v-if="active == 'NewArticle'">
-        <NewArticle :dataProps="data" @setLoading='setLoading' @setPage='setPage'></NewArticle>
+      <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'NewArticle'"
+      >
+        <NewArticle
+          :dataProps="data"
+          @setLoading="setLoading"
+          @setPage="setPage"
+        ></NewArticle>
       </div>
-      <div class="col-9 overflow-scroll" style="background:#f5f5f5; height:100vh" v-if="active == 'EditArticle'">
-        <EditArticle :dataProps='data' @setLoading='setLoading' @setPage='setPage' :selectedArticle='selectArticle'></EditArticle>
+      <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'EditArticle'"
+      >
+        <EditArticle
+          :dataProps="data"
+          @setLoading="setLoading"
+          @setPage="setPage"
+          :selectedArticle="selectArticle"
+        ></EditArticle>
+      </div>
+      <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'AdminUserList'"
+      >
+        <AdminUserList></AdminUserList>
+      </div>
+            <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'AdminUniList'"
+      >
+        <AdminUniList></AdminUniList>
+      </div>
+                  <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'AdminHelpList'"
+      >
+        <AdminHelpList></AdminHelpList>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -65,6 +124,11 @@ import { passAuth } from "../db";
 import Profile from "../components/profile.vue";
 import UniDetails from "../components/uni-details.vue";
 import Articles from "../components/articles.vue";
+import AdminUserList from "../components/admin-user-list.vue";
+import AdminUniList from "../components/admin-uni-list.vue";
+import AdminHelpList from "../components/admin-help-items.vue";
+
+
 
 import { getDatabase, ref, onValue } from "firebase/database";
 import {
@@ -73,17 +137,27 @@ import {
   ref as storageRef,
 } from "firebase/storage";
 import Loader from "../components/loader.vue";
-import NewArticle from "../components/new-article.vue"
-import EditArticle  from "../components/edit-article.vue"
+import NewArticle from "../components/new-article.vue";
+import EditArticle from "../components/edit-article.vue";
 
 // @ is an alias to /src
 
 export default {
   name: "dashboard",
-  components: { Profile, UniDetails, Loader, Articles,NewArticle, EditArticle },
+  components: {
+    Profile,
+    UniDetails,
+    Loader,
+    Articles,
+    NewArticle,
+    EditArticle,
+    AdminUserList,
+    AdminUniList,
+    AdminHelpList,
+  },
   data() {
     return {
-      selectArticle:'test',
+      selectArticle: "test",
       isLoading: false,
       active: "Profile",
       data: "",
@@ -98,9 +172,8 @@ export default {
   },
   methods: {
     selectEditArticle(articleID) {
-      this.selectArticle = articleID
-      this.active = 'EditArticle'
-      
+      this.selectArticle = articleID;
+      this.active = "EditArticle";
     },
     selectScreen(screen) {
       if (screen === "Messages") {
@@ -115,7 +188,6 @@ export default {
           const uid = user.uid;
           this.uid = uid;
           this.getUserData(uid);
-          // ...
         } else {
           // User is signed out
           // ...
@@ -134,6 +206,7 @@ export default {
           const data = snapshot.val();
           console.log(data);
           this.data = data;
+          this.checkIfAdmin(data)
 
           try {
             const logoRef = storageRef(storage, "logo/" + uid + ".png");
@@ -162,8 +235,13 @@ export default {
     setLoading(status) {
       this.isLoading = status;
     },
-    setPage(component){
-      this.active = component
+    setPage(component) {
+      this.active = component;
+    },
+    checkIfAdmin(data){
+      if(data.Admin){
+        this.active = 'AdminUserList'
+      }
     },
     resetLogo() {
       const storage = getStorage();
