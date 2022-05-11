@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { getDatabase, onValue, ref } from "@firebase/database";
 /* eslint-disable prettier/prettier */
 
 export default {
@@ -73,10 +74,21 @@ export default {
     };
   },
   updated: function () {
-    this.scrollToBottom()
-},
+    this.scrollToBottom();
+  },
+  mounted() {
+    this.getData();
+  },
 
   methods: {
+    getData() {
+      const db = getDatabase();
+      const query = ref(db, "helpItems/");
+      onValue(query, (snapshot) => {
+        const data = snapshot.val();
+        this.helpOptions = data;
+      });
+    },
     toggleChat(status) {
       this.chatOpened = status;
     },
@@ -89,10 +101,8 @@ export default {
       this.$set(this.conversation, id, {
         title: data.title,
         content: data.content,
-      })
-        this.scrollToBottom()
-
-
+      });
+      this.scrollToBottom();
     },
     makeid(length) {
       var result = "";
@@ -107,9 +117,9 @@ export default {
       return result;
     },
     scrollToBottom() {
-    let element = document.getElementById("chat-container");
-    element.scrollIntoView(false);
-}
+      let element = document.getElementById("chat-container");
+      element.scrollIntoView(false);
+    },
   },
 };
 </script>

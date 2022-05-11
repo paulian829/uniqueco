@@ -2,10 +2,7 @@
   <div id="Articles">
     <div class="article-header-container">
       <h2>User List</h2>
-      <button
-        class="btn btn-primary primary"
-        style="margin-left: 20px"
-      >
+      <button class="btn btn-primary primary" style="margin-left: 20px">
         Add new
       </button>
       <div class="search-group-container">
