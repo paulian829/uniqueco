@@ -78,7 +78,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              Add new Help Content
+              Help Content
             </h5>
             <button
               type="button"
@@ -97,6 +97,7 @@
                 class="form-control"
                 id="exampleFormControlInput1"
                 v-model="title"
+                required
               />
             </div>
             <div class="mb-3">
@@ -108,6 +109,7 @@
                 id="exampleFormControlTextarea1"
                 rows="3"
                 v-model="content"
+                required
               ></textarea>
             </div>
           </div>
