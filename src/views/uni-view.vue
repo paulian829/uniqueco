@@ -485,6 +485,10 @@ div#Scholarship {
   background: #f0eded;
   padding: 50px;
 }
-.articles-view-container h5 {
+
+.card-img-top {
+    max-height: 397px;
+    height: 100%;
+    object-fit: cover;
 }
 </style>

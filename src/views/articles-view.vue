@@ -121,7 +121,7 @@ div#article-view {
   display: flex;
   max-width: 900px;
   width: 100%;
-  margin: 0 auto;
+  margin: 50px auto;
   background: #efefef;
   border-radius: 5px;
   box-shadow: 0 0 30px #b7b3b3;
