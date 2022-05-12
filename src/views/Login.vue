@@ -28,16 +28,74 @@
       >
         Login
       </button>
-      <router-link to="/about">Forgot Password?</router-link>
+      <button
+        type="button"
+        class="btn"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Forgot Password?
+      </button>
     </div>
     <Loader v-if="loader"> </Loader>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Forgot Password</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label
+                for="exampleFormControlInput1"
+                class="form-label"
+                style="text-align: left; width: 100%"
+                >Email address</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="exampleFormControlInput1"
+                v-model="resetEmail"
+              />
+              <div id="emailHelp" class="form-text">
+                We will send a reset password link on your email address
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              ref="closeModal"
+            >
+              Close
+            </button>
+            <button type="button" @click="resetPassword"  class="btn btn-primary">Send Reset Email</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
 // import { passAuth } from "../db"
 // import { signInWithEmailAndPassword } from firebase/auth;
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { passAuth } from "../db";
 import Loader from "../components/loader.vue";
 
@@ -46,16 +104,17 @@ export default {
   components: { Loader },
   data() {
     return {
-      loader:false,
+      loader: false,
       form: {
         email: "",
         password: "",
+        resetEmail: "",
       },
     };
   },
   methods: {
     login() {
-      this.loader = true
+      this.loader = true;
       try {
         let email = this.form.email;
         let password = this.form.password;
@@ -65,16 +124,40 @@ export default {
             const user = r.user;
             console.log(user);
             this.$router.push("/dashboard");
-            this.loader = false
+            this.loader = false;
           })
           .catch(() => {
             this.showAlertError("Email or Password is wrong!");
-            this.loader = false
+            this.loader = false;
           });
       } catch (error) {
         this.showAlertError("Something went wrong!");
-        this.loader = false
+        this.loader = false;
       }
+    },
+
+    resetPassword() {
+      let email = this.resetEmail;
+      sendPasswordResetEmail(passAuth(), email)
+        .then(() => {
+          // Password reset email sent!
+          // ..
+          this.showSuccess("Please check your email address for the reset password email")
+          this.$refs.closeModal.click();
+
+        })
+        .catch((error) => {
+          this.showAlertError(error)
+          // ..
+        });
+
+    },
+    showSuccess(log){
+      this.$swal({
+        icon:"success",
+        title: "Succes",
+        text:log
+      })
     },
     showAlertError(log) {
       this.$swal({
@@ -89,12 +172,12 @@ export default {
 
 <style>
 .login {
-    background: #e4eef4;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 50px;
+  background: #e4eef4;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 50px;
 }
 
 .form-container {
@@ -121,5 +204,8 @@ export default {
 }
 .space {
   margin-bottom: 20px;
+}
+.form-text {
+  text-align: left;
 }
 </style>
