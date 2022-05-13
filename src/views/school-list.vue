@@ -51,7 +51,9 @@
           <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
 
           <div class="school-logo-container">
-            <img :src="item.logoURL" alt="" />
+            
+            <img v-if="item.logoURL"  :src="item.logoURL" alt="" />
+            <img v-else  src="../assets/yarn-error-removebg-preview.png" alt="">
           </div>
           <div class="list-item-details-container">
             <h3>
@@ -61,9 +63,10 @@
             <br />
             <h6><strong>Programs Offered</strong></h6>
             <h6>
+              <!-- <span>None provided {{item.ProgramsOffered.length}}</span> -->
               <span v-for="(program, key) in item.ProgramsOffered" :key="key">{{
                 program.Field
-              }}</span>
+              }}<br></span>
             </h6>
             <div class="school-list-btn-group">
               <router-link :to="'/university/view/' + item.Uid"

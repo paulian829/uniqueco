@@ -15,7 +15,7 @@
           <h5 v-on:click="selectScreen('Articles')">
             <strong>Articles</strong>
           </h5>
-          <h5 v-on:click="selectScreen('test')">
+          <h5 v-on:click="selectScreen('Settings')">
             <strong>Account Settings</strong>
           </h5>
         </div>
@@ -98,19 +98,26 @@
       >
         <AdminUserList></AdminUserList>
       </div>
-            <div
+      <div
         class="col-9 overflow-scroll"
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'AdminUniList'"
       >
         <AdminUniList></AdminUniList>
       </div>
-                  <div
+      <div
         class="col-9 overflow-scroll"
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'AdminHelpList'"
       >
         <AdminHelpList></AdminHelpList>
+      </div>
+            <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'Settings'"
+      >
+        <Settings></Settings>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -128,8 +135,6 @@ import AdminUserList from "../components/admin-user-list.vue";
 import AdminUniList from "../components/admin-uni-list.vue";
 import AdminHelpList from "../components/admin-help-items.vue";
 
-
-
 import { getDatabase, ref, onValue } from "firebase/database";
 import {
   getDownloadURL,
@@ -139,6 +144,7 @@ import {
 import Loader from "../components/loader.vue";
 import NewArticle from "../components/new-article.vue";
 import EditArticle from "../components/edit-article.vue";
+import Settings from "../components/settings.vue";
 
 // @ is an alias to /src
 
@@ -154,6 +160,7 @@ export default {
     AdminUserList,
     AdminUniList,
     AdminHelpList,
+    Settings,
   },
   data() {
     return {
@@ -206,7 +213,7 @@ export default {
           const data = snapshot.val();
           console.log(data);
           this.data = data;
-          this.checkIfAdmin(data)
+          this.checkIfAdmin(data);
 
           try {
             const logoRef = storageRef(storage, "logo/" + uid + ".png");
@@ -238,9 +245,9 @@ export default {
     setPage(component) {
       this.active = component;
     },
-    checkIfAdmin(data){
-      if(data.Admin){
-        this.active = 'AdminUserList'
+    checkIfAdmin(data) {
+      if (data.Admin) {
+        this.active = "AdminUserList";
       }
     },
     resetLogo() {
