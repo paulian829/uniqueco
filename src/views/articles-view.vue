@@ -137,4 +137,9 @@ div#article-view {
   margin-top: 20px;
   justify-content: flex-start;
 }
+.card img {
+    max-height: 397px;
+    height: 100%;
+    object-fit: cover;
+}
 </style>

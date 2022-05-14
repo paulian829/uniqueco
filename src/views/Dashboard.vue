@@ -117,7 +117,7 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Settings'"
       >
-        <Settings></Settings>
+        <Settings :dataProps="data" @setLoading="setLoading"></Settings>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
