@@ -61,11 +61,11 @@ export default {
       chatOpened: false,
       helpOptions: {
         test1: {
-          title: "Lorem Ipsum",
+          title: "Lorem Ipsum 1",
           content: "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum ",
         },
         test2: {
-          title: "Lorem Ipsum",
+          title: "Lorem Ipsum 2",
           content: "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum ",
         },
       },
@@ -77,7 +77,7 @@ export default {
     this.scrollToBottom();
   },
   mounted() {
-    this.getData();
+    // this.getData();
   },
 
   methods: {

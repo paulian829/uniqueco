@@ -246,7 +246,8 @@ export default {
       this.active = component;
     },
     checkIfAdmin(data) {
-      if (data.Admin) {
+
+      if (data.Admin === true) {
         this.active = "AdminUserList";
       }
     },

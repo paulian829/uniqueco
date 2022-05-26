@@ -3,6 +3,26 @@
   <div class="login">
     <div class="form-container">
       <h2 class="form-header">Login</h2>
+      <div class="type-select-container">
+        <button
+          class="btn register-btn"
+          :class="
+            registrationType === 'student' ? 'btn-primary' : 'btn-secondary'
+          "
+          @click="registrationType = 'student'"
+        >
+          STUDENT
+        </button>
+        <button
+          class="btn register-btn"
+          :class="
+            registrationType === 'university' ? 'btn-primary' : 'btn-secondary'
+          "
+          @click="registrationType = 'university'"
+        >
+          UNIVERSITY
+        </button>
+      </div>
       <div class="mb-3">
         <input
           type="text"
@@ -84,7 +104,13 @@
             >
               Close
             </button>
-            <button type="button" @click="resetPassword"  class="btn btn-primary">Send Reset Email</button>
+            <button
+              type="button"
+              @click="resetPassword"
+              class="btn btn-primary"
+            >
+              Send Reset Email
+            </button>
           </div>
         </div>
       </div>
@@ -95,7 +121,10 @@
 <script>
 // import { passAuth } from "../db"
 // import { signInWithEmailAndPassword } from firebase/auth;
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { passAuth } from "../db";
 import Loader from "../components/loader.vue";
 
@@ -105,6 +134,7 @@ export default {
   data() {
     return {
       loader: false,
+      registrationType: "student",
       form: {
         email: "",
         password: "",
@@ -142,22 +172,22 @@ export default {
         .then(() => {
           // Password reset email sent!
           // ..
-          this.showSuccess("Please check your email address for the reset password email")
+          this.showSuccess(
+            "Please check your email address for the reset password email"
+          );
           this.$refs.closeModal.click();
-
         })
         .catch((error) => {
-          this.showAlertError(error)
+          this.showAlertError(error);
           // ..
         });
-
     },
-    showSuccess(log){
+    showSuccess(log) {
       this.$swal({
-        icon:"success",
+        icon: "success",
         title: "Succes",
-        text:log
-      })
+        text: log,
+      });
     },
     showAlertError(log) {
       this.$swal({
@@ -207,5 +237,12 @@ export default {
 }
 .form-text {
   text-align: left;
+}
+.register-btn {
+  width: 50%;
+  border-radius: 0;
+}
+.type-select-container {
+  margin-bottom: 20px;
 }
 </style>
