@@ -277,6 +277,7 @@ export default {
         name: "De la salle Dasmarinas",
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
       },
+      errorFlag:false
     };
   },
   mounted() {
@@ -295,7 +296,9 @@ export default {
         const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();
-          console.log(data);
+          if (!data){
+            this.errorFlag = true
+}
           this.data = data;
 
           try {
