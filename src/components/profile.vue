@@ -1,129 +1,100 @@
-<!-- eslint-disable prettier/prettier -->
-
 <template>
-  <div id="my-profile">
-    <h1>My Profile</h1>
-    <div class="profile-form-container">
-      <div class="mb-3" style="margin-top: 50px">
-        <input
-          class="form-control"
-          type="file"
-          id="formFile"
-          @change="uploadImage"
-        />
-        <label for="formFile" class="form-label">School Logo</label>
+  <div id="article-new">
+    <div class="article-heading">
+      <div class="container overflow-hidden">
+        <div class="header-container">
+          <h1 style="margin-bottom: 30px">User Profile</h1>
+        </div>
+        <div class="row gx-5">
+          <div class="col col-form-container">
+            <div class="p-3 border bg-light">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="email"
+                  v-model="dataProps.email"
+                  disabled
+                />
+              </div>
+              <div class="mb-3">
+                <label for="first-name" class="form-label">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="first-name"
+                  v-model="dataProps.firstName"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="last-name" class="form-label">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="last-name"
+                  v-model="dataProps.lastName"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label"
+                  >Contact Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  v-model="dataProps.contactNumber"
+                />
+              </div>
+              <button class="btn btn-primary" @click="changePassword">
+                Update Profile
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="fist-name"
-          placeholder="My university"
-          v-model="dataProp.firstName"
-        />
-        <label for="fist-name" class="form-label">First Name</label>
-      </div>
-      <button
-        type="button"
-        class="btn btn-primary btn-lg btn-block"
-        @click="updateProfile()"
-      >
-        Save
-      </button>
     </div>
   </div>
 </template>
-<!-- eslint-disable prettier/prettier -->
 
 <script>
-import { getDatabase, ref, update } from "firebase/database";
-import {
-  getDownloadURL,
-  getStorage,
-  ref as StorageRef,
-  uploadBytes,
-} from "firebase/storage";
+// import { getDatabase, ref, update } from "firebase/database";
+// import {
+//   uploadBytes,
+//   getStorage,
+//   ref as StorageRef,
+//   getDownloadURL,
+//   // getDownloadURL,
+// } from "@firebase/storage";
+// import {
+//   reauthenticateWithCredential,
+//   EmailAuthProvider,
+//   updatePassword,
+//   updateEmail,
+// } from "firebase/auth";
+// import { passAuth } from "../db";
 
 export default {
-  name: "Profile",
-  components: {},
-  props: ["dataProp", "isLoading"],
+  name: "addArticle",
+  props: ["dataProps"],
   data: function () {
-    return {
-      imageUri: "",
-      imageFile: "",
-      path: "",
-    };
+    return {};
   },
-  mounted() {},
-  methods: {
-    updateProfile() {
-      this.$emit("setLoading", true);
-      let data = this.dataProp;
-      if (this.imageFile !== "") {
-        const storage = getStorage();
-        const logoRef = StorageRef(
-          storage,
-          "logo/" + this.dataProp.Uid + ".png"
-        );
-        uploadBytes(logoRef, this.imageFile[0]).then((r) => {
-          console.log(r);
-          this.$emit("resetLogo");
-          getDownloadURL(StorageRef(logoRef)).then((url) => {
-            data.logoURL = url;
-            const db = getDatabase();
-            const updates = {};
-            updates["universities/" + data.Uid] = data;
-            update(ref(db), updates)
-              .then(() => {
-                this.$emit("setLoading", false);
-              })
-              .catch((e) => {
-                console.log(e);
-                this.$emit("setLoading", false);
-              });
-          });
-        });
-      } else {
-        const db = getDatabase();
-        const updates = {};
-        updates["universities/" + data.Uid] = data;
-        update(ref(db), updates)
-          .then(() => {
-            this.$emit("setLoading", false);
-          })
-          .catch((e) => {
-            console.log(e);
-            this.$emit("setLoading", false);
-          });
-      }
-    },
-
-    uploadImage(event) {
-      console.log(event);
-      this.imageFile = event.target.files;
-    },
+  mounted() {
+    console.log(this.dataProps);
   },
+  methods: {},
 };
 </script>
-
 <style scoped>
-#my-profile {
+#article-new {
   padding: 50px;
 }
-#my-profile h1 {
-  margin-top: 30px;
+.col-form-container {
+  text-align: left;
 }
-
-#my-profile .profile-form-container {
-  max-width: 500px;
-  margin: 0 auto;
-}
-#my-profile input {
-  text-align: center;
-  margin-bottom: 10px;
-}
-button.btn.btn-primary.btn-lg.btn-block {
-  width: 100%;
+.error {
+  display: block;
 }
 </style>

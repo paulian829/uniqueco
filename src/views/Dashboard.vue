@@ -37,10 +37,10 @@
       <div
         class="col-9 overflow-scroll"
         v-if="active == 'Profile'"
-        style="height: 100vh"
+       
       >
         <Profile
-          :dataProp="accountData"
+          :dataProps="accountData"
           @setLoading="setLoading"
           @resetLogo="resetLogo"
         ></Profile>
