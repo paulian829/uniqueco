@@ -28,7 +28,7 @@
               />
             </div>
             <div class="mb-3">
-              <label for="website" class="form-label">University Website</label>
+              <label for="website" class="form-label">Website</label>
               <input
                 type="text"
                 class="form-control"
@@ -37,7 +37,7 @@
               />
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">University Email</label>
+              <label for="email" class="form-label">Email</label>
               <input
                 type="text"
                 class="form-control"
@@ -47,7 +47,7 @@
             </div>
             <div class="mb-3">
               <label for="email" class="form-label"
-                >University Contact Number</label
+                >Contact Number</label
               >
               <input
                 type="text"
@@ -57,7 +57,7 @@
               />
             </div>
             <div class="mb-3">
-              <label for="formFile" class="form-label">School Logo</label>
+              <label for="formFile" class="form-label">Logo</label>
               <input
                 class="form-control"
                 type="file"
@@ -65,6 +65,7 @@
                 @change="onFileChangeLogo"
               />
             </div>
+            <img src="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?auto=webp&s=38648ef0dc2c3fce76d5e1d8639234d8da0152b2" alt="">
           </div>
         </div>
         <div class="form-group-container">
@@ -471,7 +472,7 @@ export default {
 
       const db = getDatabase();
       const updates = {};
-      updates["universities/" + data.Uid] = data;
+      updates["university/" + data.Uid] = data;
       update(ref(db), updates)
         .then(() => {})
         .catch((e) => {

@@ -51,7 +51,7 @@
         v-if="active == 'Details'"
       >
         <UniDetails
-          :dataProps="data"
+          :dataProps="dataUni"
           @reloadPage="reloadPage"
           @setLoading="setLoading"
         ></UniDetails>
@@ -172,7 +172,8 @@ export default {
       showLogo: false,
       uid: "",
       random: "",
-      accountData:''
+      accountData:'',
+      dataUni:{}
     };
   },
   mounted() {
@@ -213,46 +214,30 @@ export default {
           this.accountData = accountData
           this.accountType = accountData.type
           console.log(accountData)
+          if (accountData.type === 'university') {
+            this.getUserData(accountData.Uid)
+          }
 
         })
     },
 
-    // getUserData(uid) {
-    //   try {
-    //     this.isLoading = true;
-    //     const db = getDatabase();
-    //     const query = ref(db, "universities/" + uid);
-    //     const storage = getStorage();
-    //     onValue(query, (snapshot) => {
-    //       const data = snapshot.val();
-    //       console.log(data);
-    //       this.data = data;
-    //       this.checkIfAdmin(data);
+    getUserData(uid) {
+      try {
+        this.isLoading = true;
+        const db = getDatabase();
+        const query = ref(db, "university/" + uid);
+        onValue(query, (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          this.dataUni = data;
+          this.isLoading = false;
 
-    //       try {
-    //         const logoRef = storageRef(storage, "logo/" + uid + ".png");
-    //         getDownloadURL(logoRef)
-    //           .then((url) => {
-    //             this.showLogo = true;
-    //             this.logoUrl = url;
-    //             this.isLoading = false;
-    //           })
-    //           .catch((e) => {
-    //             console.log(e);
-    //             this.showLogo = false;
-    //             this.logoUrl = "";
-    //             this.isLoading = false;
-    //           });
-    //       } catch (e) {
-    //         console.log("error", e);
-    //         this.isLoading = false;
-    //       }
-    //     });
-    //   } catch (e) {
-    //     console.log("error", e);
-    //     this.isLoading = false;
-    //   }
-    // },
+        });
+      } catch (e) {
+        console.log("error", e);
+        this.isLoading = false;
+      }
+    },
     setLoading(status) {
       this.isLoading = status;
     },
