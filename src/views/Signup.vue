@@ -257,7 +257,8 @@ export default {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          this.saveData(user, form);
+          this.saveAccountType(user, form);
+          // this.saveData(user, form);
           this.showAlertSuccess();
           this.logout();
           this.isLoading = false;
@@ -272,6 +273,7 @@ export default {
           this.isLoading = false;
         });
     },
+
     showAlertError(log) {
       this.$swal({
         icon: "error",
@@ -279,50 +281,47 @@ export default {
         text: log,
       });
     },
-    saveData(user, form) {
+
+    saveAccountType(user, form) {
+      const db = getDatabase();
+      set(ref(db, "Account/" + user.uid), {
+        Uid: user.uid,
+        email: form.email,
+        type: this.registrationType,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        dateCreated: Date.now(),
+      });
+
       if (this.registrationType === "university") {
-        const db = getDatabase();
-        set(ref(db, "universities/" + user.uid), {
-          publish: true,
-          Uid: user.uid,
-          Name: form.universityName,
-          Email: form.email,
-          CreatedBY: {
-            FirstName: form.firstName,
-            LastName: form.lastName,
-          },
-          DateCreated: Date.now(),
-          Address: {
-            Lot: " ",
-          },
-          SchoolDetails: {
-            AboutSchool: " ",
-          },
-          ProgramsOffered: {
-            randomID1: {
-              Field: " ",
-            },
-          },
-          SchoolPerformance: {
-            Ranking: " ",
-          },
-          Requirements: {
-            Date: " ",
-          },
-        });
-      } else {
-        const db = getDatabase();
-        set(ref(db, "students/" + user.uid), {
-          Uid: user.uid,
-          Email: form.email,
-          CreatedBY: {
-            FirstName: form.firstName,
-            LastName: form.lastName,
-          },
-          DateCreated: Date.now(),
-          
-        });
+        this.saveData(user, form);
       }
+    },
+    saveData(user, form) {
+      // Ignore this function
+      const db = getDatabase();
+      set(ref(db, "universities/" + user.uid), {
+        Uid: user.uid,
+        publish: true,
+        Name: form.universityName,
+        Address: {
+          Lot: " ",
+        },
+        SchoolDetails: {
+          AboutSchool: " ",
+        },
+        ProgramsOffered: {
+          randomID1: {
+            Field: " ",
+          },
+        },
+        SchoolPerformance: {
+          Ranking: " ",
+        },
+        Requirements: {
+          Date: " ",
+        },
+      });
     },
     showAlertSuccess() {
       this.$swal({

@@ -1,7 +1,7 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div id="uni-view">
-    <div class="container">
+    <div class="container" v-if="!errorFlag">
       <div class="inner-container">
         <div class="heading-container">
           <div class="details-containers">
@@ -229,25 +229,32 @@
         ></iframe>
       </div>
       <div class="articles-view-container">
-        <div class="articles-header-container" style="margin-bottom:30px">
+        <div class="articles-header-container" style="margin-bottom: 30px">
           <h3>Articles</h3>
         </div>
         <div class="no-articles" v-if="!data.articles">
           <h4>No Articles Available</h4>
         </div>
         <div class="row row-cols-1 row-cols-md-2 g-4" v-else>
-          <div class="col" v-for='item,key in data.articles' :key='key' @click="goToArticles(key)">
+          <div
+            class="col"
+            v-for="(item, key) in data.articles"
+            :key="key"
+            @click="goToArticles(key)"
+          >
             <div class="card">
               <img :src="item.articleImageURL" class="card-img-top" alt="..." />
               <div class="card-body">
-                <h5 class="card-title">{{item.title}}</h5>
-                <p class="card-text">{{stringTruncate(item.content)}}
-                </p>
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">{{ stringTruncate(item.content) }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <h1>Page Not Found!</h1>
     </div>
     <Loader v-if="isLoading"></Loader>
   </div>
@@ -277,11 +284,11 @@ export default {
         name: "De la salle Dasmarinas",
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
       },
-      errorFlag:false
+      errorFlag: false,
     };
   },
   mounted() {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
     this.getUserData(this.uid);
   },
   methods: {
@@ -296,9 +303,11 @@ export default {
         const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();
-          if (!data){
-            this.errorFlag = true
-}
+          if (!data) {
+            this.errorFlag = true;
+            this.isLoading = false
+            return
+          }
           this.data = data;
 
           try {
@@ -334,25 +343,22 @@ export default {
       }
     },
     stringSplit(e) {
-      console.log(e)
-      if (e !== undefined){
-      let arrayItem = e.split("\n");
-      return arrayItem;
+      console.log(e);
+      if (e !== undefined) {
+        let arrayItem = e.split("\n");
+        return arrayItem;
       }
-      return []
-
+      return [];
     },
-    stringTruncate(e){
-      if(e !==undefined){
-      return e.split(" ").splice(0,15).join(" ")
-
+    stringTruncate(e) {
+      if (e !== undefined) {
+        return e.split(" ").splice(0, 15).join(" ");
       }
-      return []
-
+      return [];
     },
     goToArticles(key) {
-      this.$router.push(`/articles/${this.data.Uid}/${key}`)
-    }
+      this.$router.push(`/articles/${this.data.Uid}/${key}`);
+    },
   },
 };
 </script>
@@ -360,7 +366,7 @@ export default {
 <style>
 #uni-view {
   background: #e4eef4;
-  min-height: 91vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 135px 50px 50px 50px;
@@ -490,8 +496,8 @@ div#Scholarship {
 }
 
 .card-img-top {
-    max-height: 397px;
-    height: 100%;
-    object-fit: cover;
+  max-height: 397px;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

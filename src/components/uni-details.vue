@@ -14,6 +14,60 @@
       </div>
       <div class="outer-form-group-container">
         <div class="form-group-container">
+          <div class="form-input-heading-container">
+            <h4>School Details</h4>
+          </div>
+          <div class="form-input-container">
+            <div class="mb-3">
+              <label for="name" class="form-label">University Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                v-model="data.Name"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="website" class="form-label">University Website</label>
+              <input
+                type="text"
+                class="form-control"
+                id="School-name"
+                v-model="data.Website"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">University Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                v-model="data.Email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label"
+                >University Contact Number</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                v-model="data.contact"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="formFile" class="form-label">School Logo</label>
+              <input
+                class="form-control"
+                type="file"
+                id="formFile"
+                @change="onFileChangeLogo"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-group-container">
           <div class="form-input-heaeding-container">
             <h4>
               <strong>Address</strong>
@@ -86,7 +140,7 @@
         <div class="form-group-container">
           <div class="form-input-heaeding-container">
             <h4>
-              <strong>School Details</strong>
+              <strong>School Mission and Vission</strong>
             </h4>
           </div>
           <div class="form-input-container">

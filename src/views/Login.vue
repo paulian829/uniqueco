@@ -173,7 +173,7 @@ export default {
           // Password reset email sent!
           // ..
           this.showSuccess(
-            "Please check your email address for the reset password email"
+            "Please check your email inbox for the reset password email"
           );
           this.$refs.closeModal.click();
         })
