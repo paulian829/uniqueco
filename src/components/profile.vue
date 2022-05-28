@@ -47,7 +47,10 @@
                   v-model="dataProps.contactNumber"
                 />
               </div>
-              <button class="btn btn-primary" @click="changePassword">
+              <p><strong style="padding-right:10px">Date Created:</strong>{{convertDate(dataProps.dateCreated)}}</p>
+              <p><strong style="padding-right:10px">Account Type:</strong>{{dataProps.type}}</p>
+
+              <button class="btn btn-primary" @click="updateProfile()">
                 Update Profile
               </button>
             </div>
@@ -59,14 +62,8 @@
 </template>
 
 <script>
-// import { getDatabase, ref, update } from "firebase/database";
-// import {
-//   uploadBytes,
-//   getStorage,
-//   ref as StorageRef,
-//   getDownloadURL,
-//   // getDownloadURL,
-// } from "@firebase/storage";
+import { getDatabase, ref, update } from "firebase/database";
+
 // import {
 //   reauthenticateWithCredential,
 //   EmailAuthProvider,
@@ -84,7 +81,21 @@ export default {
   mounted() {
     console.log(this.dataProps);
   },
-  methods: {},
+  methods: {
+    convertDate(item){
+      var d = new Date(item)
+      return d.toDateString()
+    },
+    updateProfile(){
+      let data = this.dataProps
+      this.$emit("setLoading", true);
+
+      const db = getDatabase();
+      const updates ={};
+      updates['Account/' + data.Uid] = data
+      update(ref(db),updates).then(() => {this.$emit("setLoading", false);})
+    }
+  },
 };
 </script>
 <style scoped>
