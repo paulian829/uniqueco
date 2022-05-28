@@ -99,7 +99,7 @@ export default {
     },
     checkIfPublished(uid) {
       const db = getDatabase();
-      const query = ref(db, "universities/" + uid);
+      const query = ref(db, "university/" + uid);
       onValue(query, (snapshot) => {
         const data = snapshot.val();
         this.publish = data.publish;
@@ -108,7 +108,7 @@ export default {
     togglePublish() {
       const db = getDatabase();
       const updates = {};
-      updates["universities/" + this.Uid + "/publish"] = this.publish;
+      updates["university/" + this.Uid + "/publish"] = this.publish;
       update(ref(db), updates)
         .then(() => {})
         .catch(() => {});

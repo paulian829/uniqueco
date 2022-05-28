@@ -46,9 +46,7 @@
               />
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label"
-                >Contact Number</label
-              >
+              <label for="email" class="form-label">Contact Number</label>
               <input
                 type="text"
                 class="form-control"
@@ -62,10 +60,16 @@
                 class="form-control"
                 type="file"
                 id="formFile"
-                @change="onFileChangeLogo"
+                @change="onLogoChange"
               />
             </div>
-            <img src="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?auto=webp&s=38648ef0dc2c3fce76d5e1d8639234d8da0152b2" alt="">
+            <img
+              v-if="updatedLogo"
+              :src="logoUri"
+              alt=""
+              style="max-width: 300px"
+            />
+            <img v-else :src="data.logo" alt="" style="max-width: 300px" />
           </div>
         </div>
         <div class="form-group-container">
@@ -397,8 +401,8 @@
             />
           </div>
           <div>
-            <img v-if="!previewChanged" :src="currentImage" alt="" />
-            <img v-else :src="preview" alt="" />
+            <img v-if="previewChanged" :src="preview" alt="" />
+            <img v-else :src="data.preview" alt="" />
           </div>
         </div>
       </div>
@@ -428,6 +432,9 @@ export default {
       currentImage: "",
       previewChanged: false,
       imageFile: "",
+      updatedLogo: false,
+      logoUri: "",
+      imageLogoFile: "",
     };
   },
   computed: {},
@@ -468,36 +475,83 @@ export default {
     },
     saveData() {
       this.$emit("setLoading", true);
+      if (this.updatedLogo) {
+        let file = this.imageLogoFile;
+        const storage = getStorage();
+        let uid = this.data.Uid;
+        const schoolPicRef = StorageRef(storage, `logo/${uid}-${file.name}`);
+        uploadBytes(schoolPicRef, file)
+          .then(() => {
+            getDownloadURL(schoolPicRef).then((url) => {
+              this.logoUri = url;
+              this.data.logo = url;
+              console.log(this.data);
+              if (this.previewChanged) {
+                this.uploadPreview();
+              }
+              this.updateDetails();
+            });
+          })
+          .catch((e) => {
+            this.$swal({
+              icon: "error",
+              title: "Error",
+              text: e,
+            });
+          });
+      } else if (this.previewChanged) {
+        this.uploadPreview();
+      } else {
+        this.updateDetails();
+      }
+    },
+    uploadPreview() {
+      let file = this.imageFile;
+      const storage = getStorage();
+      let uid = this.data.Uid;
+      const schoolPicRef = StorageRef(
+        storage,
+        `schoolPictures/${uid}-${file.name}`
+      );
+      uploadBytes(schoolPicRef, file)
+        .then(() => {
+          getDownloadURL(schoolPicRef).then((url) => {
+            this.preview = url;
+            this.data.preview = url;
+            this.updateDetails();
+          });
+        })
+        .catch((e) => {
+          this.$swal({
+            icon: "error",
+            title: "Error",
+            text: e,
+          });
+        });
+    },
+
+    updateDetails() {
       let data = this.data;
 
       const db = getDatabase();
       const updates = {};
       updates["university/" + data.Uid] = data;
       update(ref(db), updates)
-        .then(() => {})
-        .catch((e) => {
-          console.log(e);
-        });
-      if (this.previewChanged) {
-        let fileType = this.imageFile.name.split(".").pop();
-        const storage = getStorage();
-        let uid = this.data.Uid;
-        const schoolPicRef = StorageRef(
-          storage,
-          `schoolPictures/${uid}.${fileType}`
-        );
-        uploadBytes(schoolPicRef, this.imageFile)
-          .then((r) => {
-            console.log(r);
-            this.$emit("setLoading", false);
-          })
-          .catch((e) => {
-            console.log(e);
-            this.$emit("setLoading", false);
+        .then(() => {
+          this.$emit("setLoading", false);
+          this.$swal({
+            icon: "success",
+            title: "Success",
+            text: "Profile Updated",
           });
-      } else {
-        this.$emit("setLoading", false);
-      }
+        })
+        .catch((e) => {
+          this.$swal({
+            icon: "error",
+            title: "Error",
+            text: e,
+          });
+        });
     },
     appendPrograms() {
       const random =
@@ -523,15 +577,17 @@ export default {
     },
     onFileChange(e) {
       const file = e.target.files[0];
-      console.log(URL.createObjectURL(file));
       this.previewChanged = true;
       this.imageFile = file;
       console.log(file);
       this.preview = URL.createObjectURL(file);
-      let fileType = file.name.split(".").pop();
-      let uid = this.data.Uid;
-      let filename = `schoolPictures/${uid}.${fileType}`;
-      this.data.ImageFileName = filename;
+    },
+    onLogoChange(e) {
+      const file = e.target.files[0];
+      console.log(file);
+      this.updatedLogo = true;
+      this.logoUri = URL.createObjectURL(file);
+      this.imageLogoFile = file;
     },
   },
 };

@@ -106,7 +106,7 @@ export default {
             const db = getDatabase();
             const updates = {};
             updates[
-              `universities/${this.dataProps.Uid}/articles/${this.selectedArticle}`
+              `university/${this.dataProps.Uid}/articles/${this.selectedArticle}`
             ] = data;
             update(ref(db), updates)
               .then((e) => {
@@ -127,7 +127,7 @@ export default {
         const db = getDatabase();
         const updates = {};
         updates[
-          `universities/${this.dataProps.Uid}/articles/${this.selectedArticle}`
+          `university/${this.dataProps.Uid}/articles/${this.selectedArticle}`
         ] = data;
         update(ref(db), updates)
           .then((e) => {

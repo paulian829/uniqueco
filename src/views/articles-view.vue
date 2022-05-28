@@ -65,14 +65,14 @@ export default {
       let articleID = this.articleID;
       console.log(uid, articleID);
       const db = getDatabase();
-      const query = ref(db, `universities/${uid}/articles/${articleID}`);
+      const query = ref(db, `university/${uid}/articles/${articleID}`);
       onValue(query, (snapshopt) => {
         const data = snapshopt.val();
         console.log(data);
         this.data = data;
       });
 
-      const queryTwo = ref(db, `universities/${uid}`);
+      const queryTwo = ref(db, `university/${uid}`);
       onValue(queryTwo, (snapshopt) => {
         const data = snapshopt.val();
         console.log(data);

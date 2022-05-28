@@ -91,7 +91,7 @@ export default {
       this.$emit("setLoading", true);
       let data = this.dataProps;
       const db = getDatabase();
-      set(ref(db, `universities/${data.Uid}/articles/${key}`), {}).then(
+      set(ref(db, `university/${data.Uid}/articles/${key}`), {}).then(
         (result) => {
           console.log(result);
         }
@@ -103,9 +103,10 @@ export default {
     getData() {
       let Uid = this.dataProps.Uid;
       const db = getDatabase();
-      const query = ref(db, `universities/${Uid}/articles`);
+      const query = ref(db, `university/${Uid}/articles`);
       onValue(query, (snapshot) => {
         const data = snapshot.val();
+        console.log(data)
         this.data = data;
         this.originalData = data;
       });

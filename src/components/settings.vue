@@ -208,7 +208,7 @@ export default {
       const db = getDatabase();
       let key = this.dataProps.Uid;
       const updates = {};
-      updates["universities/" + key + "/publish"] = this.visibility;
+      updates["university/" + key + "/publish"] = this.visibility;
       update(ref(db), updates)
         .then(() => {
           this.showSuccess("Success in Change University Visibility");

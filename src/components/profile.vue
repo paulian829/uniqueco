@@ -47,8 +47,14 @@
                   v-model="dataProps.contactNumber"
                 />
               </div>
-              <p><strong style="padding-right:10px">Date Created:</strong>{{convertDate(dataProps.dateCreated)}}</p>
-              <p><strong style="padding-right:10px">Account Type:</strong>{{dataProps.type}}</p>
+              <p>
+                <strong style="padding-right: 10px">Date Created:</strong
+                >{{ convertDate(dataProps.dateCreated) }}
+              </p>
+              <p>
+                <strong style="padding-right: 10px">Account Type:</strong
+                >{{ dataProps.type }}
+              </p>
 
               <button class="btn btn-primary" @click="updateProfile()">
                 Update Profile
@@ -82,19 +88,32 @@ export default {
     console.log(this.dataProps);
   },
   methods: {
-    convertDate(item){
-      var d = new Date(item)
-      return d.toDateString()
+    convertDate(item) {
+      var d = new Date(item);
+      return d.toDateString();
     },
-    updateProfile(){
-      let data = this.dataProps
+    updateProfile() {
+      let data = this.dataProps;
       this.$emit("setLoading", true);
 
       const db = getDatabase();
-      const updates ={};
-      updates['Account/' + data.Uid] = data
-      update(ref(db),updates).then(() => {this.$emit("setLoading", false);})
-    }
+      const updates = {};
+      updates["Account/" + data.Uid] = data;
+      update(ref(db), updates).then(() => {
+        this.$emit("setLoading", false);
+        this.$swal({
+          icon: "success",
+          title: "Success",
+          text:'Profile Updated'
+        });
+      }).catch((e) => {
+                this.$swal({
+          icon: "Error",
+          title: "Error",
+          text: e,
+        });
+      })
+    },
   },
 };
 </script>

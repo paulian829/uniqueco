@@ -62,7 +62,7 @@
         v-if="active == 'Articles'"
       >
         <Articles
-          :dataProps="data"
+          :dataProps="dataUni"
           @setLoading="setLoading"
           @setPage="setPage"
           @setEditArticle="selectEditArticle"
@@ -74,7 +74,7 @@
         v-if="active == 'NewArticle'"
       >
         <NewArticle
-          :dataProps="data"
+          :dataProps="dataUni"
           @setLoading="setLoading"
           @setPage="setPage"
         ></NewArticle>
@@ -85,7 +85,7 @@
         v-if="active == 'EditArticle'"
       >
         <EditArticle
-          :dataProps="data"
+          :dataProps="dataUni"
           @setLoading="setLoading"
           @setPage="setPage"
           :selectedArticle="selectArticle"
@@ -117,7 +117,7 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Settings'"
       >
-        <Settings :dataProps="data" @setLoading="setLoading"></Settings>
+        <Settings :dataProps="dataUni"  @setLoading="setLoading"></Settings>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>

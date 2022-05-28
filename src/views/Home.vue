@@ -47,7 +47,7 @@ h1.welcome-text {
 }
 .container.home-divider {
   display: flex;
-  height: 100%;
+  height: 100vh;
 }
 img {
   max-width: 100%;

@@ -112,7 +112,7 @@ export default {
       try {
         this.isLoading = true;
         const db = getDatabase();
-        const query = ref(db, "universities");
+        const query = ref(db, "university");
         // const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();

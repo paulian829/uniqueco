@@ -7,7 +7,7 @@
           <div class="details-containers">
             <div class="uni-flex-column">
               <div class="uni-column-img">
-                <img :src="SchoopPic" alt="" />
+                <img :src="data.preview" alt="" />
               </div>
               <div class="uni-column">
                 <h3>
@@ -77,7 +77,7 @@
         </div>
         <div id="About" class="selected-group" v-if="selected == 'About'">
           <div class="logo-container">
-            <img :src="data.logoURL" alt="" />
+            <img :src="data.logo" alt="" />
           </div>
           <div class="about-details-container">
             <div>
@@ -219,7 +219,7 @@
       </div>
       <div class="map-container">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d295.61664909642514!2d121.92252934719077!3d13.999647954095922!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1649086065331!5m2!1sen!2sph"
+          src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d295.61664909642514!2d120.92903!3d14.45903!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1649086065331!5m2!1sen!2sph"
           width="100%"
           height="450"
           style="border: 0"
@@ -299,7 +299,7 @@ export default {
       try {
         this.isLoading = true;
         const db = getDatabase();
-        const query = ref(db, "universities/" + uid);
+        const query = ref(db, "university/" + uid);
         const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();

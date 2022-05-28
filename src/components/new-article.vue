@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="article-btn-container">
-      <button class="btn btn-primary" @click="publichArticle">Publish</button>
+      <button class="btn btn-primary" @click="publichArticle" style="width:100%">Publish</button>
     </div>
   </div>
 </template>
@@ -95,7 +95,7 @@ export default {
           console.log(r);
           getDownloadURL(StorageRef(schoolPicRef)).then((url) => {
             let articleImageURL = url;
-            set(ref(db, `universities/${uid}/articles/${articleID}`), {
+            set(ref(db, `university/${uid}/articles/${articleID}`), {
               title: title,
               dateCreated: dateToday,
               content: content,
