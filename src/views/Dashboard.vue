@@ -40,7 +40,7 @@
         style="height: 100vh"
       >
         <Profile
-          :dataProp="data"
+          :dataProp="accountData"
           @setLoading="setLoading"
           @resetLogo="resetLogo"
         ></Profile>
@@ -112,7 +112,7 @@
       >
         <AdminHelpList></AdminHelpList>
       </div>
-            <div
+      <div
         class="col-9 overflow-scroll"
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Settings'"
@@ -172,6 +172,7 @@ export default {
       showLogo: false,
       uid: "",
       random: "",
+      accountData:''
     };
   },
   mounted() {
@@ -194,7 +195,8 @@ export default {
         if (user) {
           const uid = user.uid;
           this.uid = uid;
-          this.getUserData(uid);
+          // this.getUserData(uid);
+          this.getAccountData(uid)
         } else {
           // User is signed out
           // ...
@@ -203,42 +205,54 @@ export default {
         }
       });
     },
-    getUserData(uid) {
-      try {
-        this.isLoading = true;
+    getAccountData(uid){
         const db = getDatabase();
-        const query = ref(db, "universities/" + uid);
-        const storage = getStorage();
+        const query = ref(db, "Account/" + uid);
         onValue(query, (snapshot) => {
-          const data = snapshot.val();
-          console.log(data);
-          this.data = data;
-          this.checkIfAdmin(data);
+          const accountData = snapshot.val()
+          this.accountData = accountData
+          this.accountType = accountData.type
+          console.log(accountData)
 
-          try {
-            const logoRef = storageRef(storage, "logo/" + uid + ".png");
-            getDownloadURL(logoRef)
-              .then((url) => {
-                this.showLogo = true;
-                this.logoUrl = url;
-                this.isLoading = false;
-              })
-              .catch((e) => {
-                console.log(e);
-                this.showLogo = false;
-                this.logoUrl = "";
-                this.isLoading = false;
-              });
-          } catch (e) {
-            console.log("error", e);
-            this.isLoading = false;
-          }
-        });
-      } catch (e) {
-        console.log("error", e);
-        this.isLoading = false;
-      }
+        })
     },
+
+    // getUserData(uid) {
+    //   try {
+    //     this.isLoading = true;
+    //     const db = getDatabase();
+    //     const query = ref(db, "universities/" + uid);
+    //     const storage = getStorage();
+    //     onValue(query, (snapshot) => {
+    //       const data = snapshot.val();
+    //       console.log(data);
+    //       this.data = data;
+    //       this.checkIfAdmin(data);
+
+    //       try {
+    //         const logoRef = storageRef(storage, "logo/" + uid + ".png");
+    //         getDownloadURL(logoRef)
+    //           .then((url) => {
+    //             this.showLogo = true;
+    //             this.logoUrl = url;
+    //             this.isLoading = false;
+    //           })
+    //           .catch((e) => {
+    //             console.log(e);
+    //             this.showLogo = false;
+    //             this.logoUrl = "";
+    //             this.isLoading = false;
+    //           });
+    //       } catch (e) {
+    //         console.log("error", e);
+    //         this.isLoading = false;
+    //       }
+    //     });
+    //   } catch (e) {
+    //     console.log("error", e);
+    //     this.isLoading = false;
+    //   }
+    // },
     setLoading(status) {
       this.isLoading = status;
     },
@@ -246,7 +260,6 @@ export default {
       this.active = component;
     },
     checkIfAdmin(data) {
-
       if (data.Admin === true) {
         this.active = "AdminUserList";
       }

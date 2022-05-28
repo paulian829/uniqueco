@@ -300,7 +300,7 @@ export default {
     saveData(user, form) {
       // Ignore this function
       const db = getDatabase();
-      set(ref(db, "universities/" + user.uid), {
+      set(ref(db, "university/" + user.uid), {
         Uid: user.uid,
         publish: true,
         Name: form.universityName,

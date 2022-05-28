@@ -15,63 +15,13 @@
       </div>
       <div class="mb-3">
         <input
-          type="email"
+          type="text"
           class="form-control"
-          id="uniName"
+          id="fist-name"
           placeholder="My university"
-          v-model="dataProp.Name"
+          v-model="dataProp.firstName"
         />
-        <label for="uniName" class="form-label">School Name</label>
-      </div>
-      <div class="mb-3">
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          placeholder="name@example.com"
-          v-model="dataProp.Email"
-        />
-        <label for="email" class="form-label">Email address</label>
-      </div>
-      <div class="mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="website"
-          placeholder="www.uniqueco.com"
-          v-model="dataProp.Website"
-        />
-        <label for="website" class="form-label">Website</label>
-      </div>
-      <div class="mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="firstName"
-          placeholder="First name"
-          v-model="dataProp.CreatedBY.FirstName"
-        />
-        <label for="firstName" class="form-label">First Name</label>
-      </div>
-      <div class="mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="lastName"
-          placeholder="First name"
-          v-model="dataProp.CreatedBY.LastName"
-        />
-        <label for="lastName" class="form-label">Last Name</label>
-      </div>
-      <div class="mb-3">
-        <input
-          type="text"
-          class="form-control"
-          id="phone"
-          placeholder="PhoneNumber"
-          v-model="dataProp.Phone"
-        />
-        <label for="lastName" class="form-label">Phone number</label>
+        <label for="fist-name" class="form-label">First Name</label>
       </div>
       <button
         type="button"
@@ -120,7 +70,7 @@ export default {
           console.log(r);
           this.$emit("resetLogo");
           getDownloadURL(StorageRef(logoRef)).then((url) => {
-            data.logoURL = url
+            data.logoURL = url;
             const db = getDatabase();
             const updates = {};
             updates["universities/" + data.Uid] = data;
