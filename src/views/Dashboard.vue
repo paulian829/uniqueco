@@ -2,9 +2,11 @@
 <template>
   <div class="dashboard">
     <div class="row">
-      <div class="col-3 full-width dashboard-nav" v-if="!data.Admin">
-        <img class="school-logo" :src="logoUrl" v-if="showLogo" alt="" />
-        <h2 style="margin-top: 20px"><strong>Dashboard</strong></h2>
+      <div
+        class="col-3 full-width dashboard-nav"
+        v-if="accountType == 'university'"
+      >
+        <h2 style="margin-top: 20px"><strong>University Dashboard</strong></h2>
         <div class="nav-container">
           <h5 v-on:click="selectScreen('Profile')">
             <strong>My Profile</strong>
@@ -20,7 +22,27 @@
           </h5>
         </div>
       </div>
-      <div class="col-3 full-width dashboard-nav" v-else>
+      <div
+        class="col-3 full-width dashboard-nav"
+        v-else-if="accountType == 'student'"
+      >
+        <h2 style="margin-top: 20px"><strong>Student Dashboard</strong></h2>
+        <div class="nav-container">
+          <h5 v-on:click="selectScreen('Profile')">
+            <strong>My Profile</strong>
+          </h5>
+          <h5 v-on:click="selectScreen('Favorites')">
+            <strong>Favorites</strong>
+          </h5>
+          <h5 v-on:click="selectScreen('Settings')">
+            <strong>Account Settings</strong>
+          </h5>
+        </div>
+      </div>
+      <div
+        class="col-3 full-width dashboard-nav"
+        v-else-if="accountType === 'admin'"
+      >
         <h2 style="margin-top: 20px"><strong>Admin Dashboard</strong></h2>
         <div class="nav-container">
           <h5 v-on:click="selectScreen('AdminUserList')">
@@ -34,11 +56,7 @@
           </h5>
         </div>
       </div>
-      <div
-        class="col-9 overflow-scroll"
-        v-if="active == 'Profile'"
-       
-      >
+      <div class="col-9 overflow-scroll" v-if="active == 'Profile'">
         <Profile
           :dataProps="accountData"
           @setLoading="setLoading"
@@ -117,7 +135,7 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Settings'"
       >
-        <Settings :dataProps="dataUni"  @setLoading="setLoading"></Settings>
+        <Settings :dataProps="dataUni" @setLoading="setLoading"></Settings>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -172,8 +190,9 @@ export default {
       showLogo: false,
       uid: "",
       random: "",
-      accountData:'',
-      dataUni:{}
+      accountData: "",
+      accountType: "",
+      dataUni: {},
     };
   },
   mounted() {
@@ -197,7 +216,7 @@ export default {
           const uid = user.uid;
           this.uid = uid;
           // this.getUserData(uid);
-          this.getAccountData(uid)
+          this.getAccountData(uid);
         } else {
           // User is signed out
           // ...
@@ -206,19 +225,18 @@ export default {
         }
       });
     },
-    getAccountData(uid){
-        const db = getDatabase();
-        const query = ref(db, "Account/" + uid);
-        onValue(query, (snapshot) => {
-          const accountData = snapshot.val()
-          this.accountData = accountData
-          this.accountType = accountData.type
-          console.log(accountData)
-          if (accountData.type === 'university') {
-            this.getUserData(accountData.Uid)
-          }
-
-        })
+    getAccountData(uid) {
+      const db = getDatabase();
+      const query = ref(db, "Account/" + uid);
+      onValue(query, (snapshot) => {
+        const accountData = snapshot.val();
+        this.accountData = accountData;
+        this.accountType = accountData.type;
+        console.log(accountData);
+        if (accountData.type === "university") {
+          this.getUserData(accountData.Uid);
+        }
+      });
     },
 
     getUserData(uid) {
@@ -231,7 +249,6 @@ export default {
           console.log(data);
           this.dataUni = data;
           this.isLoading = false;
-
         });
       } catch (e) {
         console.log("error", e);

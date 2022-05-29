@@ -55,6 +55,36 @@
               />
             </div>
             <div class="mb-3">
+              <label for="email" class="form-label">University Type</label>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault1"
+                  value="Public"
+                  v-model="data.schoolType"
+                />
+                <label class="form-check-label" for="flexRadioDefault1">
+                Public 
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault2"
+                  value="Private"
+                  v-model="data.schoolType"
+
+                />
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Private
+                </label>
+              </div>
+            </div>
+            <div class="mb-3">
               <label for="formFile" class="form-label">Logo</label>
               <input
                 class="form-control"
@@ -424,7 +454,6 @@ import {
 export default {
   name: "uni-details",
   props: ["dataProps"],
-  components: {},
   data: function () {
     return {
       data: "",

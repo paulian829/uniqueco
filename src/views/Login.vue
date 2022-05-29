@@ -3,7 +3,7 @@
   <div class="login">
     <div class="form-container">
       <h2 class="form-header">Login</h2>
-      <div class="type-select-container">
+      <!-- <div class="type-select-container">
         <button
           class="btn register-btn"
           :class="
@@ -22,7 +22,7 @@
         >
           UNIVERSITY
         </button>
-      </div>
+      </div> -->
       <div class="mb-3">
         <input
           type="text"
