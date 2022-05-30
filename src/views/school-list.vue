@@ -51,7 +51,7 @@
           <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
 
           <div class="school-logo-container">
-            <img v-if="item.logoURL" :src="item.logoURL" alt="" />
+            <img v-if="item.logo" :src="item.logo" alt="" />
             <img
               v-else
               src="../assets/yarn-error-removebg-preview.png"
@@ -225,7 +225,7 @@ export default {
           });
         });
     },
-        removeToFavorites(UniId) {
+    removeToFavorites(UniId) {
       let Uid = this.uid;
       console.log(UniId, Uid);
       const db = getDatabase();
