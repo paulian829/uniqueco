@@ -109,7 +109,7 @@
         </div>
         <br />
         <div class="row gx-5">
-          <div class="col col-form-container">
+          <div class="col col-form-container" v-show="type==='university'">
             <div class="p-3 border bg-light">
               <h4 class="margin-bottom:10px">Disable University</h4>
               <div class="form-check form-switch">
@@ -128,7 +128,7 @@
           </div>
           <div class="col col-form-container">
             <div class="p-3 border bg-light">
-              <h4 class="margin-bottom:10px">Delete University Account</h4>
+              <h4 class="margin-bottom:10px">Delete Account</h4>
               <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label"
                   >Password</label
@@ -183,7 +183,7 @@ import { passAuth } from "../db";
 
 export default {
   name: "addArticle",
-  props: ["dataProps"],
+  props: ["dataProps",'dataAccount'],
   data: function () {
     return {
       data: "test",
@@ -196,10 +196,13 @@ export default {
       newEmail: "",
       newEmailRepeat: "",
       visibility: false,
+      type:'',
     };
   },
   mounted() {
     this.visibility = this.dataProps.publish;
+    console.log(this.dataAccount)
+    this.type = this.dataAccount.type
   },
   methods: {
     changeVisibility() {

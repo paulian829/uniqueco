@@ -46,14 +46,17 @@
           class="school-item"
           v-for="(item, key) in data"
           :key="key"
-          v-show="!item.Admin && item.publish "
+          v-show="!item.Admin && item.publish"
         >
           <!-- <div class="school-item" v-for="(item, key) in data" :key="key" > -->
 
           <div class="school-logo-container">
-            
-            <img v-if="item.logoURL"  :src="item.logoURL" alt="" />
-            <img v-else  src="../assets/yarn-error-removebg-preview.png" alt="">
+            <img v-if="item.logoURL" :src="item.logoURL" alt="" />
+            <img
+              v-else
+              src="../assets/yarn-error-removebg-preview.png"
+              alt=""
+            />
           </div>
           <div class="list-item-details-container">
             <h3>
@@ -64,9 +67,9 @@
             <h6><strong>Programs Offered</strong></h6>
             <h6>
               <!-- <span>None provided {{item.ProgramsOffered.length}}</span> -->
-              <span v-for="(program, key) in item.ProgramsOffered" :key="key">{{
-                program.Field
-              }}<br></span>
+              <span v-for="(program, key) in item.ProgramsOffered" :key="key"
+                >{{ program.Field }}<br
+              /></span>
             </h6>
             <div class="school-list-btn-group">
               <router-link :to="'/university/view/' + item.Uid"
@@ -75,6 +78,22 @@
               <a :href="item.Website"
                 ><button class="btn btn-secondary">Visit Website</button></a
               >
+              <button
+                v-if="
+                  type === 'student' && FavoriteList[item.Uid] === undefined
+                "
+                class="btn btn-secondary"
+                @click="addToFavorites(item.Uid)"
+              >
+                Add to Favorites
+              </button>
+              <button
+                v-else
+                class="btn btn-secondary"
+                @click="removeToFavorites(item.Uid)"
+              >
+                Remove to Favorites
+              </button>
             </div>
           </div>
         </div>
@@ -87,7 +106,10 @@
 /* eslint-disable prettier/prettier */
 
 // import Loader from "../components/loader.vue"
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, update } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
+import { passAuth } from "../db";
+
 // import {
 //   getDownloadURL,
 //   getStorage,
@@ -102,10 +124,14 @@ export default {
       searchLocation: "",
       searchName: "",
       originalData: "",
+      type: "",
+      uid: "",
+      FavoriteList: {},
     };
   },
   mounted() {
     this.getSchools();
+    this.checkLoggedIn();
   },
   methods: {
     getSchools() {
@@ -128,7 +154,6 @@ export default {
       let finalResults = {};
       for (const prop in this.originalData) {
         let schoolName = this.originalData[prop].Name;
-        console.log(schoolName.includes(searchName));
         schoolName = schoolName.toLowerCase();
         searchName = searchName.toLowerCase();
         if (schoolName.includes(searchName)) {
@@ -138,7 +163,6 @@ export default {
       console.log(searchResults);
 
       for (const prop in searchResults) {
-        console.log(searchResults[prop].Address);
         let obj = JSON.stringify(searchResults[prop].Address);
         obj = obj.toLowerCase();
         searchLocation = searchLocation.toLowerCase();
@@ -152,6 +176,76 @@ export default {
       this.searchName = "";
       this.searchLocation = "";
       this.data = this.originalData;
+    },
+    checkLoggedIn() {
+      const auth = passAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const uid = user.uid;
+          this.uid = uid;
+          this.checkIfStudent(uid);
+        } else {
+          console.log("user is logged out");
+        }
+      });
+    },
+    checkIfStudent(uid) {
+      const db = getDatabase();
+      const query = ref(db, "Account/" + uid);
+      onValue(query, (snapshot) => {
+        const data = snapshot.val();
+        if (data.Favorite === undefined) {
+          this.FavoriteList = { None: "None" };
+        } else {
+          this.FavoriteList = data.Favorite;
+        }
+        console.log(data.Favorite);
+        this.type = data.type;
+      });
+    },
+    addToFavorites(UniId) {
+      let Uid = this.uid;
+      console.log(UniId, Uid);
+      const db = getDatabase();
+      const updates = {};
+      updates["Account/" + Uid + "/Favorite/" + UniId] = UniId;
+      update(ref(db), updates)
+        .then(() => {
+          this.$swal({
+            icon: "success",
+            title: "Success",
+            text: "Added to Favorite",
+          });
+        })
+        .catch((e) => {
+          this.$swal({
+            icon: "Error",
+            title: "Error",
+            text: e,
+          });
+        });
+    },
+        removeToFavorites(UniId) {
+      let Uid = this.uid;
+      console.log(UniId, Uid);
+      const db = getDatabase();
+      const updates = {};
+      updates["Account/" + Uid + "/Favorite/" + UniId] = null;
+      update(ref(db), updates)
+        .then(() => {
+          this.$swal({
+            icon: "success",
+            title: "Success",
+            text: "Remove to Favorite",
+          });
+        })
+        .catch((e) => {
+          this.$swal({
+            icon: "Error",
+            title: "Error",
+            text: e,
+          });
+        });
     },
   },
 };
@@ -225,7 +319,7 @@ div#university-list {
   margin-right: 20px;
 }
 .school-logo-container img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 </style>

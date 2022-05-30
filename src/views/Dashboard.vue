@@ -100,6 +100,17 @@
       <div
         class="col-9 overflow-scroll"
         style="background: #f5f5f5; height: 100vh"
+        v-if="active == 'Favorites'"
+      >
+        <Favorites
+          :dataProps="accountData"
+          @setLoading="setLoading"
+          @setPage="setPage"
+        ></Favorites>
+      </div>
+      <div
+        class="col-9 overflow-scroll"
+        style="background: #f5f5f5; height: 100vh"
         v-if="active == 'EditArticle'"
       >
         <EditArticle
@@ -135,7 +146,11 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'Settings'"
       >
-        <Settings :dataProps="dataUni" @setLoading="setLoading"></Settings>
+        <Settings
+          :dataProps="dataUni"
+          :dataAccount="accountData"
+          @setLoading="setLoading"
+        ></Settings>
       </div>
     </div>
     <Loader v-if="isLoading"></Loader>
@@ -163,6 +178,7 @@ import Loader from "../components/loader.vue";
 import NewArticle from "../components/new-article.vue";
 import EditArticle from "../components/edit-article.vue";
 import Settings from "../components/settings.vue";
+import Favorites from "../components/favorites.vue";
 
 // @ is an alias to /src
 
@@ -179,7 +195,8 @@ export default {
     AdminUniList,
     AdminHelpList,
     Settings,
-  },
+    Favorites,
+},
   data() {
     return {
       selectArticle: "test",

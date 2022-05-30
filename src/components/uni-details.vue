@@ -66,7 +66,7 @@
                   v-model="data.schoolType"
                 />
                 <label class="form-check-label" for="flexRadioDefault1">
-                Public 
+                  Public
                 </label>
               </div>
               <div class="form-check">
@@ -77,7 +77,6 @@
                   id="flexRadioDefault2"
                   value="Private"
                   v-model="data.schoolType"
-
                 />
                 <label class="form-check-label" for="flexRadioDefault2">
                   Private
