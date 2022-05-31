@@ -88,7 +88,7 @@
                 Add to Favorites
               </button>
               <button
-                v-else
+                v-else v-show="accountType === 'student'"
                 class="btn btn-secondary"
                 @click="removeToFavorites(item.Uid)"
               >
@@ -127,6 +127,7 @@ export default {
       type: "",
       uid: "",
       FavoriteList: {},
+      accountType:'university'
     };
   },
   mounted() {
@@ -194,6 +195,7 @@ export default {
       const query = ref(db, "Account/" + uid);
       onValue(query, (snapshot) => {
         const data = snapshot.val();
+        this.accountType = data.type
         if (data.Favorite === undefined) {
           this.FavoriteList = { None: "None" };
         } else {

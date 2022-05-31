@@ -82,6 +82,7 @@ export default {
       this.imageChanged = true;
     },
     publichArticle() {
+      this.$emit("setLoading", true);
       let content = this.dataProps.articles[this.selectedArticle].content;
       let title = this.dataProps.articles[this.selectedArticle].title;
       let file = this.imageFile;
@@ -109,11 +110,21 @@ export default {
               `university/${this.dataProps.Uid}/articles/${this.selectedArticle}`
             ] = data;
             update(ref(db), updates)
-              .then((e) => {
-                console.log(e);
+              .then(( ) => {
+                this.$emit("setLoading", false);
+                this.$swal({
+                  icon: "success",
+                  title: "Success",
+                  text: "Successfully Updated Article",
+                });
               })
               .catch((e) => {
-                console.log(e);
+                this.$emit("setLoading", false);
+                this.$swal({
+                  icon: "Error",
+                  title: "Error",
+                  text: e,
+                });
               });
           });
         });
@@ -130,11 +141,21 @@ export default {
           `university/${this.dataProps.Uid}/articles/${this.selectedArticle}`
         ] = data;
         update(ref(db), updates)
-          .then((e) => {
-            console.log(e);
+          .then(() => {
+            this.$emit("setLoading", false);
+            this.$swal({
+              icon: "success",
+              title: "Success",
+              text: "Successfully Updated Article",
+            });
           })
           .catch((e) => {
-            console.log(e);
+            this.$emit("setLoading", false);
+            this.$swal({
+              icon: "Error",
+              title: "Error",
+              text: e,
+            });
           });
       }
     },

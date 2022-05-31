@@ -146,14 +146,14 @@
             <div class="row">
               <div class="col">
                 <div class="mb-3">
-                  <label for="Address-Country" class="form-label"
-                    >Country</label
+                  <label for="Address-Province" class="form-label"
+                    >Province</label
                   >
                   <input
                     type="text"
                     class="form-control"
-                    id="Address-Country"
-                    v-model="data.Address.Country"
+                    id="Address-Province"
+                    v-model="data.Address.Province"
                   />
                 </div>
               </div>
@@ -570,7 +570,7 @@ export default {
           this.$swal({
             icon: "success",
             title: "Success",
-            text: "Profile Updated",
+            text: "Details Updated",
           });
         })
         .catch((e) => {

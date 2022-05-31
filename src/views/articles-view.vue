@@ -5,7 +5,7 @@
       <div class="container">
         <div class="inner-container">
           <div class="articles-image-container">
-            <img :src="data.articleImageURL" alt="" />
+            <img :src="data.articleImageURL" alt="" style="width:100%; object-fit: contain;" />
           </div>
           <div class="articles-header-container">
             <h1>{{ data.title }}</h1>
@@ -17,7 +17,7 @@
         </div>
         <div class="article-university-container">
           <div class="article-logo-container">
-            <img :src="unidata.logoURL" alt="" />
+            <img :src="unidata.logo" alt=""  style="max-width:200px; border-radius:9999px" />
           </div>
           <div class="article-uni-details-container">
             <h2>

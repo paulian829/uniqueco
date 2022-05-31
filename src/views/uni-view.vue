@@ -19,11 +19,11 @@
                 <h4 style="margin-top: 20px"><strong>Address</strong></h4>
                 <p>
                   {{ data.Address.Lot }} {{ data.Address.Barangay }}
-                  {{ data.Address.City }} {{ data.Address.Country }}
+                  {{ data.Address.City }} {{ data.Address.Province }}
                   {{ data.Address.ZipCode }}
                 </p>
                 <h4><strong>Contacts</strong></h4>
-                <span>{{ data.Phone }}</span>
+                <span>{{ data.contact }}</span>
                 <div class="btn-container">
                   <a
                     :href="'https://' + data.Website"
@@ -305,8 +305,8 @@ export default {
           const data = snapshot.val();
           if (!data) {
             this.errorFlag = true;
-            this.isLoading = false
-            return
+            this.isLoading = false;
+            return;
           }
           this.data = data;
 
