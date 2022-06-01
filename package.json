@@ -13,7 +13,9 @@
     "core-js": "^3.6.5",
     "firebase": "^9.6.10",
     "vue": "^2.6.11",
+    "vue-carousel-3d": "^1.0.1",
     "vue-router": "3",
+    "vue-star-rating": "^1.7.0",
     "vue-sweetalert2": "^5.0.2"
   },
   "devDependencies": {

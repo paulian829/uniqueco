@@ -15,6 +15,8 @@ const options = {
   confirmButtonColor: "#ff974c",
   cancelButtonColor: "#ff7674",
 };
+// Vue.component("MyComponent", MyComponent)
+
 
 Vue.use(VueSweetalert2, options);
 new Vue({

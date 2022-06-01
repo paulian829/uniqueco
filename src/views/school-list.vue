@@ -62,6 +62,12 @@
             <h3>
               <strong>{{ item.Name }}</strong>
             </h3>
+            <StarRating
+              :rating="4"
+              :read-only="true"
+              :increment="1"
+              :star-size="30"
+            ></StarRating>
             <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
             <br />
             <h6><strong>Programs Offered</strong></h6>
@@ -88,7 +94,8 @@
                 Add to Favorites
               </button>
               <button
-                v-else v-show="accountType === 'student'"
+                v-else
+                v-show="accountType === 'student'"
                 class="btn btn-secondary"
                 @click="removeToFavorites(item.Uid)"
               >
@@ -105,18 +112,14 @@
 <script>
 /* eslint-disable prettier/prettier */
 
-// import Loader from "../components/loader.vue"
 import { getDatabase, ref, onValue, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { passAuth } from "../db";
-
-// import {
-//   getDownloadURL,
-//   getStorage,
-//   ref as storageRef,
-// } from "firebase/storage";
+import StarRating from "vue-star-rating";
 
 export default {
+  name: "uniList",
+  components: { StarRating },
   data() {
     return {
       data: "",
@@ -127,7 +130,7 @@ export default {
       type: "",
       uid: "",
       FavoriteList: {},
-      accountType:'university'
+      accountType: "university",
     };
   },
   mounted() {
@@ -195,7 +198,7 @@ export default {
       const query = ref(db, "Account/" + uid);
       onValue(query, (snapshot) => {
         const data = snapshot.val();
-        this.accountType = data.type
+        this.accountType = data.type;
         if (data.Favorite === undefined) {
           this.FavoriteList = { None: "None" };
         } else {

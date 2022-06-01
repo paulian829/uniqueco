@@ -13,6 +13,13 @@
                 <h3>
                   <strong>{{ data.Name }}</strong>
                 </h3>
+                              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+              ></StarRating>
+              <span>30 Reviews</span>
                 <h5 style="margin-top: 10px">
                   "{{ data.SchoolDetails.Qoute }}"
                 </h5>
@@ -252,6 +259,108 @@
           </div>
         </div>
       </div>
+      <div class="review-container">
+        <div class="articles-header-container" style="margin-bottom: 30px">
+          <h3>Reviews</h3>
+        </div>
+        <carousel-3d>
+          <slide :index="0">
+            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+          <slide :index="1">
+            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+          <slide :index="2">
+            <div class="review-text">
+              "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia
+              exercitationem pariatur explicabo perferendis ullam quasi laborum,
+              omnis fugiat animi doloribus!"
+            </div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+          <slide :index="3">
+            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+          <slide :index="4">
+            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+                    <slide :index="5">
+            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+                    <slide :index="6">
+            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+            <div class="star-rating">
+              <StarRating
+                :rating="4"
+                :read-only="true"
+                :increment="1"
+                :star-size="30"
+                :show-rating="false"
+              ></StarRating>
+            </div>
+            <div class="review-name">Paul Ian, Quezon</div>
+          </slide>
+        </carousel-3d>
+      </div>
     </div>
     <div v-else>
       <h1>Page Not Found!</h1>
@@ -268,9 +377,12 @@ import {
   getStorage,
   ref as storageRef,
 } from "firebase/storage";
+import { Carousel3d, Slide } from "vue-carousel-3d";
+import StarRating from "vue-star-rating";
+
 export default {
   name: "uni-update",
-  components: { Loader },
+  components: { Loader, Carousel3d, Slide, StarRating },
 
   data() {
     return {
@@ -384,6 +496,7 @@ export default {
 .uni-column-img img {
   max-width: 550px;
   max-height: 470px;
+  min-height: 470px;
   width: 100%;
   height: 100%;
 }
@@ -489,7 +602,8 @@ div#Requirements,
 div#Scholarship {
   padding: 30px;
 }
-.articles-view-container {
+.articles-view-container,
+.review-container {
   margin: 0 !important;
   background: #f0eded;
   padding: 50px;
@@ -499,5 +613,21 @@ div#Scholarship {
   max-height: 397px;
   height: 100%;
   object-fit: cover;
+}
+
+.carousel-3d-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding:15px
+}
+.review-text {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.star-rating,
+.review-name {
+  margin-bottom: 10px;
 }
 </style>
