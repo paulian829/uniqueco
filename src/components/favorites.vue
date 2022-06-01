@@ -6,32 +6,35 @@
           <h1 style="margin-bottom: 30px">Favorite University</h1>
         </div>
         <div class="fav-container">
-          <div class="row row-cols-1 row-cols-md-3 g-2" v-if="data">
+          <div class="row row-cols-1 row-cols-md-3 g-2" v-if="Object.keys(data).length > 0">
             <div class="col" v-for="(item, key) in data" :key="key">
               <div class="card">
                 <img
-                  v-if="item.logo"
-                  :src="item.logo"
+                  v-if="item.value.logo"
+                  :src="item.value.logo"
                   class="card-img-top"
                   alt="..."
-                  @click="goTo(key)"
+                  @click="goTo(item.value.Uid)"
                 />
                 <img
                   v-else
                   class="card-img-top"
                   src="../assets/yarn-error-removebg-preview.png"
                   alt=""
-                  @click="goTo(key)"
+                  @click="goTo(item.value.Uid)"
                 />
                 <div class="card-body">
-                  <h5 class="card-title">{{ item.Name }}</h5>
+                  <h5 class="card-title">{{ item.value.Name }}</h5>
                   <div class="card-btn-container">
-                    <button class="btn btn-primary" @click="goTo(key)">
+                    <button
+                      class="btn btn-primary"
+                      @click="goTo(item.value.Uid)"
+                    >
                       Visit
                     </button>
                     <button
                       class="btn btn-warning"
-                      @click="removeFavorite(key)"
+                      @click="removeFavorite(item.value.Uid)"
                     >
                       Remove
                     </button>
@@ -40,7 +43,7 @@
               </div>
             </div>
           </div>
-          <div v-else><h4>No Favorite University!</h4> </div>
+          <div v-else><h4>No Favorite University!</h4></div>
         </div>
       </div>
     </div>
@@ -48,7 +51,7 @@
 </template>
 
 <script>
-import { getDatabase, ref, onValue, update } from "firebase/database";
+import { getDatabase, ref, update, get, child } from "firebase/database";
 
 // import {
 //   reauthenticateWithCredential,
@@ -62,7 +65,7 @@ export default {
   name: "addArticle",
   props: ["dataProps"],
   data: function () {
-    return { data: null };
+    return { data: {} };
   },
   mounted() {
     this.generateList(this.dataProps);
@@ -70,20 +73,31 @@ export default {
   methods: {
     generateList(data) {
       let arrayFav = data.Favorite;
-      if(arrayFav.length === 0){
-        this.data = null
-        return 
+      if (arrayFav.length === 0) {
+        this.data = null;
+        return;
       }
-      let dataItems = {};
+      // let dataItems = {};
+
       for (let item in arrayFav) {
-        const db = getDatabase();
-        const query = ref(db, "university/" + item);
-        onValue(query, (snapshot) => {
-          const dataItem = snapshot.val();
-          dataItems[dataItem.Uid] = dataItem;
-        });
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `university/${item}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              let value = snapshot.val();
+              console.log(value.Uid);
+              this.$set(this.data, value.Uid, {
+                value,
+              });
+              console.log(this.data);
+            } else {
+              console.log("No data available");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-      this.data = dataItems;
     },
     removeFavorite(key) {
       let Uid = this.dataProps.Uid;
@@ -98,15 +112,21 @@ export default {
             title: "Success",
             text: "Remove to Favorite",
           });
-          delete dataNew[key];
-          this.data = dataNew;
-          this.generateList(this.dataProps)
+          if (Object.keys(dataNew).length === 1) {
+            this.data = {};
+          } else {
+            delete dataNew[key];
+            console.log(dataNew);
+            this.data = dataNew;
+          }
+
+          this.generateList(this.dataProps);
         })
-        .catch((e) => {
+        .catch(() => {
           this.$swal({
-            icon: "Error",
-            title: "Error",
-            text: e,
+            icon: "success",
+            title: "Success",
+            text: "Removed to Favorite",
           });
         });
     },
@@ -125,7 +145,7 @@ export default {
 }
 .card-title {
   text-overflow: ellipsis;
-  width: 246px;
+  /* width: 246px; */
   overflow: hidden;
   white-space: nowrap;
 }
