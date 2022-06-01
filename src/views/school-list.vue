@@ -63,10 +63,12 @@
               <strong>{{ item.Name }}</strong>
             </h3>
             <StarRating
+            style="margin-bottom:10px"
               :rating="4"
               :read-only="true"
               :increment="1"
               :star-size="30"
+              :show-rating="false"
             ></StarRating>
             <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
             <br />
