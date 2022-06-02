@@ -13,13 +13,13 @@
                 <h3>
                   <strong>{{ data.Name }}</strong>
                 </h3>
-                              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-              ></StarRating>
-              <span>30 Reviews</span>
+                <StarRating
+                  :rating="4"
+                  :read-only="true"
+                  :increment="1"
+                  :star-size="30"
+                ></StarRating>
+                <span>30 Reviews</span>
                 <h5 style="margin-top: 10px">
                   "{{ data.SchoolDetails.Qoute }}"
                 </h5>
@@ -264,102 +264,47 @@
           <h3>Reviews</h3>
         </div>
         <carousel-3d>
-          <slide :index="0">
-            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
+          <slide :index="i" v-for="(index, i) in reviews" :key="i">
+            <div class="review-text">"{{ index.comment }}"</div>
             <div class="star-rating">
               <StarRating
-                :rating="4"
+                :rating="index.rating"
                 :read-only="true"
                 :increment="1"
                 :star-size="30"
                 :show-rating="false"
               ></StarRating>
             </div>
-            <div class="review-name">Paul Ian, Quezon</div>
-          </slide>
-          <slide :index="1">
-            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
-            <div class="star-rating">
-              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-                :show-rating="false"
-              ></StarRating>
+            <div class="review-name">
+              {{ index.name }}, {{ index.Province }}
             </div>
-            <div class="review-name">Paul Ian, Quezon</div>
-          </slide>
-          <slide :index="2">
-            <div class="review-text">
-              "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia
-              exercitationem pariatur explicabo perferendis ullam quasi laborum,
-              omnis fugiat animi doloribus!"
-            </div>
-            <div class="star-rating">
-              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-                :show-rating="false"
-              ></StarRating>
-            </div>
-            <div class="review-name">Paul Ian, Quezon</div>
-          </slide>
-          <slide :index="3">
-            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
-            <div class="star-rating">
-              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-                :show-rating="false"
-              ></StarRating>
-            </div>
-            <div class="review-name">Paul Ian, Quezon</div>
-          </slide>
-          <slide :index="4">
-            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
-            <div class="star-rating">
-              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-                :show-rating="false"
-              ></StarRating>
-            </div>
-            <div class="review-name">Paul Ian, Quezon</div>
-          </slide>
-                    <slide :index="5">
-            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
-            <div class="star-rating">
-              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-                :show-rating="false"
-              ></StarRating>
-            </div>
-            <div class="review-name">Paul Ian, Quezon</div>
-          </slide>
-                    <slide :index="6">
-            <div class="review-text">"Lorem ipsum dolor sit amet."</div>
-            <div class="star-rating">
-              <StarRating
-                :rating="4"
-                :read-only="true"
-                :increment="1"
-                :star-size="30"
-                :show-rating="false"
-              ></StarRating>
-            </div>
-            <div class="review-name">Paul Ian, Quezon</div>
           </slide>
         </carousel-3d>
+      </div>
+      <div class="comment-section" v-if="loggedIn">
+        <div class="articles-header-container" style="margin-bottom: 30px">
+          <h3>Write a comment</h3>
+        </div>
+        <div class="comment-section-form">
+          <textarea
+            name="comment"
+            id="comment"
+            maxlength="150"
+            cols="30"
+            rows="10"
+            v-model="rating.comment"
+          ></textarea>
+          <div>
+            <star-rating
+              :show-rating="false"
+              @rating-selected="setRating"
+              style="margin: 0 auto; justify-content: center"
+            ></star-rating>
+          </div>
+          <button class="btn btn-primary btn-lg" style="margin-top: 15px" @click="postReview">
+            POST REVIEW
+          </button>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -370,13 +315,11 @@
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue,update } from "firebase/database";
 import Loader from "../components/loader.vue";
-import {
-  getDownloadURL,
-  getStorage,
-  ref as storageRef,
-} from "firebase/storage";
+import { passAuth } from "../db";
+import { onAuthStateChanged } from "firebase/auth";
+
 import { Carousel3d, Slide } from "vue-carousel-3d";
 import StarRating from "vue-star-rating";
 
@@ -397,11 +340,28 @@ export default {
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
       },
       errorFlag: false,
+      reviews: [
+        {
+          Uid: "uid1",
+          comment: "the big brown fox jump over the lazy cow",
+          rating: 4,
+          name: "Paul Ian",
+          Province: "Quezon",
+        },
+      ],
+      rating: {
+        rating: 0,
+        comment: "",
+        Uid: this.Uid,
+      },
+      loggedIn: false,
+      accountData: {},
     };
   },
   mounted() {
     window.scrollTo(0, 0);
     this.getUserData(this.uid);
+    this.checkLoggedIn();
   },
   methods: {
     getPic(pic) {
@@ -412,7 +372,6 @@ export default {
         this.isLoading = true;
         const db = getDatabase();
         const query = ref(db, "university/" + uid);
-        const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();
           if (!data) {
@@ -420,34 +379,8 @@ export default {
             this.isLoading = false;
             return;
           }
+          this.isLoading = false;
           this.data = data;
-
-          try {
-            const logoRef = storageRef(storage, "logo/" + uid + ".png");
-            getDownloadURL(logoRef)
-              .then((url) => {
-                this.showLogo = true;
-                this.logoUrl = url;
-                this.isLoading = false;
-              })
-              .catch((e) => {
-                console.log(e);
-                this.showLogo = false;
-                this.logoUrl = "";
-                this.isLoading = false;
-              });
-            if (data.ImageFileName) {
-              const schoolImageRef = storageRef(storage, data.ImageFileName);
-              getDownloadURL(schoolImageRef).then((url) => {
-                this.SchoopPic = url;
-                console.log(url);
-                this.isLoading = false;
-              });
-            }
-          } catch (e) {
-            console.log("error", e);
-            this.isLoading = false;
-          }
         });
       } catch (e) {
         console.log("error", e);
@@ -470,6 +403,52 @@ export default {
     },
     goToArticles(key) {
       this.$router.push(`/articles/${this.data.Uid}/${key}`);
+    },
+    setRating(rating) {
+      console.log(rating);
+      this.rating.rating = rating;
+    },
+    checkLoggedIn() {
+      const auth = passAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log(user.uid);
+          this.getAccountType(user.uid);
+          // this.getUserData(uid);
+        } else {
+          // User is signed out
+          // ...
+          this.loggedIn = false;
+        }
+      });
+    },
+    getAccountType(uid) {
+      const db = getDatabase();
+      const query = ref(db, "Account/" + uid);
+      onValue(query, (snapshot) => {
+        const accountData = snapshot.val();
+        this.accountData = accountData;
+        console.log(accountData);
+        if (accountData.type === "student") {
+          this.loggedIn = true;
+        }
+      });
+    },
+    postReview() {
+      const db = getDatabase();
+
+      const updates = {};
+      let review = {
+        rating: this.rating.rating,
+        comment: this.rating.comment,
+        name: this.accountData.firstName,
+        Uid: this.accountData.Uid,
+      };
+      updates["university/" + this.data.Uid + "/reviews/"+this.accountData.Uid] = review;
+
+      update(ref(db), updates)
+        .then(() => {})
+        .catch(() => {});
     },
   },
 };
@@ -609,6 +588,11 @@ div#Scholarship {
   padding: 50px;
 }
 
+.comment-section {
+  background: #ccc;
+  padding: 50px;
+}
+
 .card-img-top {
   max-height: 397px;
   height: 100%;
@@ -620,7 +604,7 @@ div#Scholarship {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding:15px
+  padding: 15px;
 }
 .review-text {
   font-size: 20px;
