@@ -17,7 +17,7 @@
         </div>
         <div class="article-university-container">
           <div class="article-logo-container">
-            <img :src="unidata.logo" alt=""  style="max-width:200px; border-radius:9999px" />
+            <img :src="unidata.logo" alt=""  style="max-width:200px;" />
           </div>
           <div class="article-uni-details-container">
             <h2>

@@ -14,12 +14,14 @@
                   <strong>{{ data.Name }}</strong>
                 </h3>
                 <StarRating
-                  :rating="4"
+                  :rating="score"
                   :read-only="true"
-                  :increment="1"
+                  :increment="0.1"
+                  
                   :star-size="30"
                 ></StarRating>
-                <span>30 Reviews</span>
+                <span v-if="reviewCount <= 1">{{ reviewCount }} Review</span>
+                <span v-else>{{ reviewCount }} Reviews</span>
                 <h5 style="margin-top: 10px">
                   "{{ data.SchoolDetails.Qoute }}"
                 </h5>
@@ -264,7 +266,7 @@
           <h3>Reviews</h3>
         </div>
         <carousel-3d>
-          <slide :index="i" v-for="(index, i) in reviews" :key="i">
+          <slide v-for="(index,i) in reviews" :key="i" :index="index.index" >
             <div class="review-text">"{{ index.comment }}"</div>
             <div class="star-rating">
               <StarRating
@@ -293,15 +295,20 @@
             cols="30"
             rows="10"
             v-model="rating.comment"
+            style="padding: 10px"
           ></textarea>
           <div>
             <star-rating
               :show-rating="false"
-              @rating-selected="setRating"
+              :increment="0.01"
               style="margin: 0 auto; justify-content: center"
             ></star-rating>
           </div>
-          <button class="btn btn-primary btn-lg" style="margin-top: 15px" @click="postReview">
+          <button
+            class="btn btn-primary btn-lg"
+            style="margin-top: 15px"
+            @click="postReview"
+          >
             POST REVIEW
           </button>
         </div>
@@ -315,7 +322,14 @@
 </template>
 <!-- eslint-disable prettier/prettier -->
 <script>
-import { getDatabase, ref, onValue,update } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
+  get,
+  child,
+} from "firebase/database";
 import Loader from "../components/loader.vue";
 import { passAuth } from "../db";
 import { onAuthStateChanged } from "firebase/auth";
@@ -348,6 +362,41 @@ export default {
           name: "Paul Ian",
           Province: "Quezon",
         },
+                {
+          Uid: "uid1",
+          comment: "the big brown fox jump over the lazy cow",
+          rating: 4,
+          name: "Paul Ian",
+          Province: "Quezon",
+        },
+                {
+          Uid: "uid1",
+          comment: "the big brown fox jump over the lazy cow",
+          rating: 4,
+          name: "Paul Ian",
+          Province: "Quezon",
+        },
+                        {
+          Uid: "uid1",
+          comment: "the big brown fox jump over the lazy cow",
+          rating: 4,
+          name: "Paul Ian",
+          Province: "Quezon",
+        },
+                        {
+          Uid: "uid1",
+          comment: "the big brown fox jump over the lazy cow",
+          rating: 4,
+          name: "Paul Ian",
+          Province: "Quezon",
+        },
+                        {
+          Uid: "uid1",
+          comment: "the big brown fox jump over the lazy cow",
+          rating: 4,
+          name: "Paul Ian",
+          Province: "Quezon",
+        },
       ],
       rating: {
         rating: 0,
@@ -356,6 +405,9 @@ export default {
       },
       loggedIn: false,
       accountData: {},
+      score: 0,
+      reviewCount: 0,
+      count: 0,
     };
   },
   mounted() {
@@ -381,6 +433,7 @@ export default {
           }
           this.isLoading = false;
           this.data = data;
+          this.getReviews();
         });
       } catch (e) {
         console.log("error", e);
@@ -444,11 +497,54 @@ export default {
         name: this.accountData.firstName,
         Uid: this.accountData.Uid,
       };
-      updates["university/" + this.data.Uid + "/reviews/"+this.accountData.Uid] = review;
+      updates[
+        "university/" + this.data.Uid + "/reviews/" + this.accountData.Uid
+      ] = review;
 
       update(ref(db), updates)
-        .then(() => {})
+        .then(() => {
+          this.getReviews();
+          this.rating = {};
+        })
         .catch(() => {});
+    },
+    getReviews() {
+      const dbRef = ref(getDatabase());
+      get(child(dbRef, `university/${this.data.Uid}/reviews`))
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            let reviewsObj = snapshot.val();
+            let count = 0;
+            for (let reviews in reviewsObj) {
+              reviewsObj[reviews].index= count
+              count = count + 1;
+              console.log(reviews);
+            }
+               this.reviews = Object.assign({},reviewsObj);
+
+            console.log(count);
+            console.log(this.reviews);
+            this.count = count;
+            this.getAverage(reviewsObj);
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    getAverage(arr) {
+      let score = 0;
+      let reviewCount = 0;
+      for (let item in arr) {
+        score = score + arr[item].rating;
+        reviewCount = reviewCount + 1;
+      }
+      console.log(score);
+      console.log(reviewCount);
+      this.score = score/reviewCount;
+      this.reviewCount = reviewCount;
     },
   },
 };
@@ -609,6 +705,7 @@ div#Scholarship {
 .review-text {
   font-size: 20px;
   margin-bottom: 10px;
+  text-align: center;
 }
 .star-rating,
 .review-name {
