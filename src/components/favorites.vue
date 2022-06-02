@@ -6,9 +6,18 @@
           <h1 style="margin-bottom: 30px">Favorite University</h1>
         </div>
         <div class="fav-container">
-          <div class="row row-cols-1 row-cols-md-3 g-2" v-if="Object.keys(data).length > 0">
+          <div
+            class="row row-cols-1 row-cols-md-3 g-2"
+            v-if="Object.keys(data).length > 0"
+          >
             <div class="col" v-for="(item, key) in data" :key="key">
-              <div class="card">
+              <div class="shadow card">
+                <button
+                  type="button"
+                  class="btn-close"
+                  aria-label="Close"
+                  @click="removeFavorite(item.value.Uid)"
+                ></button>
                 <img
                   v-if="item.value.logo"
                   :src="item.value.logo"
@@ -25,20 +34,6 @@
                 />
                 <div class="card-body">
                   <h5 class="card-title">{{ item.value.Name }}</h5>
-                  <div class="card-btn-container">
-                    <button
-                      class="btn btn-primary"
-                      @click="goTo(item.value.Uid)"
-                    >
-                      Visit
-                    </button>
-                    <button
-                      class="btn btn-warning"
-                      @click="removeFavorite(item.value.Uid)"
-                    >
-                      Remove
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -52,6 +47,7 @@
 
 <script>
 import { getDatabase, ref, update, get, child } from "firebase/database";
+// import MDBBtnClose  from 'mdb-vue-ui-kit';
 
 // import {
 //   reauthenticateWithCredential,
@@ -63,6 +59,7 @@ import { getDatabase, ref, update, get, child } from "firebase/database";
 
 export default {
   name: "addArticle",
+  // components:{MDBBtnClose},
   props: ["dataProps"],
   data: function () {
     return { data: {} };
@@ -107,11 +104,11 @@ export default {
       updates["Account/" + Uid + "/Favorite/" + key] = null;
       update(ref(db), updates)
         .then(() => {
-          this.$swal({
-            icon: "success",
-            title: "Success",
-            text: "Remove to Favorite",
-          });
+          // this.$swal({
+          //   icon: "success",
+          //   title: "Success",
+          //   text: "Remove to Favorite",
+          // });
           if (Object.keys(dataNew).length === 1) {
             this.data = {};
           } else {
@@ -123,11 +120,11 @@ export default {
           this.generateList(this.dataProps);
         })
         .catch(() => {
-          this.$swal({
-            icon: "success",
-            title: "Success",
-            text: "Removed to Favorite",
-          });
+          // this.$swal({
+          //   icon: "success",
+          //   title: "Success",
+          //   text: "Removed to Favorite",
+          // });
         });
     },
   },
@@ -154,5 +151,11 @@ export default {
   width: 200px;
   height: 200px;
   margin: 0 auto;
+}
+.card {
+  padding: 10px;
+}
+.btn-close {
+  margin-left: auto;
 }
 </style>

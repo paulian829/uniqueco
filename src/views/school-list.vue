@@ -63,10 +63,10 @@
               <strong>{{ item.Name }}</strong>
             </h3>
             <StarRating
-            style="margin-bottom:10px"
-              :rating="4"
+              style="margin-bottom: 10px"
+              :rating="item.score"
               :read-only="true"
-              :increment="1"
+              :increment="0.1"
               :star-size="30"
               :show-rating="false"
             ></StarRating>
@@ -148,12 +148,37 @@ export default {
         // const storage = getStorage();
         onValue(query, (snapshot) => {
           const data = snapshot.val();
+
+          for (let uni in data) {
+            console.log(data[uni].reviews);
+            let average = this.getAverage(data[uni].reviews);
+            console.log(average);
+            data[uni].score = average;
+          }
+
           this.data = data;
           this.originalData = data;
+          console.log(data)
         });
       } catch (e) {
         console.log(e);
       }
+    },
+    getAverage(arr) {
+      if (!arr) {
+        return 0;
+      }
+      let score = 0;
+      let reviewCount = 0;
+      for (let item in arr) {
+        score = score + arr[item].rating;
+        reviewCount = reviewCount + 1;
+      }
+      // console.log(score);
+      return score / reviewCount;
+      // console.log(reviewCount);
+      // this.score = score / reviewCount;
+      // this.reviewCount = reviewCount;
     },
     search(searchName, searchLocation) {
       let searchResults = {};

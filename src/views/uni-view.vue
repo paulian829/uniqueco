@@ -17,7 +17,6 @@
                   :rating="score"
                   :read-only="true"
                   :increment="0.1"
-                  
                   :star-size="30"
                 ></StarRating>
                 <span v-if="reviewCount <= 1">{{ reviewCount }} Review</span>
@@ -266,7 +265,7 @@
           <h3>Reviews</h3>
         </div>
         <carousel-3d>
-          <slide v-for="(index,i) in reviews" :key="i" :index="index.index" >
+          <slide v-for="(index, i) in reviews" :key="i" :index="index.index">
             <div class="review-text">"{{ index.comment }}"</div>
             <div class="star-rating">
               <StarRating
@@ -354,50 +353,7 @@ export default {
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
       },
       errorFlag: false,
-      reviews: [
-        {
-          Uid: "uid1",
-          comment: "the big brown fox jump over the lazy cow",
-          rating: 4,
-          name: "Paul Ian",
-          Province: "Quezon",
-        },
-                {
-          Uid: "uid1",
-          comment: "the big brown fox jump over the lazy cow",
-          rating: 4,
-          name: "Paul Ian",
-          Province: "Quezon",
-        },
-                {
-          Uid: "uid1",
-          comment: "the big brown fox jump over the lazy cow",
-          rating: 4,
-          name: "Paul Ian",
-          Province: "Quezon",
-        },
-                        {
-          Uid: "uid1",
-          comment: "the big brown fox jump over the lazy cow",
-          rating: 4,
-          name: "Paul Ian",
-          Province: "Quezon",
-        },
-                        {
-          Uid: "uid1",
-          comment: "the big brown fox jump over the lazy cow",
-          rating: 4,
-          name: "Paul Ian",
-          Province: "Quezon",
-        },
-                        {
-          Uid: "uid1",
-          comment: "the big brown fox jump over the lazy cow",
-          rating: 4,
-          name: "Paul Ian",
-          Province: "Quezon",
-        },
-      ],
+      reviews: [1,2,3],
       rating: {
         rating: 0,
         comment: "",
@@ -516,11 +472,15 @@ export default {
             let reviewsObj = snapshot.val();
             let count = 0;
             for (let reviews in reviewsObj) {
-              reviewsObj[reviews].index= count
+              reviewsObj[reviews].index = count;
+              this.$set(this.reviews, count, reviewsObj[reviews])
+
               count = count + 1;
               console.log(reviews);
             }
-               this.reviews = Object.assign({},reviewsObj);
+            // this.reviews = Object.assign({}, reviewsObj);
+            // Vue.set(vm.items, indexOfItem, newValue)  //works fine
+
 
             console.log(count);
             console.log(this.reviews);
@@ -543,7 +503,7 @@ export default {
       }
       console.log(score);
       console.log(reviewCount);
-      this.score = score/reviewCount;
+      this.score = score / reviewCount;
       this.reviewCount = reviewCount;
     },
   },
