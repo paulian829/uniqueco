@@ -4,13 +4,17 @@
     <div class="flex-list">
       <div class="search-bar-container">
         <div class="row">
-        <h3>test</h3>
+          <h1 style="text-align: center">Find your perfect School</h1>
           <div class="col">
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label"
                 >School Type</label
               >
-              <select class="form-select form-select-lg mb-3" aria-label="Default select example" v-model="schoolType">
+              <select
+                class="form-select form-select-lg mb-3"
+                aria-label="Default select example"
+                v-model="schoolType"
+              >
                 <option selected>Open this select menu</option>
                 <option value="Public">Public</option>
                 <option value="Private">Private</option>
@@ -30,6 +34,40 @@
               />
             </div>
           </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >Program</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="exampleFormControlInput1"
+                v-model="program"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label"
+                >Max Tuition fee: PHP {{ range }}</label
+              >
+              <input
+                type="range"
+                class="form-range"
+                id="customRange1"
+                min="10000"
+                max="100000"
+                v-model="range"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="btn-container">
+        <button class="btn btn-primary" >Find a School Match</button>
+
         </div>
       </div>
       <div class="school-group-container">
@@ -123,8 +161,9 @@ export default {
       type: "",
       uid: "",
       FavoriteList: {},
-      accountType: "university",
-      schoolType: 'Public'
+      schoolType: "Public",
+      program: "",
+      range: 50000,
     };
   },
   mounted() {
@@ -345,5 +384,9 @@ div#university-list {
 .school-logo-container img {
   width: 100%;
   height: 100%;
+}
+.btn-container {
+    display: flex;
+    justify-content: center;
 }
 </style>
