@@ -9,6 +9,7 @@
         <router-link v-if="loggedIn" to="/dashboard">Dashboard</router-link>
 
         <router-link to="/university/list">Schools</router-link>
+        <router-link to="/match">Match</router-link>
         <router-link to="/about">About</router-link>
         <div class="login-button-container">
           <!-- <div class="form-check form-switch" v-if="loggedIn">

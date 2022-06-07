@@ -50,6 +50,11 @@ const routes = [
     name: "singleArticle",
     component: () => import("../views/articles-view.vue"),
   },
+  {
+    path: "/match",
+    name: "match",
+    component: () => import("../views/match.vue"),
+  },
 ];
 
 const router = new VueRouter({
