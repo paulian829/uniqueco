@@ -66,11 +66,15 @@
           </div>
         </div>
         <div class="btn-container">
-        <button class="btn btn-primary" >Find a School Match</button>
-
+          <button
+            class="btn btn-primary"
+            @click="search(schoolType, searchLocation, program, range)"
+          >
+            Find a School Match
+          </button>
         </div>
       </div>
-      <div class="school-group-container">
+      <div class="school-group-container" v-show="show">
         <div
           class="school-item"
           v-for="(item, key) in data"
@@ -137,6 +141,7 @@
         </div>
       </div>
     </div>
+    <Loader v-if="isLoading"></Loader>
   </div>
 </template>
 
@@ -147,23 +152,25 @@ import { getDatabase, ref, onValue, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { passAuth } from "../db";
 import StarRating from "vue-star-rating";
+import Loader from "../components/loader.vue";
 
 export default {
   name: "uniList",
-  components: { StarRating },
+  components: { StarRating, Loader },
   data() {
     return {
       data: "",
-      isLoading: false,
       searchLocation: "",
       searchName: "",
       originalData: "",
       type: "",
       uid: "",
       FavoriteList: {},
-      schoolType: "Public",
+      schoolType: "",
       program: "",
       range: 50000,
+      show: false,
+      isLoading: false,
     };
   },
   mounted() {
@@ -172,6 +179,7 @@ export default {
   },
   methods: {
     getSchools() {
+      this.isLoading = true;
       try {
         this.isLoading = true;
         const db = getDatabase();
@@ -186,9 +194,12 @@ export default {
             console.log(average);
             data[uni].score = average;
           }
+          this.show = false;
 
           this.data = data;
           this.originalData = data;
+          this.isLoading = false;
+
           console.log(data);
         });
       } catch (e) {
@@ -211,29 +222,60 @@ export default {
       // this.score = score / reviewCount;
       // this.reviewCount = reviewCount;
     },
-    search(searchName, searchLocation) {
-      let searchResults = {};
-      let finalResults = {};
-      for (const prop in this.originalData) {
-        let schoolName = this.originalData[prop].Name;
-        schoolName = schoolName.toLowerCase();
-        searchName = searchName.toLowerCase();
-        if (schoolName.includes(searchName)) {
-          searchResults[prop] = this.originalData[prop];
-        }
-      }
-      console.log(searchResults);
+    search(schoolType, searchLocation, program, Maxtuition) {
+      // let searchResults = {};
+      this.isLoading = true;
 
-      for (const prop in searchResults) {
-        let obj = JSON.stringify(searchResults[prop].Address);
-        obj = obj.toLowerCase();
-        searchLocation = searchLocation.toLowerCase();
-        if (obj.includes(searchLocation)) {
-          finalResults[prop] = searchResults[prop];
+      let finalResults = {};
+      console.log(schoolType, searchLocation, program, Maxtuition);
+
+      schoolType = schoolType.toLowerCase();
+      searchLocation = searchLocation.toLowerCase();
+      program = program.toLowerCase();
+
+      if (!schoolType) {
+        this.isLoading = false;
+        return;
+      }
+      if (!searchLocation) {
+        this.isLoading = false;
+        return;
+      }
+      if (!program) {
+        this.isLoading = false;
+        return;
+      }
+
+      for (const prop in this.originalData) {
+        let currentSchoolType = this.originalData[prop].schoolType;
+        if (currentSchoolType) {
+          currentSchoolType = currentSchoolType.toLowerCase();
+        } else {
+          currentSchoolType = "none";
+        }
+        let currentSchoolLocation = JSON.stringify(
+          this.originalData[prop].Address
+        ).toString();
+        currentSchoolLocation = currentSchoolLocation.toLowerCase();
+        let currentPrograms = JSON.stringify(
+          this.originalData[prop].ProgramsOffered
+        ).toString();
+        currentPrograms = currentPrograms.toLowerCase();
+        console.log(currentSchoolType, currentSchoolLocation, currentPrograms);
+        if (
+          currentSchoolType.includes(schoolType) &&
+          currentSchoolLocation.includes(searchLocation) &&
+          currentPrograms.includes(program)
+        ) {
+          finalResults[prop] = this.originalData[prop];
         }
       }
+      console.log(finalResults);
       this.data = finalResults;
+      this.show = true;
+      this.isLoading = false;
     },
+
     reset() {
       this.searchName = "";
       this.searchLocation = "";
@@ -386,7 +428,7 @@ div#university-list {
   height: 100%;
 }
 .btn-container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 </style>
