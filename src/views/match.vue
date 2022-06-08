@@ -222,6 +222,14 @@ export default {
       // this.score = score / reviewCount;
       // this.reviewCount = reviewCount;
     },
+
+    error() {
+      this.$swal({
+        icon: "error",
+        title: "Error",
+        text: "All fields are required",
+      });
+    },
     search(schoolType, searchLocation, program, Maxtuition) {
       // let searchResults = {};
       this.isLoading = true;
@@ -235,14 +243,17 @@ export default {
 
       if (!schoolType) {
         this.isLoading = false;
+        this.error();
         return;
       }
       if (!searchLocation) {
         this.isLoading = false;
+        this.error();
         return;
       }
       if (!program) {
         this.isLoading = false;
+        this.error();
         return;
       }
 
@@ -261,7 +272,6 @@ export default {
           this.originalData[prop].ProgramsOffered
         ).toString();
         currentPrograms = currentPrograms.toLowerCase();
-        console.log(currentSchoolType, currentSchoolLocation, currentPrograms);
         if (
           currentSchoolType.includes(schoolType) &&
           currentSchoolLocation.includes(searchLocation) &&
@@ -270,7 +280,13 @@ export default {
           finalResults[prop] = this.originalData[prop];
         }
       }
-      console.log(finalResults);
+      if (Object.keys(finalResults).length === 0) {
+        this.$swal({
+          icon: "error",
+          title: "Results",
+          text: "No results were found!",
+        });
+      }
       this.data = finalResults;
       this.show = true;
       this.isLoading = false;
