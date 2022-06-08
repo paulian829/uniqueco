@@ -2,7 +2,7 @@
 <template>
   <div class="login">
     <div class="form-container">
-      <h2 class="form-header">Signup</h2>
+      <h2 class="form-header">Sign up</h2>
       <div class="type-select-container">
         <button
           class="btn register-btn"
@@ -29,8 +29,7 @@
       >
         <h5>Student Registration</h5>
         <p class="align-left">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime ullam
-          amet dignissimos.
+           To register your College/University, fill up the following details and accept the Terms of Service and Privacy Policy.
         </p>
         <div class="mb-3">
           <input
