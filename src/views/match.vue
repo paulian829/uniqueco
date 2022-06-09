@@ -256,6 +256,8 @@ export default {
         this.error();
         return;
       }
+      let highestPrice = 0;
+      let progArray = {};
 
       for (const prop in this.originalData) {
         let currentSchoolType = this.originalData[prop].schoolType;
@@ -272,10 +274,20 @@ export default {
           this.originalData[prop].ProgramsOffered
         ).toString();
         currentPrograms = currentPrograms.toLowerCase();
+
+        // Get the highest price of program
+        progArray = this.originalData[prop].ProgramsOffered;
+        for (let item in progArray) {
+          if (progArray[item].TuitionMax > highestPrice) {
+            highestPrice = progArray[item].TuitionMax;
+          }
+        }
+        console.log(highestPrice);
         if (
           currentSchoolType.includes(schoolType) &&
           currentSchoolLocation.includes(searchLocation) &&
-          currentPrograms.includes(program)
+          currentPrograms.includes(program) &&
+          Maxtuition >= highestPrice
         ) {
           finalResults[prop] = this.originalData[prop];
         }
@@ -286,7 +298,17 @@ export default {
           title: "Results",
           text: "No results were found!",
         });
+        this.isLoading = false;
+        this.data = {};
+
+        return;
       }
+
+      this.$swal({
+        icon: "success",
+        title: "Results found",
+        text: `${Object.keys(finalResults).length} Were Found!`,
+      });
       this.data = finalResults;
       this.show = true;
       this.isLoading = false;
