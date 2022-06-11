@@ -170,6 +170,77 @@
               </div>
             </div>
           </div>
+          <div class="form-input-heaeding-container">
+            <h4>
+              <strong>Google Map</strong>
+            </h4>
+            <h6>Instructions</h6>
+            <ol style="list-style-type: decimal">
+              <li>
+                Go to
+                <a :href="googleLink" target="_blank" rel="noopener noreferrer"
+                  >Google Map</a
+                >
+              </li>
+              <li>
+                Search for the University Location
+                <a
+                  :href="'https://i.imgur.com/WH34S0T.jpg'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >See Example</a
+                >
+              </li>
+              <li>
+                Click on the <strong>Share</strong> Link Button
+                <a
+                  :href="'https://i.imgur.com/eolfTNQ.jpg'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >See Example</a
+                >
+              </li>
+              <li>
+                Select Embed a Map and Then <strong>Copy</strong> HTML code
+                <a
+                  :href="'https://i.imgur.com/V2z0Ee5.jpg'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >See Example</a
+                >
+              </li>
+              <li>
+                <strong>Paste</strong> the HTML code to the form below
+                <a
+                  :href="'https://i.imgur.com/ndCXDRo.png'"
+                  target="_blank"
+                  rel="noopeneer noreferrer"
+                  >See Example</a
+                >
+              </li>
+              <li>
+                <strong>Edit</strong> the width to <strong>100%</strong>
+                <a
+                  :href="'https://i.imgur.com/ls96VS9.png'"
+                  target="_blank"
+                  rel="noopeneer noreferrer"
+                  >See Example</a
+                >
+              </li>
+            </ol>
+            <div class="mb-3">
+              <label for="Details-About" class="form-label"
+                >Map Embedded HTML code</label
+              >
+              <textarea
+                class="form-control"
+                id="Details-About"
+                rows="3"
+                v-model="data.Address.gmap"
+                @blur="(e) => checkGmap(data.Address.gmap)"
+              ></textarea>
+            </div>
+          </div>
         </div>
         <div class="form-group-container">
           <div class="form-input-heaeding-container">
@@ -463,6 +534,7 @@ export default {
       updatedLogo: false,
       logoUri: "",
       imageLogoFile: "",
+      googleLink: "https://www.google.com.ph/maps/",
     };
   },
   computed: {},
@@ -616,6 +688,32 @@ export default {
       this.updatedLogo = true;
       this.logoUri = URL.createObjectURL(file);
       this.imageLogoFile = file;
+    },
+    checkGmap(e) {
+      if (!e.includes("https://www.google.com/maps/embed")) {
+        this.$swal({
+          icon: "error",
+          title: "Error",
+          text: "Error in Adding Google Map Embedded link",
+        });
+        this.data.Address.gmap = "";
+        return;
+      }
+
+      if (!e.includes('width="100%"')) {
+        this.$swal({
+          icon: "error",
+          title: "Error",
+          text: "Error in Adding Google Map Embedded link",
+        });
+        this.data.Address.gmap = "";
+        return;
+      }
+      this.$swal({
+        icon: "success",
+        title: "Success",
+        text: "Google map embedded link added",
+      });
     },
   },
 };
