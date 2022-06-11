@@ -225,16 +225,7 @@
           </div>
         </div>
       </div>
-      <div class="map-container">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d295.61664909642514!2d120.92903!3d14.45903!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1649086065331!5m2!1sen!2sph"
-          width="100%"
-          height="450"
-          style="border: 0"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <div class="map-container" v-html="data.Address.gmap">
       </div>
       <div class="articles-view-container">
         <div class="articles-header-container" style="margin-bottom: 30px">
@@ -353,7 +344,7 @@ export default {
         schoolPic: require("../assets/pexels-photo-207692.jpeg"),
       },
       errorFlag: false,
-      reviews: [1,2,3],
+      reviews: [1, 2, 3],
       rating: {
         rating: 0,
         comment: "",
@@ -473,14 +464,13 @@ export default {
             let count = 0;
             for (let reviews in reviewsObj) {
               reviewsObj[reviews].index = count;
-              this.$set(this.reviews, count, reviewsObj[reviews])
+              this.$set(this.reviews, count, reviewsObj[reviews]);
 
               count = count + 1;
               console.log(reviews);
             }
             // this.reviews = Object.assign({}, reviewsObj);
             // Vue.set(vm.items, indexOfItem, newValue)  //works fine
-
 
             console.log(count);
             console.log(this.reviews);
