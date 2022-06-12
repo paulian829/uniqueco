@@ -46,6 +46,7 @@
                 class="btn btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal1"
+                @click="edit(index.data.uid)"
               >
                 Edit
               </button>
@@ -176,14 +177,14 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="editUser">
+            <form @submit.prevent="editSubmit">
               <div class="mb-3">
                 <label for="add-contact" class="form-label">Contact</label>
                 <input
                   type="text"
                   class="form-control"
                   id="add-contact"
-                  v-model="addForm.contact"
+                  v-model="editForm.contact"
                 />
               </div>
               <div class="mb-3">
@@ -192,7 +193,7 @@
                   type="text"
                   class="form-control"
                   id="add-fname"
-                  v-model="addForm.firstname"
+                  v-model="editForm.firstname"
                 />
               </div>
               <div class="mb-3">
@@ -201,7 +202,7 @@
                   type="text"
                   class="form-control"
                   id="add-lname"
-                  v-model="addForm.lastname"
+                  v-model="editForm.lastname"
                 />
               </div>
               <div class="modal-footer">
@@ -243,6 +244,12 @@ export default {
         firstname: null,
         lastname: null,
       },
+      editForm: {
+        contact: null,
+        firstname: null,
+        lastname: null,
+        uid: null,
+      },
     };
   },
   mounted() {
@@ -254,20 +261,46 @@ export default {
       d = d.toString();
       return d.slice(0, 21);
     },
+    edit(uid) {
+      this.editForm.contact = this.data[uid].data.data.contactNumber;
+      this.editForm.firstname = this.data[uid].data.data.firstName;
+      this.editForm.lastname = this.data[uid].data.data.lastName;
+      this.editForm.uid = this.data[uid].data.uid;
+    },
+    editSubmit() {
+      let form = this.editForm;
+      const formData = new FormData();
+      formData.append("contact", form.contact);
+      formData.append("firstname", form.firstname);
+      formData.append("lastname", form.lastname);
+      formData.append("uid", form.uid);
+
+      axios
+        .post(this.url + "/update", formData)
+        .then((response) => {
+          if (response.data === "Success") {
+            this.$refs.CloseEdit.click();
+
+            this.showAlertSuccess("Success in Editing Account");
+          } else {
+            this.showAlertError(response.data);
+          }
+        })
+        .catch((e) => {
+          this.showAlertError(e);
+        });
+    },
     deleteAccount(uid) {
       if (!confirm("Are you sure you want to delete account?")) {
         return;
       }
-      console.log(uid);
       axios
         .delete(this.url + "?uid=" + uid)
         .then((response) => {
-          console.log(response);
           if (response.data === "success") {
             this.showAlertSuccess("Deleted Account");
-            delete this.data[uid]
+            delete this.data[uid];
             this.getData();
-
           } else {
             this.showAlertError(response.data);
           }
@@ -297,7 +330,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           if (response.data === "Success") {
             let addForm = {
               email: null,
@@ -327,7 +359,6 @@ export default {
         })
         .then((response) => {
           let dataArr = response.data;
-          console.log(dataArr);
           for (let item in dataArr) {
             // this.data.push(dataArr[item]);
             this.$set(this.data, dataArr[item].uid, {

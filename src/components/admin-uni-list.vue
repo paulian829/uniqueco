@@ -27,7 +27,6 @@
         <thead>
           <tr>
             <th scope="col">University list</th>
-            <th scope="col">Date Created</th>
             <th scope="col">Action</th>
             <th scope="col">Publish</th>
           </tr>
@@ -35,7 +34,6 @@
         <tbody>
           <tr v-for="(item, key) in data" :key="key" v-show="!item.Admin">
             <td class="text-left">{{ item.Name }}</td>
-            <td class="text-left" v-text="textSlice(item.DateCreated)"></td>
             <td class="articles-btn-container">
               <!-- <button class="btn btn-secondary" @click="viewArticle(key)">
                 View
