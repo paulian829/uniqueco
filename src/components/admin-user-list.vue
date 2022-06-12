@@ -10,7 +10,7 @@
       >
         Add new
       </button>
-      <div class="search-group-container">
+      <!-- <div class="search-group-container">
         <div class="input-group mb-3 input-group-lg">
           <input
             type="text"
@@ -22,7 +22,7 @@
             Search
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="articles-list-container">
       <table class="table">
