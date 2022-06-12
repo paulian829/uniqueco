@@ -99,20 +99,22 @@ export default {
       const db = getDatabase();
       const updates = {};
       updates["Account/" + data.Uid] = data;
-      update(ref(db), updates).then(() => {
-        this.$emit("setLoading", false);
-        this.$swal({
-          icon: "success",
-          title: "Success",
-          text:'Profile Updated'
+      update(ref(db), updates)
+        .then(() => {
+          this.$emit("setLoading", false);
+          this.$swal({
+            icon: "success",
+            title: "Success",
+            text: "Profile Updated",
+          });
+        })
+        .catch((e) => {
+          this.$swal({
+            icon: "Error",
+            title: "Error",
+            text: e,
+          });
         });
-      }).catch((e) => {
-                this.$swal({
-          icon: "Error",
-          title: "Error",
-          text: e,
-        });
-      })
     },
   },
 };

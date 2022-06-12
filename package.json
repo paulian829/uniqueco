@@ -16,7 +16,9 @@
     "vue-carousel-3d": "^1.0.1",
     "vue-router": "3",
     "vue-star-rating": "^1.7.0",
-    "vue-sweetalert2": "^5.0.2"
+    "vue-sweetalert2": "^5.0.2",
+    "axios": "^0.24.0"
+
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.15",

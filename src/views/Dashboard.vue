@@ -45,6 +45,9 @@
       >
         <h2 style="margin-top: 20px"><strong>Admin Dashboard</strong></h2>
         <div class="nav-container">
+                    <h5 v-on:click="selectScreen('Profile')">
+            <strong>My Profile</strong>
+          </h5>
           <h5 v-on:click="selectScreen('AdminUserList')">
             <strong>User List</strong>
           </h5>
@@ -125,7 +128,7 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'AdminUserList'"
       >
-        <AdminUserList></AdminUserList>
+        <AdminUserList @setLoading = 'setLoading'></AdminUserList>
       </div>
       <div
         class="col-9 overflow-scroll"

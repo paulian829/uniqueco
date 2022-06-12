@@ -11,15 +11,9 @@
             type="text"
             class="form-control"
             placeholder="Search"
-            @input="search"
             v-model="searchString"
           />
-          <button
-            class="btn btn-primary"
-            @click="search"
-            type="button"
-            id="button-addon2"
-          >
+          <button class="btn btn-primary" type="button" id="button-addon2">
             Search
           </button>
         </div>
@@ -29,33 +23,18 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Title</th>
+            <th scope="col">Uid</th>
             <th scope="col">Date Created</th>
+            <th scope="col">Email</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, key) in data" :key="key">
-            <td class="text-left">{{ item.title }}</td>
-            <td class="text-left" v-text="textSlice(item.dateCreated)"></td>
-            <td class="articles-btn-container">
-              <button class="btn btn-secondary" @click="viewArticle(key)">
-                View
-              </button>
-              <button
-                class="btn btn-primary"
-                @click="goToEdit(key)"
-                style="margin-left: 30px"
-              >
-                Edit</button
-              ><button
-                style="margin-left: 30px"
-                @click="deleteArticle(key)"
-                class="btn btn-warning"
-              >
-                Delete
-              </button>
-            </td>
+          <tr v-for="index in data" :key="index.uid">
+            <td class="text-left">{{ index.uid }}</td>
+            <td class="text-left">{{ textSlice(index.data.dateCreated) }}</td>
+            <td class="text-left">{{ index.email }}</td>
+            <td class="text-left"><button class="btn btn-primary">Edit</button></td>
           </tr>
         </tbody>
       </table>
@@ -64,66 +43,51 @@
 </template>
 
 <script>
-import { getDatabase, onValue, ref, set } from "@firebase/database";
+// import { getDatabase, onValue, ref, set } from "@firebase/database";
+const axios = require("axios");
 export default {
   name: "Articles",
-  components: {},
   props: ["dataProps"],
   data: function () {
     return {
-      data: "",
+      data: [],
       searchString: "",
-      originalData: "",
+      originalData: [],
+      url: "https://ramenadmin.pythonanywhere.com",
     };
   },
   mounted() {
     this.getData();
   },
   methods: {
-    goToEdit(key) {
-      this.$emit("setEditArticle", key);
-    },
-    deleteArticle(key) {
-      this.$emit("setLoading", true);
-      let data = this.dataProps;
-      const db = getDatabase();
-      set(ref(db, `university/${data.Uid}/articles/${key}`), {}).then(
-        (result) => {
-          console.log(result);
-        }
-      );
-    },
-    addNewArticle() {
-      this.$emit("setPage", "NewArticle");
+    textSlice(item) {
+      let d = new Date(item);
+      d = d.toString();
+      return d.slice(0, 21);
     },
     getData() {
-      let Uid = this.dataProps.Uid;
-      const db = getDatabase();
-      const query = ref(db, `university/${Uid}/articles`);
-      onValue(query, (snapshot) => {
-        const data = snapshot.val();
-        this.data = data;
-        this.originalData = data;
-      });
-    },
-    textSlice(item) {
-      return item.slice(0, 28);
-    },
-    viewArticle(key) {
-      this.$router.push(`articles/${this.dataProps.Uid}/${key}`);
-    },
-    search() {
-      let searchString = this.searchString;
-      searchString = searchString.toLowerCase();
-      let result = {};
-      for (const prop in this.originalData) {
-        let title = this.originalData[prop].title;
-        title = title.toLowerCase();
-        if (title.includes(searchString)) {
-          result[prop] = this.originalData[prop]
-        }
-      }
-      this.data = result;
+      this.$emit("setLoading", true);
+
+      axios
+        .get(this.url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          let dataArr = response.data;
+          // for (let item in dataArr) {
+          //   this.data.push(dataArr[item]);
+          //   this.$set(this.data, item, {
+          //     data: dataArr[item],
+          //   });
+          // }
+          this.data = dataArr;
+          this.originalData = dataArr;
+          console.log(this.data);
+          this.$emit("setLoading", false);
+        })
+        .catch((e) => alert(e));
     },
   },
 };
