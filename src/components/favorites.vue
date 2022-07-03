@@ -127,6 +127,11 @@ export default {
           // });
         });
     },
+    goTo(key){
+      console.log(key)
+        this.$router.push("/university/view/" +key);
+
+    }
   },
 };
 </script>

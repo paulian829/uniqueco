@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <div class="btn-container">
+        <div class="btn-container-match">
           <button
             class="btn btn-primary"
             @click="search(schoolType, searchLocation, program, range)"
@@ -464,8 +464,11 @@ div#university-list {
 .school-logo-container img {
   width: 100%;
   height: 100%;
+  max-height: 300px;
+  max-width: 300px;
+  object-fit: cover;
 }
-.btn-container {
+.btn-container-match {
   display: flex;
   justify-content: center;
 }
