@@ -241,21 +241,21 @@ export default {
       searchLocation = searchLocation.toLowerCase();
       program = program.toLowerCase();
 
-      if (!schoolType) {
-        this.isLoading = false;
-        this.error();
-        return;
-      }
-      if (!searchLocation) {
-        this.isLoading = false;
-        this.error();
-        return;
-      }
-      if (!program) {
-        this.isLoading = false;
-        this.error();
-        return;
-      }
+      // if (!schoolType) {
+      //   this.isLoading = false;
+      //   this.error();
+      //   return;
+      // }
+      // if (!searchLocation) {
+      //   this.isLoading = false;
+      //   this.error();
+      //   return;
+      // }
+      // if (!program) {
+      //   this.isLoading = false;
+      //   this.error();
+      //   return;
+      // }
       let highestPrice = 0;
       let progArray = {};
 
@@ -278,11 +278,23 @@ export default {
         // Get the highest price of program
         progArray = this.originalData[prop].ProgramsOffered;
         for (let item in progArray) {
-          if (progArray[item].TuitionMax > highestPrice) {
-            highestPrice = progArray[item].TuitionMax;
+          highestPrice = 0
+          let tuition = progArray[item].TuitionMax
+          if (tuition == undefined){
+            tuition = '0'
           }
+          if (/^[0-9]+$/.test(tuition) == false){
+            tuition = '0'
+          }
+          tuition = tuition.toString()
+          tuition = tuition.replace(/[^\d.-]/g, '');
+          tuition = parseInt(tuition)
+
+          if (tuition > highestPrice) {
+            highestPrice = tuition;
+          }
+          console.log(highestPrice)
         }
-        console.log(highestPrice);
         if (
           currentSchoolType.includes(schoolType) &&
           currentSchoolLocation.includes(searchLocation) &&
