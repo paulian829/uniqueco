@@ -62,23 +62,12 @@
             <h3>
               <strong>{{ item.Name }}</strong>
             </h3>
-            <!-- <StarRating
-              style="margin-bottom: 10px"
-              :rating="item.score"
-              :read-only="true"
-              :increment="0.1"
-              :star-size="30"
-              :show-rating="false"
-            ></StarRating> -->
+
             <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
             <h6>{{ item.schoolType }}</h6>
             <br />
-            <!-- <h6><strong>Programs Offered</strong></h6>
-            <h6>
-              <span v-for="(program, key) in item.ProgramsOffered" :key="key"
-                >{{ program.Field }}<br
-              /></span>
-            </h6> -->
+            <h6><v-icon name="phone"></v-icon>{{ item.contact }}</h6>
+            <br />
             <div class="school-list-btn-group">
               <router-link :to="'/university/view/' + item.Uid"
                 ><button class="btn btn-primary">View</button></router-link

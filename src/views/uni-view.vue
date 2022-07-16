@@ -193,10 +193,17 @@
           <div class="group-centered">
             <br />
             <h5><strong>Ranking</strong></h5>
-            <h1>{{ data.SchoolPerformance.Ranking }} Place on Philippines</h1>
+            <h1>{{ data.SchoolPerformance.Ranking }}</h1>
             <br />
             <h5><strong>Board Exam Performance</strong></h5>
-            <h1>{{ data.SchoolPerformance.BoardPerformance }} Passing Rate</h1>
+            <h4
+              v-for="item in stringSplit(
+                data.SchoolPerformance.BoardPerformance
+              )"
+              v-bind:key="item"
+            >
+              {{ item }}
+            </h4>
             <br />
             <div class="performance-others">
               <h5><strong>Others</strong></h5>
@@ -574,11 +581,16 @@ div#Programs {
   display: flex;
   padding-top: 20px;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 .program-container {
-  width: 50%;
+  width: 48%;
   text-align: left;
-  padding-top: 10px;
+  padding:15px;
+  background: white;
+  box-shadow: 10 10 10px grey;
+  border-radius: 5px;
+
 }
 .program-heading {
   padding-top: 30px;

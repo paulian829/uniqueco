@@ -10,19 +10,6 @@
       >
         Add new
       </button>
-      <!-- <div class="search-group-container">
-        <div class="input-group mb-3 input-group-lg">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Search"
-            v-model="searchString"
-          />
-          <button class="btn btn-primary" type="button" id="button-addon2">
-            Search
-          </button>
-        </div>
-      </div> -->
     </div>
     <div class="articles-list-container">
       <table class="table">

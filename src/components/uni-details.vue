@@ -399,12 +399,13 @@
               <label for="school-performance-board-exam" class="form-label"
                 >Board Examp Performance</label
               >
-              <input
-                type="email"
+              <textarea
                 class="form-control"
-                id="school-performance-board-exam"
+                id="school-performance-others"
+                cols="30"
+                rows="3"
                 v-model="data.SchoolPerformance.BoardPerformance"
-              />
+              ></textarea>
             </div>
             <div class="mb-3">
               <label for="school-performance-others" class="form-label"
