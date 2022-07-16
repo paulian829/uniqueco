@@ -48,7 +48,6 @@
         <router-link to="/admin/accounts">Accounts</router-link>
         <router-link to="/admin/universities">Universities</router-link>
         <router-link to="/admin/help">Help Messages</router-link>
-
       </div>
     </div>
     <router-view class="padding-top" />
@@ -86,9 +85,9 @@ export default {
           console.log("user is logged out");
         }
       });
-      var urlName = window.location.href
+      var urlName = window.location.href;
       console.log(urlName);
-      this.isAdmin = urlName.includes('admin')
+      this.isAdmin = urlName.includes("admin");
     },
     logout() {
       signOut(passAuth())
@@ -132,6 +131,7 @@ body {
   text-align: center;
   color: #2c3e50;
   min-height: 100vh;
+  height: 91vh;
   position: relative;
 }
 

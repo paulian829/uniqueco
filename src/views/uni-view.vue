@@ -225,8 +225,7 @@
           </div>
         </div>
       </div>
-      <div class="map-container" v-html="data.Address.gmap">
-      </div>
+      <div class="map-container" v-html="data.Address.gmap"></div>
       <div class="articles-view-container">
         <div class="articles-header-container" style="margin-bottom: 30px">
           <h3>Articles</h3>
@@ -290,7 +289,9 @@
           <div>
             <star-rating
               :show-rating="false"
-              :increment="0.01"
+              :increment="1"
+              :rating="rating.rating"
+              @rating-selected="(rating) => setRating(rating)"
               style="margin: 0 auto; justify-content: center"
             ></star-rating>
           </div>

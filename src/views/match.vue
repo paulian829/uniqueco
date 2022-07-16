@@ -95,23 +95,23 @@
             <h3>
               <strong>{{ item.Name }}</strong>
             </h3>
-            <StarRating
+            <!-- <StarRating
               style="margin-bottom: 10px"
               :rating="item.score"
               :read-only="true"
               :increment="0.1"
               :star-size="30"
               :show-rating="false"
-            ></StarRating>
+            ></StarRating> -->
             <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
+            <h6>{{ item.schoolType }}</h6>
             <br />
-            <h6><strong>Programs Offered</strong></h6>
+            <!-- <h6><strong>Programs Offered</strong></h6>
             <h6>
-              <!-- <span>None provided {{item.ProgramsOffered.length}}</span> -->
               <span v-for="(program, key) in item.ProgramsOffered" :key="key"
                 >{{ program.Field }}<br
               /></span>
-            </h6>
+            </h6> -->
             <div class="school-list-btn-group">
               <router-link :to="'/university/view/' + item.Uid"
                 ><button class="btn btn-primary">View</button></router-link
@@ -151,12 +151,12 @@
 import { getDatabase, ref, onValue, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { passAuth } from "../db";
-import StarRating from "vue-star-rating";
+// import StarRating from "vue-star-rating";
 import Loader from "../components/loader.vue";
 
 export default {
   name: "uniList",
-  components: { StarRating, Loader },
+  components: { Loader },
   data() {
     return {
       data: "",
@@ -240,22 +240,6 @@ export default {
       schoolType = schoolType.toLowerCase();
       searchLocation = searchLocation.toLowerCase();
       program = program.toLowerCase();
-
-      // if (!schoolType) {
-      //   this.isLoading = false;
-      //   this.error();
-      //   return;
-      // }
-      // if (!searchLocation) {
-      //   this.isLoading = false;
-      //   this.error();
-      //   return;
-      // }
-      // if (!program) {
-      //   this.isLoading = false;
-      //   this.error();
-      //   return;
-      // }
       let highestPrice = 0;
       let progArray = {};
 
@@ -278,22 +262,22 @@ export default {
         // Get the highest price of program
         progArray = this.originalData[prop].ProgramsOffered;
         for (let item in progArray) {
-          highestPrice = 0
-          let tuition = progArray[item].TuitionMax
-          if (tuition == undefined){
-            tuition = '0'
+          highestPrice = 0;
+          let tuition = progArray[item].TuitionMax;
+          if (tuition == undefined) {
+            tuition = "0";
           }
-          if (/^[0-9]+$/.test(tuition) == false){
-            tuition = '0'
+          if (/^[0-9]+$/.test(tuition) == false) {
+            tuition = "0";
           }
-          tuition = tuition.toString()
-          tuition = tuition.replace(/[^\d.-]/g, '');
-          tuition = parseInt(tuition)
+          tuition = tuition.toString();
+          tuition = tuition.replace(/[^\d.-]/g, "");
+          tuition = parseInt(tuition);
 
           if (tuition > highestPrice) {
             highestPrice = tuition;
           }
-          console.log(highestPrice)
+          console.log(highestPrice);
         }
         if (
           currentSchoolType.includes(schoolType) &&

@@ -62,23 +62,23 @@
             <h3>
               <strong>{{ item.Name }}</strong>
             </h3>
-            <StarRating
+            <!-- <StarRating
               style="margin-bottom: 10px"
               :rating="item.score"
               :read-only="true"
               :increment="0.1"
               :star-size="30"
               :show-rating="false"
-            ></StarRating>
+            ></StarRating> -->
             <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
+            <h6>{{ item.schoolType }}</h6>
             <br />
-            <h6><strong>Programs Offered</strong></h6>
+            <!-- <h6><strong>Programs Offered</strong></h6>
             <h6>
-              <!-- <span>None provided {{item.ProgramsOffered.length}}</span> -->
               <span v-for="(program, key) in item.ProgramsOffered" :key="key"
                 >{{ program.Field }}<br
               /></span>
-            </h6>
+            </h6> -->
             <div class="school-list-btn-group">
               <router-link :to="'/university/view/' + item.Uid"
                 ><button class="btn btn-primary">View</button></router-link
@@ -117,11 +117,11 @@
 import { getDatabase, ref, onValue, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { passAuth } from "../db";
-import StarRating from "vue-star-rating";
+// import StarRating from "vue-star-rating";
 
 export default {
   name: "uniList",
-  components: { StarRating },
+  // components: { StarRating },
   data() {
     return {
       data: "",
@@ -158,7 +158,7 @@ export default {
 
           this.data = data;
           this.originalData = data;
-          console.log(data)
+          console.log(data);
         });
       } catch (e) {
         console.log(e);
@@ -353,7 +353,7 @@ div#university-list {
 .school-logo-container img {
   width: 100%;
   height: 100%;
-    max-height: 300px;
+  max-height: 300px;
   max-width: 300px;
   object-fit: cover;
 }
