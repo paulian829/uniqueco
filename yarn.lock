@@ -1356,6 +1356,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@iconify/vue2@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@iconify/vue2/-/vue2-1.2.1.tgz#f858bcfe8554970cca6d8f4c7a7e8015c7933fbb"
+  integrity sha512-aJy/PLs0mqKF5wv6vMc+Pf2+v4TkrlLP15tTU15Tbyw5OSnIGZa64eCkEEJnag2h8+XIf/mx6MOf7m2DE58pHw==
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.npmjs.org/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz"
@@ -8844,11 +8849,6 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.npmjs.org/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-
-vue-icon@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/vue-icon/-/vue-icon-2.3.0.tgz#7e0231fc44be1455d944cb4e1ba948f36b78d80e"
-  integrity sha512-woPd+wFcDbpgXbJNceBqqf7c8EOC9lYKRx0+Drj9j+Ldo9TTh/hTX+yhu4GlEcfx9/XrC7bJ+OTMxuUl0qUd+g==
 
 "vue-loader-v16@npm:vue-loader@^16.1.0":
   version "16.8.3"

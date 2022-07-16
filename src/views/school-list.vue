@@ -63,10 +63,9 @@
               <strong>{{ item.Name }}</strong>
             </h3>
 
-            <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
-            <h6>{{ item.schoolType }}</h6>
-            <br />
-            <h6><v-icon name="phone"></v-icon>{{ item.contact }}</h6>
+            <h6><Icon icon="clarity:map-marker-solid" style="margin-right:10" /> {{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
+            <h6><Icon icon="ic:baseline-school" style="margin-right:10" /> {{ item.schoolType }}</h6>
+            <h6> <Icon icon="carbon:phone-filled" style="margin-right:10" />{{ item.contact }}</h6>
             <br />
             <div class="school-list-btn-group">
               <router-link :to="'/university/view/' + item.Uid"
@@ -107,10 +106,12 @@ import { getDatabase, ref, onValue, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { passAuth } from "../db";
 // import StarRating from "vue-star-rating";
+import { Icon } from '@iconify/vue2';
+
 
 export default {
   name: "uniList",
-  // components: { StarRating },
+  components: { Icon },
   data() {
     return {
       data: "",
