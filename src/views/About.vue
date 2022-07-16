@@ -92,10 +92,13 @@
                 <div class="p-3 text-left">
                   <h3><strong>Nepomuceno, Marian Z.</strong></h3>
                   <p>
-                    Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-                    odit aut fugit, sed quia consequuntur magni dolores eos qui
-                    ratione voluptatem sequi nesciunt. Neque porro quisquam est,
-                    qui dolorem.
+                    Marian Z. Nepomuceno, one of the Backend Developers of the
+                    UniQueCo system. She is responsible for maintaining the
+                    flow, features, and functionalities of the system together
+                    with the developers. She wanted to develop an application
+                    that would help prospective students decide on what school
+                    in the Quezon Province will fit their criteria and through
+                    UniQueCo Application, it comes to life.
                   </p>
                 </div>
               </div>
