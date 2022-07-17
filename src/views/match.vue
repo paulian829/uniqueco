@@ -103,8 +103,20 @@
               :star-size="30"
               :show-rating="false"
             ></StarRating> -->
-            <h6>{{ item.Address.Lot }} {{ item.Address.Barangay }}</h6>
-            <h6>{{ item.schoolType }}</h6>
+
+            <h6>
+              <Icon icon="clarity:map-marker-solid" style="margin-right: 10" />
+              {{ item.Address.Lot }} {{ item.Address.Barangay }}
+            </h6>
+            <h6>
+              <Icon icon="ic:baseline-school" style="margin-right: 10" />
+              {{ item.schoolType }}
+            </h6>
+            <h6>
+              <Icon icon="carbon:phone-filled" style="margin-right: 10" />{{
+                item.contact
+              }}
+            </h6>
             <br />
             <!-- <h6><strong>Programs Offered</strong></h6>
             <h6>
@@ -151,12 +163,14 @@
 import { getDatabase, ref, onValue, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { passAuth } from "../db";
+import { Icon } from "@iconify/vue2";
+
 // import StarRating from "vue-star-rating";
 import Loader from "../components/loader.vue";
 
 export default {
   name: "uniList",
-  components: { Loader },
+  components: { Loader, Icon },
   data() {
     return {
       data: "",
