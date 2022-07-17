@@ -11,38 +11,29 @@
       </div>
       <div class="chat-container" id="chat-container" ref="list">
         <div class="dialog-left">
-          How can I help you? Click on the topic you want to explore
+          {{ data.introMessage }}
           <div class="help-topics">
             <br />
             <div
               @click="addMessage(key)"
-              v-for="(item, key) in helpOptions"
+              v-for="(item, key) in data.QnA"
               :key="key"
               class="help-topic-item"
             >
-              {{ item.title }}
+              {{ item.question }}
             </div>
           </div>
         </div>
-        <div v-for="(item, key) in conversation" :key="key">
-          <div class="dialog-right">
-            {{ item.title }}
+        <div
+          v-for="(item, key) in conversation"
+          :key="key"
+          style="margin-top: 10px"
+        >
+          <div class="dialog-right" style="margin-top: 10px">
+            {{ item.question }}
           </div>
-          <div class="dialog-left">
-            {{ item.content }}
-            <br />
-            <br />
-            <p>Do you have any other question?</p>
-            <div class="help-topics">
-              <div
-                @click="addMessage(key)"
-                v-for="(item, key) in helpOptions"
-                :key="key"
-                class="help-topic-item"
-              >
-                {{ item.title }}
-              </div>
-            </div>
+          <div class="dialog-left" style="margin-top: 10px">
+            {{ item.answer }}
           </div>
         </div>
       </div>
@@ -56,6 +47,7 @@ import { getDatabase, onValue, ref } from "@firebase/database";
 
 export default {
   name: "Chat",
+  props: ["data"],
   data() {
     return {
       chatOpened: false,
@@ -78,6 +70,7 @@ export default {
   },
   mounted() {
     // this.getData();
+    console.log(this.data);
   },
 
   methods: {
@@ -94,13 +87,13 @@ export default {
     },
     addMessage(key) {
       let id = this.makeid(5);
-      let data = this.helpOptions[key];
+      let data = this.data.QnA[key];
       //   this.conversation[id] = data
       //   this.randomID = id
 
       this.$set(this.conversation, id, {
-        title: data.title,
-        content: data.content,
+        answer: data.answer,
+        question: data.question,
       });
       this.scrollToBottom();
     },
@@ -132,7 +125,7 @@ export default {
 }
 
 .chat-widget {
-  position: absolute;
+  position: fixed;
   z-index: 999;
   bottom: 3rem;
   right: 3rem;
@@ -171,7 +164,7 @@ export default {
 
 .dialog-right {
   padding: 15px;
-  background: rgb(240, 186, 85);
+  background: rgb(66, 230, 61);
   border-radius: 8px;
   max-width: 50%;
   color: black;
@@ -191,9 +184,9 @@ export default {
   align-items: center;
 }
 .help-topic-item {
-  padding: 8px;
+  padding: 12px;
   background: whitesmoke;
-  border-radius: 999px;
+  border-radius: 30px;
   margin-bottom: 10px;
   cursor: pointer;
 }

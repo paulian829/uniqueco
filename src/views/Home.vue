@@ -9,7 +9,7 @@
         <img src="../assets/home-pic.png" style="margin: 0 auto" alt="" />
       </div>
     </div>
-    <Chat />
+    <Chat :data="data" />
   </div>
 </template>
 
@@ -20,6 +20,26 @@ import Chat from "../components/chat.vue";
 export default {
   name: "Home",
   components: { Chat },
+  data() {
+    return {
+      chatOpened: false,
+      data: {
+        introMessage: "Hello! How Can I help You",
+        QnA: {
+          test1: {
+            answer: "Lorem Ipsum 1",
+            question: "Lorem Ipsum?",
+          },
+          test2: {
+            answer: "Lorem Ipsum 2",
+            question: "Lorem Ipsum? ",
+          },
+        },
+      },
+      conversation: {},
+      randomID: "",
+    };
+  },
 };
 </script>
 

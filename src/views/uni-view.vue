@@ -85,7 +85,7 @@
         </div>
         <div id="About" class="selected-group" v-if="selected == 'About'">
           <div class="logo-container">
-            <img :src="data.logo" alt="" />
+            <img :src="data.logo" alt="" style="max-width: 300px" />
           </div>
           <div class="about-details-container">
             <div>
@@ -311,6 +311,7 @@
           </button>
         </div>
       </div>
+      <Chat v-if="data.helpChat.chatState" :data="data.helpChat" />
     </div>
     <div v-else>
       <h1>Page Not Found!</h1>
@@ -331,13 +332,14 @@ import {
 import Loader from "../components/loader.vue";
 import { passAuth } from "../db";
 import { onAuthStateChanged } from "firebase/auth";
+import Chat from "../components/chat.vue";
 
 import { Carousel3d, Slide } from "vue-carousel-3d";
 import StarRating from "vue-star-rating";
 
 export default {
   name: "uni-update",
-  components: { Loader, Carousel3d, Slide, StarRating },
+  components: { Loader, Carousel3d, Slide, StarRating, Chat },
 
   data() {
     return {
@@ -586,11 +588,10 @@ div#Programs {
 .program-container {
   width: 48%;
   text-align: left;
-  padding:15px;
+  padding: 15px;
   background: white;
   box-shadow: 10 10 10px grey;
   border-radius: 5px;
-
 }
 .program-heading {
   padding-top: 30px;
