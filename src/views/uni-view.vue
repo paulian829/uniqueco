@@ -311,7 +311,7 @@
           </button>
         </div>
       </div>
-      <Chat v-if="data.helpChat.chatState" :data="data.helpChat" />
+      <Chat v-if="chat" :data="data.helpChat" />
     </div>
     <div v-else>
       <h1>Page Not Found!</h1>
@@ -365,12 +365,18 @@ export default {
       score: 0,
       reviewCount: 0,
       count: 0,
+      chat: false,
     };
   },
   mounted() {
     window.scrollTo(0, 0);
     this.getUserData(this.uid);
     this.checkLoggedIn();
+    if (this.data.helpChat.chatState) {
+      this.chat = this.data.helpChat;
+    } else {
+      this.chat = false;
+    }
   },
   methods: {
     getPic(pic) {
