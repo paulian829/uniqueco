@@ -13,8 +13,8 @@
                   class="form-check-input"
                   type="checkbox"
                   id="flexSwitchCheckChecked"
-                  v-model="visibility"
-                  @change="changeVisibility"
+                  v-model="chatState"
+                  @change="toggleChatStage()"
                 />
                 <label class="form-check-label" for="flexSwitchCheckChecked"
                   >Toggle Help Chat visibility</label
@@ -72,6 +72,7 @@
                         cols="30"
                         rows="2"
                         v-model="QnA[index].question"
+                        @blur="saveAll()"
                       ></textarea>
                     </div>
                   </div>
@@ -87,6 +88,7 @@
                         cols="30"
                         rows="2"
                         v-model="QnA[index].answer"
+                        @blur="saveAll()"
                       ></textarea>
                     </div>
                   </div>
@@ -101,7 +103,7 @@
 </template>
 
 <script>
-// import { getDatabase, ref, update } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import { Icon } from "@iconify/vue2";
 
 export default {
@@ -110,14 +112,24 @@ export default {
   components: { Icon },
   data: function () {
     return {
-      introMessage: "test",
+      chatState: false,
+      introMessage: "",
       QnA: {},
     };
   },
   mounted() {
-    console.log(this.dataProps.Uid);
+    console.log(this.dataProps);
+    let data = this.dataProps;
+    if (data.helpChat) {
+      this.chatState = data.helpChat.chatState;
+      this.introMessage = data.helpChat.introMessage;
+      this.QnA = data.helpChat.QnA;
+    }
   },
   methods: {
+    toggleChatStage() {
+      this.saveAll();
+    },
     addRow() {
       let random =
         Math.random().toString(36).substring(2) +
@@ -127,13 +139,33 @@ export default {
         question: "Question goes here",
         answer: "This is a response",
       });
+      this.saveAll();
     },
     removeRow(key) {
       console.log(key);
       this.$delete(this.QnA, key);
+      this.saveAll();
     },
     saveAll() {
-      console.log(this.introMessage);
+      let data = {
+        chatState: this.chatState,
+        introMessage: this.introMessage,
+        QnA: this.QnA,
+      };
+      const db = getDatabase();
+      const updates = {};
+      updates[`university/${this.dataProps.Uid}/helpChat`] = data;
+      update(ref(db), updates)
+        .then(() => {
+          this.$toast.success("Chat Settings Saved!", {
+            // optional options Object
+          });
+        })
+        .catch((e) => {
+          this.$toast.error(e, {
+            // optional options Object
+          });
+        });
     },
   },
 };

@@ -456,7 +456,7 @@
               <textarea
                 class="form-control"
                 id="requirements-cross-enrolles"
-                srows="2"
+                rows="2"
                 v-model="data.Requirements.CrossEnrolles"
               >
               </textarea>
@@ -468,7 +468,7 @@
               <textarea
                 class="form-control"
                 id="requirements-second-course"
-                srows="2"
+                rows="2"
                 v-model="data.Requirements.SecondCourse"
               >
               </textarea>
@@ -551,20 +551,6 @@ export default {
         const storage = getStorage();
         getDownloadURL(StorageRef(storage, this.data.ImageFileName))
           .then((url) => {
-            // `url` is the download URL for 'images/stars.jpg'
-            // This can be downloaded directly:
-            // const xhr = new XMLHttpRequest();
-            // xhr.responseType = "blob";
-            // xhr.onload = () => {
-            //   const blob = xhr.response;
-            //   console.log(blob)
-            // };
-            // xhr.open("GET", url);
-            // xhr.send();
-
-            // Or inserted into an <img> element
-            // const img = document.getElementById("myimg");
-            // img.setAttribute("src", url);
             this.previewChanged = false;
             this.currentImage = url;
           })

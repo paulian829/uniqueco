@@ -69,9 +69,9 @@
           @resetLogo="resetLogo"
         ></Profile>
       </div>
-            <div class="col-9 overflow-scroll" v-if="active == 'HelpChatSettings'">
+      <div class="col-9 overflow-scroll" v-if="active == 'HelpChatSettings'">
         <HelpChatSettings
-          :dataProps="accountData"
+          :dataProps="dataUni"
           @setLoading="setLoading"
           @resetLogo="resetLogo"
         ></HelpChatSettings>
@@ -210,8 +210,8 @@ export default {
     AdminHelpList,
     Settings,
     Favorites,
-    HelpChatSettings
-},
+    HelpChatSettings,
+  },
   data() {
     return {
       selectArticle: "test",

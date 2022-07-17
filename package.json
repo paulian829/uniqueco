@@ -17,7 +17,8 @@
     "vue-carousel-3d": "^1.0.1",
     "vue-router": "3",
     "vue-star-rating": "^1.7.0",
-    "vue-sweetalert2": "^5.0.2"
+    "vue-sweetalert2": "^5.0.2",
+    "vue-toast-notification": "^0.6"
   },
   "devDependencies": {
     "@iconify/vue2": "^1.2.1",
