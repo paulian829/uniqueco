@@ -17,6 +17,9 @@
           <h5 v-on:click="selectScreen('Articles')">
             <strong>Articles</strong>
           </h5>
+          <h5 v-on:click="selectScreen('HelpChatSettings')">
+            <strong>Help Chat</strong>
+          </h5>
           <h5 v-on:click="selectScreen('Settings')">
             <strong>Account Settings</strong>
           </h5>
@@ -45,7 +48,7 @@
       >
         <h2 style="margin-top: 20px"><strong>Admin Dashboard</strong></h2>
         <div class="nav-container">
-                    <h5 v-on:click="selectScreen('Profile')">
+          <h5 v-on:click="selectScreen('Profile')">
             <strong>My Profile</strong>
           </h5>
           <h5 v-on:click="selectScreen('AdminUserList')">
@@ -65,6 +68,13 @@
           @setLoading="setLoading"
           @resetLogo="resetLogo"
         ></Profile>
+      </div>
+            <div class="col-9 overflow-scroll" v-if="active == 'HelpChatSettings'">
+        <HelpChatSettings
+          :dataProps="accountData"
+          @setLoading="setLoading"
+          @resetLogo="resetLogo"
+        ></HelpChatSettings>
       </div>
       <div
         class="col-9 overflow-scroll"
@@ -128,7 +138,7 @@
         style="background: #f5f5f5; height: 100vh"
         v-if="active == 'AdminUserList'"
       >
-        <AdminUserList @setLoading = 'setLoading'></AdminUserList>
+        <AdminUserList @setLoading="setLoading"></AdminUserList>
       </div>
       <div
         class="col-9 overflow-scroll"
@@ -182,6 +192,7 @@ import NewArticle from "../components/new-article.vue";
 import EditArticle from "../components/edit-article.vue";
 import Settings from "../components/settings.vue";
 import Favorites from "../components/favorites.vue";
+import HelpChatSettings from "../components/help-chat-settings.vue";
 
 // @ is an alias to /src
 
@@ -199,6 +210,7 @@ export default {
     AdminHelpList,
     Settings,
     Favorites,
+    HelpChatSettings
 },
   data() {
     return {
